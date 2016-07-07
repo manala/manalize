@@ -1,0 +1,19 @@
+{
+    "name": "rch/manalize",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Robin CHALAS",
+            "email": "robin.chalas@gmail.com",
+            "homepage": "https://github.com/chalasr"
+        }
+    ],
+    "require": {
+        "symfony/console": "~2.8|~3.0",
+        "symfony/filesystem": "~2.8|3.0",
+        "symfony/process": "~2.8|3.0"
+    },
+    "autoload": {
+        "psr-4": { "RCH\\Manalize\\": "src/" }
+    }
+}

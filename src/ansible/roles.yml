@@ -1,0 +1,96 @@
+- src:     elao.motd
+  version: 1.0
+- src:     elao.timezone
+  version: 1.0
+- src:     elao.env
+  version: 1.0
+- src:     elao.apt
+  version: 1.0
+- src:     elao.ssh
+  version: 1.0
+- src:     elao.git
+  version: 1.0
+- src:     elao.zsh
+  version: 1.0
+- src:     elao.ohmyzsh
+  version: 1.0
+- src:     elao.curl
+  version: 1.0
+- src:     elao.acl
+  version: 1.0
+- src:     elao.files
+  version: 1.0
+- src:     elao.make
+  version: 1.0
+- src:     elao.nodejs
+  version: 1.0
+- src:     elao.npm
+  version: 1.0
+- src:     elao.ruby
+  version: 1.0
+- src:     elao.gem
+  version: 1.0
+- src:     elao.phantomjs
+  version: 1.0
+- src:     elao.mailcatcher
+  version: 1.0
+- src:     elao.logio
+  version: 1.0
+- src:     elao.php
+  version: 1.0
+- src:     elao.nginx
+  version: 1.0
+- src:     elao.opcache-dashboard
+  version: 1.0
+
+# Cron
+
+- src:     elao.cron
+  version: 1.0
+
+# Python
+
+- src:     elao.python
+  version: 1.0
+- src:     elao.pip
+  version: 1.0
+
+# Supervisor
+
+- src:     elao.supervisor
+  version: 1.0
+
+# MySQL
+
+- src:     elao.mysql
+  version: 1.0
+- src:     elao.phpmyadmin
+  version: 1.0
+
+# PostgreSQL
+
+- src:     elao.postgresql
+  version: 1.0
+- src:     elao.phppgadmin
+  version: 1.0
+
+# Redis
+
+- src:     elao.redis
+  version: 1.0
+- src:     elao.phpredisadmin
+  version: 1.0
+
+# Elasticsearch
+
+- src:     elao.java
+  version: 1.0
+- src:     elao.elasticsearch
+  version: 1.0
+
+# MongoDB
+
+- src:     elao.mongodb
+  version: 1.0
+
+# App

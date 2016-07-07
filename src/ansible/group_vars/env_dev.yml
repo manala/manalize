@@ -1,0 +1,84 @@
+---
+
+_env: dev
+
+#########
+# Files #
+#########
+
+_env_files:
+  - path:  /var/log/symfony
+    state: directory
+    acls:
+      - "user:{{ elao_php_user }}:rwx"
+      - "user:{{ _user }}:rwx"
+      - "default:user:{{ elao_php_user }}:rwx"
+      - "default:user:{{ _user }}:rwx"
+  - path:  /var/cache/symfony
+    state: directory
+    acls:
+      - "user:{{ elao_php_user }}:rwx"
+      - "user:{{ _user }}:rwx"
+      - "default:user:{{ elao_php_user }}:rwx"
+      - "default:user:{{ _user }}:rwx"
+  - path:  "{{ _app_dir }}/symfony/var/logs"
+    src:   /var/log/symfony
+    state: link
+    force: true
+  - path:  "{{ _app_dir }}/symfony/var/cache"
+    src:   /var/cache/symfony
+    state: link
+    force: true
+
+#########
+# Nginx #
+#########
+
+_env_nginx_configs:
+  # OPcache Dashboard
+  - file:     opcache-dashboard.conf
+    template: configs/server_{{ _env }}.conf.j2
+    config:
+      - listen: 2013
+      - root:   "{{ elao_opcache_dashboard_dir }}"
+      - include: conf.d/gzip
+      - location /:
+        - try_files: $uri /opcache.php$is_args$args
+      - location ~ ^/.+\.php(/|$):
+        - include: conf.d/php_fpm_params
+  # PhpMyAdmin
+  - file:     phpmyadmin.conf
+    template: configs/server_{{ _env }}.conf.j2
+    config:
+      - listen: 1979
+      - root:   "{{ elao_phpmyadmin_dir }}"
+      - include: conf.d/gzip
+      - client_max_body_size: 16M
+      - location /:
+        - try_files: $uri /index.php$is_args$args
+      - location ~ ^/.+\.php(/|$):
+        - include: conf.d/php_fpm_params
+  # PhpPgAdmin
+  #- file:     phppgadmin.conf
+  #  template: configs/server_{{ _env }}.conf.j2
+  #  config:
+  #    - listen: 1980
+  #    - root:   "{{ elao_phppgadmin_dir }}"
+  #    - include: conf.d/gzip
+  #    - client_max_body_size: 16M
+  #    - location /:
+  #      - try_files: $uri /index.php$is_args$args
+  #    - location ~ ^/.+\.php(/|$):
+  #      - include: conf.d/php_fpm_params
+  # PhpRedisAdmin
+  #- file:     phpredisadmin.conf
+  #  template: configs/server_{{ _env }}.conf.j2
+  #  config:
+  #    - listen: 1981
+  #    - root:   "{{ elao_phpredisadmin_dir }}"
+  #    - include: conf.d/gzip
+  #    - client_max_body_size: 16M
+  #    - location /:
+  #      - try_files: $uri /index.php$is_args$args
+  #    - location ~ ^/.+\.php(/|$):
+  #      - include: conf.d/php_fpm_params

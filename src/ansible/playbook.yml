@@ -1,0 +1,59 @@
+---
+
+- hosts: all
+
+  roles:
+    - role: elao.motd
+    - role: elao.timezone
+    - role: elao.env
+    - role: elao.apt
+    - role: elao.ssh
+    - role: elao.git
+    - role: elao.zsh
+      when: _env == 'dev'
+    - role: elao.ohmyzsh
+      when: _env == 'dev'
+    - role: elao.curl
+    - role: elao.acl
+    - role: elao.files
+      elao_files: "{{ _all_files + _env_files|default([]) }}"
+    - role: elao.make
+    - role: elao.nodejs
+    - role: elao.npm
+    - role: elao.ruby
+    - role: elao.gem
+    - role: elao.phantomjs
+    - role: elao.mailcatcher
+    - role: elao.logio
+      when: _env == 'dev'
+    - role: elao.php
+    - role: elao.opcache-dashboard
+      when: _env == 'dev'
+    - role: elao.nginx
+      elao_nginx_configs: "{{ _all_nginx_configs + _env_nginx_configs|default([]) }}"
+    # Cron
+    #- role: elao.cron
+    #  when: _env == 'dev'
+    # Python
+    #- role: elao.python
+    #- role: elao.pip
+    # Supervisor (need python)
+    #- role: elao.supervisor
+    # MySql
+    - role: elao.mysql
+    - role: elao.phpmyadmin
+      when: _env == 'dev'
+    # PostgreSQL
+    #- role: elao.postgresql
+    #- role: elao.phppgadmin
+    #  when: _env == 'dev'
+    # Redis
+    #- role: elao.redis
+    #- role: elao.phpredisadmin
+    #  when: _env == 'dev'
+    # Elasticsearch
+    #- role: elao.java
+    #- role: elao.elasticsearch
+    # MongoDB
+    #- role: elao.mongodb
+    # App

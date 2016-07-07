@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__.'/../vendor/autoload.php';
+
+use RCH\Manalize\SetupCommand;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+
+// Creates a new Application
+$app = new Application('rch/manalize', '1.0');
+
+$app
+    ->add(new SetupCommand())
+    ->run(new ArgvInput(), new ConsoleOutput());

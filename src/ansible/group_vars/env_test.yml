@@ -1,0 +1,23 @@
+---
+
+_env: test
+
+#########
+# Files #
+#########
+
+_env_files:
+  - path:  "{{ _app_dir }}/symfony/var/logs"
+    state: directory
+    acls:
+      - "user:{{ elao_php_user }}:rwx"
+      - "user:{{ _user }}:rwx"
+      - "default:user:{{ elao_php_user }}:rwx"
+      - "default:user:{{ _user }}:rwx"
+  - path:  "{{ _app_dir }}/symfony/var/cache"
+    state: directory
+    acls:
+      - "user:{{ elao_php_user }}:rwx"
+      - "user:{{ _user }}:rwx"
+      - "default:user:{{ elao_php_user }}:rwx"
+      - "default:user:{{ _user }}:rwx"
