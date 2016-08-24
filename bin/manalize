@@ -3,14 +3,11 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-use RCH\Manalize\SetupCommand;
+use RCH\Manalize\Setup;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-// Creates a new Application
-$app = new Application('rch/manalize', '1.0');
-
-$app
-    ->add(new SetupCommand())
+(new Application('manalize', '1.0'))
+    ->add(new Setup())
     ->run(new ArgvInput(), new ConsoleOutput());
