@@ -18,6 +18,7 @@ use Manala\Manalize\Config\Make;
 use Manala\Manalize\Config\Vagrant;
 use Manala\Manalize\Config\Vars;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -25,17 +26,26 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
- * Setups a full environment on top of Manala' ansible roles.
+ * Setups a full stack environment on top of Manala' ansible roles.
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
 class Setup extends Command
 {
+    /**
+     * @var string
+     */
+    protected $workingDirectory;
+
+    /**
+     * {@inheritdoc}
+     */
     protected function configure()
     {
         $this
             ->setName('setup')
-            ->setDescription('Manalize your application on top of Manala');
+            ->setDescription('Manalize your application on top of Manala')
+            ->addArgument('work-dir', InputArgument::OPTIONAL, 'The absolute path of the application to manalize');
     }
 
     /**
@@ -43,6 +53,13 @@ class Setup extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $workDir = $input->getArgument('work-dir');
+        $this->workingDirectory = realpath($workDir);
+
+        if (!is_dir($this->workingDirectory)) {
+            throw new \RuntimeException(sprintf('The working directory "%s" doesn\'t exist.', $workDir));
+        }
+
         $io = new SymfonyStyle($input, $output);
         $fs = new Filesystem();
 
@@ -59,13 +76,13 @@ class Setup extends Command
             })
         );
 
+        // TODO: ask and validate database name (closes https://github.com/chalasr/manalize/issues/2)
+
         $io->comment('<info>Composing your environment on top of Manala...</info>');
 
         foreach ($configs as $config) {
             $this->dumpConfig($config, $vars, $io, $fs);
         }
-
-        // TODO: fill the database name in symfony configs (see https://github.com/chalasr/manalize/issues/2)
 
         $io->newLine();
         $io->comment('<info>Manalizing your application...</info>');
@@ -73,10 +90,19 @@ class Setup extends Command
         return $this->manalize($io);
     }
 
+    /**
+     * Executes the manalizing process.
+     *
+     * @param OutputInterface $output
+     *
+     * @return int The process exit code
+     */
     protected function manalize(OutputInterface $output)
     {
         $builder = new ProcessBuilder(['make', 'setup']);
-        $builder->setTimeout(null);
+        $builder
+            ->setTimeout(null)
+            ->setWorkingDirectory($this->workingDirectory);
 
         $process = $builder->getProcess();
         $process->run(function ($type, $buffer) use ($output) {
@@ -92,17 +118,24 @@ class Setup extends Command
         return $process->getExitCode();
     }
 
-    protected function dumpConfig(Config $config, Vars $vars, OutputInterface $output, FileSystem $fs = null)
+    /**
+     * Dumps all files of a configuration into the working directory.
+     *
+     * @param Config          $config
+     * @param Vars            $vars
+     * @param OutputInterface $output
+     * @param FileSystem      $fs
+     */
+    protected function dumpConfig(Config $config, Vars $vars, OutputInterface $output, FileSystem $fs)
     {
-        $baseOrigin = $config->getOrigin();
-        $baseTarget = $config->getTarget();
+        $baseTarget = $this->workingDirectory.DIRECTORY_SEPARATOR.$config->getTarget();
         $template = $config->getTemplate();
 
         foreach ($config->getFiles() as $file) {
-            $target = str_replace($baseOrigin, $baseTarget, $file->getPathName());
+            $target = str_replace($config->getOrigin(), $baseTarget, $file->getPathName());
             $dump = ((string) $template === $file->getRealPath()) ? Dumper::dump($config, $vars) : file_get_contents($file);
 
-            $output->writeln(sprintf('- %s', str_replace(getcwd().'/', '', $target)));
+            $output->writeln(sprintf('- %s', str_replace($this->workingDirectory.DIRECTORY_SEPARATOR, '', $target)));
             $fs->dumpFile($target, $dump);
         }
     }
@@ -111,7 +144,6 @@ class Setup extends Command
      * Checks that a given configuration value is properly formatted.
      *
      * @param string $value The value to assert
-     * @param string $key   The key for which to assert the value
      *
      * @return string The validated value
      *
@@ -120,7 +152,7 @@ class Setup extends Command
     protected function assertConfigValue($value)
     {
         if (!preg_match('/^([-A-Z0-9])*$/i', $value)) {
-            throw new \InvalidArgumentException(sprintf('This value must only contains alphanumeric characters or hyphens, "%s" given.', $value));
+            throw new \InvalidArgumentException(sprintf('Value "%s" violated a constraint, it must contain only alphanumeric characters or hyphens.', $value));
         }
 
         return $value;

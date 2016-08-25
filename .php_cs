@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 $header = <<<EOF
 This file is part of the Manala package.
 
@@ -20,7 +11,7 @@ EOF;
 
 
 $finder = Symfony\CS\Finder\DefaultFinder::create()
-    ->in(array(__DIR__.'/src', __DIR__.'/bin'))
+    ->in(array(__DIR__.'/src', __DIR__.'/tests'))
 ;
 
 Symfony\CS\Fixer\Contrib\HeaderCommentFixer::setHeader($header);

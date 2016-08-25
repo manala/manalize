@@ -47,7 +47,7 @@ abstract class Config
      */
     public function getTarget()
     {
-        return getcwd().DIRECTORY_SEPARATOR.$this->getPath();
+        return $this->getPath();
     }
 
     /**
