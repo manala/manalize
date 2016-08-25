@@ -36,11 +36,9 @@ class Setup extends Command
         $io = new SymfonyStyle($input, $output);
         $fs = new Filesystem();
 
-        $io->comment('Start creating the VM configuration...');
+        $output->setDecorated(true);
 
-        // TODO: fill the database name here:
-        // 'app/config/parameters.yml.dist',
-        // 'app/config/config.yml',
+        $io->comment('<info>Start creating the VM configuration...</info>');
 
         $configs = [
             new Ansible(),
@@ -55,22 +53,26 @@ class Setup extends Command
 
         $io->comment('<info>Composing your environment on top of Manala...</info>');
 
+        // TODO: fill the database name in symfony configs (see https://github.com/chalasr/manalize/issues/2)
+
         foreach ($configs as $config) {
-            // $fs->mirror($origi, $targetDir [, $iterator, $options])
             foreach ($config->getFiles() as $file) {
+                $target = str_replace($config->getOrigin(), $config->getTarget(), $file->getPathName());
+                $io->writeln(sprintf('- %s', str_replace(getcwd().'/', '', $target)));
                 $fs->dumpFile(
-                    str_replace($config->getOrigin(), $config->getTarget(), $file->getPathName()),
+                    $target,
                     $config->getTemplate() === $file->getRealPath() ? Dumper::dump($config, $vars) : file_get_contents($file)
                 );
             }
         }
 
+        $io->newLine();
         $io->comment('<info>Manalizing your application...</info>');
 
-        return $this->doManalize($io);
+        return $this->manalize($io);
     }
 
-    private function doManalize(OutputInterface $output)
+    private function manalize(OutputInterface $output)
     {
         $builder = new ProcessBuilder(['make', 'setup']);
         $builder->setTimeout(null);
