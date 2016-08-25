@@ -12,17 +12,25 @@
 namespace Manala\Manalize\Config;
 
 /**
- * Vagrant configuration.
+ * Make.
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-class Vagrant extends Config
+class Make extends Config
 {
     /**
      * {@inheritdoc}
      */
     public function getPath()
     {
-        return 'Vagrantfile';
+        return 'Makefile';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTemplate()
+    {
+        return;
     }
 }

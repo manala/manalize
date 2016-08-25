@@ -1,6 +1,15 @@
 <?php
 
-namespace RCH\Manalize\Config;
+/*
+ * This file is part of the Manala package.
+ *
+ * (c) Manala <contact@manala.io>
+ *
+ * For the full copyright and license information, please refer to the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Manala\Manalize\Config;
 
 /**
  * Represents a config part of a Manala environment.
@@ -16,11 +25,13 @@ abstract class Config
      */
     public function getFiles()
     {
-        yield new \SplFileInfo($this->getOrigin());
+        $origin = $this->getOrigin();
+
+        yield ($origin instanceof \SplFileInfo) ? $origin : new \SplFileInfo($origin);
     }
 
     /**
-     * Gets the origin configuration path.
+     * Gets the origin configuration file.
      *
      * @return \SplFileInfo|string A file or directory path, or a \SplFileInfo object
      */
@@ -30,7 +41,7 @@ abstract class Config
     }
 
     /**
-     * Gets the target configuration path.
+     * Gets the target configuration file.
      *
      * @return \SplFileInfo|string A file or directory path, or a \SplFileInfo object
      */
@@ -40,9 +51,9 @@ abstract class Config
     }
 
     /**
-     * Returns the path of the template to be rendered.
+     * Returns the template to render (or its path).
      *
-     * @return string
+     * @return \SplFileInfo|string
      */
     public function getTemplate()
     {

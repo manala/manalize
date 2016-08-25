@@ -1,6 +1,15 @@
 <?php
 
-namespace RCH\Manalize\Config;
+/*
+ * This file is part of the Manala package.
+ *
+ * (c) Manala <contact@manala.io>
+ *
+ * For the full copyright and license information, please refer to the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Manala\Manalize\Config;
 
 /**
  * Represents a config part of a Manala environment.
@@ -17,11 +26,8 @@ class Dumper
     /**
      * Dumps a rendered Config.
      *
-     * @param Config $config The whole Config for which to dump
-     *                       the template
-     *
-     * @param Vars $vars The vars to replace while rendering
-     *                   the Config' template
+     * @param Config $config The whole Config for which to dump the template
+     * @param Vars   $vars   The vars to insert
      */
     public static function dump(Config $config, Vars $vars)
     {
@@ -32,10 +38,10 @@ class Dumper
         }
 
         $replaces = [
-            self::$vendorKey   => $vars->getVendor(),
-            self::$appKey      => $vars->getApp(),
+            self::$vendorKey => $vars->getVendor(),
+            self::$appKey => $vars->getApp(),
             self::$databaseKey => $vars->getDatabase(),
-            self::$hostKey     => $vars->getHost(),
+            self::$hostKey => $vars->getHost(),
         ];
 
         return strtr(file_get_contents($template), $replaces);

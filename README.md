@@ -1,14 +1,4 @@
 Manalize
-=========
+========
 
-Usage
------
-
-```bash
-$ cd myproject
-$ manalize .
-// Enjoy
-```
-
-----
-- [ ] Move ansible roles to manala.*
+#### /!\ This project is in progress, stay connected.

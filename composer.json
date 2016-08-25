@@ -1,11 +1,14 @@
 {
-    "name": "rch/manalize",
+    "name": "manala/manalize",
+    "description": "Lightweight binary providing infrastructure stacks on top of Manala",
+    "keywords": ["manala", "ansible", "vagrant", "docker"],
+    "homepage": "https://github.com/manala/manalize",
     "license": "MIT",
     "authors": [
         {
-            "name": "Robin CHALAS",
-            "email": "robin.chalas@gmail.com",
-            "homepage": "https://github.com/chalasr"
+            "name": "Manala",
+            "email": "contact@manala.io",
+            "homepage": "https://github.com/manala"
         }
     ],
     "require": {
@@ -13,7 +16,13 @@
         "symfony/filesystem": "~2.8|3.0",
         "symfony/process": "~2.8|3.0"
     },
+    "require-dev": {
+        "phpunit/phpunit": "~5.4",
+        "symfony/phpunit-bridge": "~2.8|~3.0",
+        "symfony/console": "~3.2@dev",
+        "friendsofphp/php-cs-fixer": "~1.1"
+    },
     "autoload": {
-        "psr-4": { "RCH\\Manalize\\": "src/" }
+        "psr-4": { "Manala\\Manalize\\": "src/" }
     }
 }
