@@ -24,5 +24,8 @@
     },
     "autoload": {
         "psr-4": { "Manala\\Manalize\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Manala\\Manalize\\Tests\\": "tests/" }
     }
 }

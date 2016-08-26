@@ -21,6 +21,7 @@ return Symfony\CS\Config\Config::create()
     ->fixers(array(
         '-unalign_double_arrow',
         '-unalign_equals',
+        '-psr0',
         'newline_after_open_tag',
         'ordered_use',
         'short_array_syntax',
