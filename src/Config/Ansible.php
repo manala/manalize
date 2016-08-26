@@ -46,7 +46,7 @@ class Ansible extends Config
         return $this->getOrigin().'/group_vars/all.yml';
     }
 
-    protected function getPath()
+    public function getPath()
     {
         return 'ansible';
     }

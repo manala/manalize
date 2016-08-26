@@ -25,6 +25,14 @@ class Application extends BaseApplication
     const VERSION = '1.0.0';
 
     /**
+     * @return Application
+     */
+    public static function create()
+    {
+        return new self(self::NAME, self::VERSION);
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function getCommandName(InputInterface $input)
@@ -55,10 +63,5 @@ class Application extends BaseApplication
         $inputDefinition->setArguments();
 
         return $inputDefinition;
-    }
-
-    public static function create()
-    {
-        return new self(self::NAME, self::VERSION);
     }
 }

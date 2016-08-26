@@ -93,11 +93,11 @@ class Setup extends Command
     /**
      * Executes the manalizing process.
      *
-     * @param OutputInterface $output
+     * @param SymfonyStyle $output
      *
      * @return int The process exit code
      */
-    protected function manalize(OutputInterface $output)
+    protected function manalize(SymfonyStyle $output)
     {
         $builder = new ProcessBuilder(['make', 'setup']);
         $builder
@@ -128,7 +128,7 @@ class Setup extends Command
      */
     protected function dumpConfig(Config $config, Vars $vars, OutputInterface $output, FileSystem $fs)
     {
-        $baseTarget = $this->workingDirectory.DIRECTORY_SEPARATOR.$config->getTarget();
+        $baseTarget = $this->workingDirectory.DIRECTORY_SEPARATOR.$config->getPath();
         $template = $config->getTemplate();
 
         foreach ($config->getFiles() as $file) {

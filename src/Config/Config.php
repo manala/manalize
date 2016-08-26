@@ -41,16 +41,6 @@ abstract class Config
     }
 
     /**
-     * Gets the target configuration file.
-     *
-     * @return \SplFileInfo|string A file or directory path, or a \SplFileInfo object
-     */
-    public function getTarget()
-    {
-        return $this->getPath();
-    }
-
-    /**
      * Returns the template to render (or its path).
      *
      * @return \SplFileInfo|string
@@ -61,9 +51,11 @@ abstract class Config
     }
 
     /**
-     * Returns the raw resource path (without prepending any base directory).
+     * Returns the path name of the configuration file or directory.
+     *
+     * Note: This needs to be concatened to a given working directory.
      *
      * @return string
      */
-    abstract protected function getPath();
+    abstract public function getPath();
 }
