@@ -25,7 +25,7 @@ class BaseTestConfig extends \PHPUnit_Framework_TestCase
 
     protected function getEnvType()
     {
-        return EnvEnum::create('symfony-dev');
+        return EnvEnum::create(self::ENV);
     }
 
     protected function getOrigin($name)

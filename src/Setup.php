@@ -23,6 +23,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
@@ -65,27 +66,27 @@ class Setup extends Command
         $fs = new Filesystem();
 
         $io->setDecorated(true);
-        $io->comment('<info>Start creating the VM configuration...</info>');
+        $io->comment('<info>Start creating the VM configuration</info>');
 
         $vars = new Vars(
-            $io->ask('<info>Vendor name</info>: ', null,  function ($v) {
+            $io->ask('<info>Vendor name</info>: ', null, function ($v) {
                 return $this->assertConfigValue($v);
             }),
-            $io->ask('<info>Application name</info> [<comment>app</comment>]: ', 'app', function ($v) {
+            $io->ask('<info>Application name</info>: ', 'app', function ($v) {
                 return $this->assertConfigValue($v);
             })
         );
 
         // TODO: ask and validate database name (closes https://github.com/chalasr/manalize/issues/2)
 
-        $io->comment('<info>Composing your environment on top of Manala...</info>');
+        $io->comment('<info>Composing your environment on top of Manala</info>');
 
         foreach (EnvFactory::createEnv($envType)->getConfigs() as $config) {
             $this->dumpConfig($config, $vars, $io, $fs);
         }
 
         $io->newLine();
-        $io->comment('<info>Manalizing your application...</info>');
+        $io->comment('<info>Manalizing your application</info>');
 
         return $this->manalize($io);
     }
@@ -111,6 +112,8 @@ class Setup extends Command
 
         if (!$process->isSuccessful()) {
             $output->warning(['An error occured during the process execution', 'Run the command again with the "-v" option for more details']);
+
+            return $process->getExitCode();
         }
 
         $output->success('Environment successfully created');
