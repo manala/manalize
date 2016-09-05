@@ -17,20 +17,20 @@ class AnsibleTest extends BaseTestConfig
 {
     public function testGetPath()
     {
-        $ansible = new Ansible();
+        $ansible = new Ansible($this->getEnvType());
 
         $this->assertSame('ansible', $ansible->getPath());
     }
 
     public function testGetOrigin()
     {
-        $this->assertOrigin(new Ansible(), 'ansible');
+        $this->assertOrigin(new Ansible($this->getEnvType()), 'ansible');
     }
 
     public function testGetTemplate()
     {
-        $ansible = new Ansible();
+        $ansible = new Ansible($this->getEnvType());
 
-        $this->assertSame(realpath(__DIR__.'/../../src/Resources/ansible').'/group_vars/all.yml', $ansible->getTemplate());
+        $this->assertSame(realpath($this->getOrigin('ansible').'/group_vars/all.yml'), $ansible->getTemplate());
     }
 }

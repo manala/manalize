@@ -12,7 +12,7 @@
 namespace Manala\Manalize\Config;
 
 /**
- * Represents a config part of a Manala environment.
+ * Config dumper.
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */

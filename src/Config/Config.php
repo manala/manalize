@@ -11,6 +11,8 @@
 
 namespace Manala\Manalize\Config;
 
+use Manala\Manalize\Env\EnvEnum;
+
 /**
  * Represents a config part of a Manala environment.
  *
@@ -18,6 +20,19 @@ namespace Manala\Manalize\Config;
  */
 abstract class Config
 {
+    /**
+     * @var EnvEnum
+     */
+    protected $envType;
+
+    /**
+     * @param EnvEnum $env
+     */
+    public function __construct(EnvEnum $envType)
+    {
+        $this->envType = $envType;
+    }
+
     /**
      * Generates the config template as an object.
      *
@@ -37,7 +52,7 @@ abstract class Config
      */
     public function getOrigin()
     {
-        return realpath(__DIR__.'/../Resources/'.$this->getPath());
+        return realpath(__DIR__.sprintf('/../Resources/%s/%s', $this->envType, $this->getPath()));
     }
 
     /**

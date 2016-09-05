@@ -12,11 +12,24 @@
 namespace Manala\Manalize\Tests\Config;
 
 use Manala\Manalize\Config\Config;
+use Manala\Manalize\Env\EnvEnum;
 
 class BaseTestConfig extends \PHPUnit_Framework_TestCase
 {
+    const ENV = EnvEnum::SYMFONY_DEV;
+
     protected function assertOrigin(Config $config, $name)
     {
-        $this->assertSame(realpath(__DIR__.'/../../src/Resources/'.$name), $config->getOrigin());
+        $this->assertSame(realpath($this->getOrigin($name)), $config->getOrigin());
+    }
+
+    protected function getEnvType()
+    {
+        return EnvEnum::create('symfony-dev');
+    }
+
+    protected function getOrigin($name)
+    {
+        return __DIR__.'/../../src/Resources/'.self::ENV.'/'.$name;
     }
 }

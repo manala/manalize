@@ -17,19 +17,19 @@ class MakeTest extends BaseTestConfig
 {
     public function testGetPath()
     {
-        $make = new Make();
+        $make = new Make($this->getEnvType());
 
         $this->assertSame('Makefile', $make->getPath());
     }
 
     public function testGetOrigin()
     {
-        $this->assertOrigin(new Make(), 'Makefile');
+        $this->assertOrigin(new Make($this->getEnvType()), 'Makefile');
     }
 
     public function testGetTemplate()
     {
-        $make = new Make();
+        $make = new Make($this->getEnvType());
 
         $this->assertNull($make->getTemplate());
     }

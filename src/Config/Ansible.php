@@ -28,7 +28,7 @@ class Ansible extends Config
         $originDirectory = $this->getOrigin();
 
         if (!is_readable($originDirectory)) {
-            throw new \InvalidArgumentException('Unable to load an Ansible configuration from directory "%s" as it is either not readable or doesn\'t exist.');
+            throw new \InvalidArgumentException(sprintf('Unable to load an Ansible configuration from directory "%s" as it is either not readable or doesn\'t exist.', $originDirectory));
         }
 
         $iterator = new \RecursiveIteratorIterator(

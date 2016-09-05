@@ -11,15 +11,15 @@
 
 namespace Manala\Manalize;
 
-use Manala\Manalize\Config\Ansible;
 use Manala\Manalize\Config\Config;
 use Manala\Manalize\Config\Dumper;
-use Manala\Manalize\Config\Make;
-use Manala\Manalize\Config\Vagrant;
 use Manala\Manalize\Config\Vars;
+use Manala\Manalize\Env\EnvEnum;
+use Manala\Manalize\Env\EnvFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
@@ -45,7 +45,8 @@ class Setup extends Command
         $this
             ->setName('setup')
             ->setDescription('Manalize your application on top of Manala')
-            ->addArgument('work-dir', InputArgument::OPTIONAL, 'The absolute path of the application to manalize');
+            ->addArgument('work-dir', InputArgument::OPTIONAL, 'The absolute path of the application to manalize', getcwd())
+            ->addOption('env', null, InputOption::VALUE_OPTIONAL, 'One of the available environments', 'symfony-dev');
     }
 
     /**
@@ -53,8 +54,8 @@ class Setup extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $workDir = $input->getArgument('work-dir');
-        $this->workingDirectory = realpath($workDir);
+        $this->workingDirectory = realpath($input->getArgument('work-dir'));
+        $envType = EnvEnum::create($input->getOption('env'));
 
         if (!is_dir($this->workingDirectory)) {
             throw new \RuntimeException(sprintf('The working directory "%s" doesn\'t exist.', $workDir));
@@ -66,7 +67,6 @@ class Setup extends Command
         $io->setDecorated(true);
         $io->comment('<info>Start creating the VM configuration...</info>');
 
-        $configs = [new Ansible(), new Vagrant(), new Make()];
         $vars = new Vars(
             $io->ask('<info>Vendor name</info>: ', null,  function ($v) {
                 return $this->assertConfigValue($v);
@@ -80,7 +80,7 @@ class Setup extends Command
 
         $io->comment('<info>Composing your environment on top of Manala...</info>');
 
-        foreach ($configs as $config) {
+        foreach (EnvFactory::createEnv($envType)->getConfigs() as $config) {
             $this->dumpConfig($config, $vars, $io, $fs);
         }
 

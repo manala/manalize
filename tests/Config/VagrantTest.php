@@ -17,20 +17,20 @@ class VagrantTest extends BaseTestConfig
 {
     public function testGetPath()
     {
-        $vagrant = new Vagrant();
+        $vagrant = new Vagrant($this->getEnvType());
 
         $this->assertSame('Vagrantfile', $vagrant->getPath());
     }
 
     public function testGetOrigin()
     {
-        $this->assertOrigin(new Vagrant(), 'Vagrantfile');
+        $this->assertOrigin(new Vagrant($this->getEnvType()), 'Vagrantfile');
     }
 
     public function testGetTemplate()
     {
-        $vagrant = new Vagrant();
+        $vagrant = new Vagrant($this->getEnvType());
 
-        $this->assertSame(realpath(__DIR__.'/../../src/Resources/Vagrantfile'), $vagrant->getTemplate());
+        $this->assertSame(realpath($this->getOrigin('Vagrantfile')), $vagrant->getTemplate());
     }
 }
