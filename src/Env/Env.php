@@ -27,9 +27,7 @@ class Env
      */
     public function __construct(Config ...$configs)
     {
-        foreach ($configs as $config) {
-            $this->configs[] = $config;
-        }
+        $this->configs = $configs;
     }
 
     /**
