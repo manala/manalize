@@ -19,3 +19,5 @@ before_install:
     - composer selfupdate
 
 install: composer update --prefer-dist --no-interaction --optimize-autoloader
+
+script: phpunit --exclude-group infra

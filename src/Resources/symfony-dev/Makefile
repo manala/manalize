@@ -27,7 +27,7 @@ help:
 
 ## Setup environment & Install application
 setup: provision
-	vagrant ssh -c 'cd /srv/app/symfony && make install'
+	vagrant ssh -c 'cd /srv/app/symfony && composer self-update && make install'
 
 setup@test: provision@test install@test
 
