@@ -50,14 +50,6 @@ class Vars
     /**
      * @return string
      */
-    public function getDatabase()
-    {
-        return ($this->vendor ? $this->vendor.'_' : '').$this->app;
-    }
-
-    /**
-     * @return string
-     */
     public function getHost()
     {
         return $this->app.($this->vendor ? '.'.$this->vendor : '');

@@ -20,7 +20,6 @@ class Dumper
 {
     private static $vendorKey = '{{ vendor }}';
     private static $appKey = '{{ app }}';
-    private static $databaseKey = '{{ app_database }}';
     private static $hostKey = '{{ app_host }}';
 
     /**
@@ -40,7 +39,6 @@ class Dumper
         $replaces = [
             self::$vendorKey => $vars->getVendor(),
             self::$appKey => $vars->getApp(),
-            self::$databaseKey => $vars->getDatabase(),
             self::$hostKey => $vars->getHost(),
         ];
 

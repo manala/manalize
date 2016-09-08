@@ -58,8 +58,6 @@ class Setup extends Command
         $io->setDecorated(true);
         $io->comment('<info>Start configuring the VM</info>');
 
-        // TODO: ask and validate database name (closes https://github.com/chalasr/manalize/issues/2)
-
         $vars = new Vars($io->ask('Vendor name', null, [$this, 'validateVar']), $io->ask('App name', null, [$this, 'validateVar']));
         $process = new SetupProcess($cwd);
 
