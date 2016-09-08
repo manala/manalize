@@ -11,12 +11,12 @@
 
 namespace Manala\Manalize\Tests\Env;
 
-use Manala\Manalize\Env\Env;
-use Manala\Manalize\Env\EnvEnum;
-use Manala\Manalize\Env\EnvFactory;
 use Manala\Manalize\Config\Ansible;
 use Manala\Manalize\Config\Make;
 use Manala\Manalize\Config\Vagrant;
+use Manala\Manalize\Env\Env;
+use Manala\Manalize\Env\EnvEnum;
+use Manala\Manalize\Env\EnvFactory;
 
 class EnvFactoryTest extends \PHPUnit_Framework_TestCase
 {

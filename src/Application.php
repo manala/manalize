@@ -11,6 +11,7 @@
 
 namespace Manala\Manalize;
 
+use Manala\Manalize\Command\Setup;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\InputInterface;
 

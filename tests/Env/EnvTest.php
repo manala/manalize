@@ -11,8 +11,8 @@
 
 namespace Manala\Manalize\Tests\Env;
 
-use Manala\Manalize\Env\Env;
 use Manala\Manalize\Config\Config;
+use Manala\Manalize\Env\Env;
 
 class EnvTest extends \PHPUnit_Framework_TestCase
 {

@@ -1,8 +1,17 @@
 <?php
 
-namespace Manala\Manalize\Tests;
+/*
+ * This file is part of the Manala package.
+ *
+ * (c) Manala <contact@manala.io>
+ *
+ * For the full copyright and license information, please refer to the LICENSE
+ * file that was distributed with this source code.
+ */
 
-use Manala\Manalize\Setup;
+namespace Manala\Manalize\Tests\Functional;
+
+use Manala\Manalize\Command\Setup;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
@@ -17,7 +26,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
         $cwd = sys_get_temp_dir().'/Manala';
-        $fs = new Filesystem;
+        $fs = new Filesystem();
 
         if ($fs->exists($cwd)) {
             $fs->remove($cwd);
@@ -34,10 +43,10 @@ class SetupTest extends \PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
-        $tester = new CommandTester(new Setup);
+        $tester = new CommandTester(new Setup());
         $tester
             ->setInputs(['manala', 'dummy'])
-            ->execute(['work-dir' => static::$cwd]);
+            ->execute(['cwd' => static::$cwd]);
 
         $this->assertSame(0, $tester->getStatusCode());
         $this->assertContains('Environment successfully created', $tester->getDisplay());
@@ -57,6 +66,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase
     public static function tearDownAfterClass()
     {
         (new Process(sprintf('cd %s && vagrant destroy --force && cd %s', self::$cwd, getcwd())))->run();
-        (new Filesystem)->remove(self::$cwd);
+        (new Filesystem())->remove(self::$cwd);
     }
 }
