@@ -41,21 +41,23 @@ class Setup extends Process
      * @param Env  $env
      * @param Vars $vars
      *
-     * @return \Generator The config dumps
+     * @return \Generator The dumped file path
      */
     public function prepare(Env $env, Vars $vars)
     {
         $fs = new Filesystem();
         $cwd = parent::getWorkingDirectory();
+
         foreach ($env->getConfigs() as $config) {
             $baseTarget = $cwd.DIRECTORY_SEPARATOR.$config->getPath();
             $template = $config->getTemplate();
+
             foreach ($config->getFiles() as $file) {
                 $target = str_replace($config->getOrigin(), $baseTarget, $file->getPathName());
                 $dump = ((string) $template === $file->getRealPath()) ? Dumper::dump($config, $vars) : file_get_contents($file);
                 $fs->dumpFile($target, $dump);
 
-                yield $target => $dump;
+                yield $target;
             }
         }
     }

@@ -63,8 +63,8 @@ class Setup extends Command
 
         $io->comment('<info>Composing your environment on top of Manala</info>');
 
-        foreach ($process->prepare(EnvFactory::createEnv($envType), $vars) as $target => $dump) {
-            $io->writeln(sprintf('- %s', str_replace($cwd.DIRECTORY_SEPARATOR, '', $target)));
+        foreach ($process->prepare(EnvFactory::createEnv($envType), $vars) as $targetFile) {
+            $io->writeln(sprintf('- %s', str_replace($cwd.DIRECTORY_SEPARATOR, '', $targetFile)));
         }
 
         $io->newLine();
