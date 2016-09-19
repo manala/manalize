@@ -1,0 +1,19 @@
+
+---
+
+###########
+# Removed #
+###########
+
+manala_deploy_removed:
+  - web/app_dev.php
+  - web/app_test.php
+
+#########
+# Tasks #
+#########
+
+manala_deploy_tasks:
+  - make: install@prod
+  - make: assets@prod
+  - service_restart: supervisor

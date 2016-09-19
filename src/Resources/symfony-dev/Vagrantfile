@@ -1,114 +1,65 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-VAGRANTFILE_API_VERSION = '2'
-
-Vagrant.require_version ">= 1.7.2"
-
-options = {
-    :vendor           => '{{ vendor }}',
-    :app              => '{{ app }}',
-    :aliases          => [],
-    :memory           => 1024,
-    :box              => 'elao/symfony-standard-debian',
-    :box_version      => '~> 1.0.0',
-    :folders          => {
-        '.' => '/srv/app/symfony'
-    },
-    :ansible_playbook => 'ansible/playbook.yml',
-    :ansible_groups   => ['env_dev', 'app'],
-    :ansible_vars     => {
-        '_user' => 'vagrant'
-    },
-    :debug            => false
+app = {
+  :name        => '{{ app }}.{{ vendor }}',
+  :box         => 'manala/app-dev-debian',
+  :box_version => '~> 3.0.0',
+  :box_memory  => 1024
 }
 
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+Vagrant.require_version '>= 1.8.4'
 
-    # Box
-    config.vm.box         = options[:box]
-    config.vm.box_version = options[:box_version]
+Vagrant.configure(2) do |config|
 
-    # Hostname
-    config.vm.hostname = options[:app] + ((options[:vendor] != '') ? '.' + options[:vendor] : '') + '.dev'
+  # Ssh
+  config.ssh.username      = 'app'
+  config.ssh.forward_agent = true
 
-    # Hosts
-    if Vagrant.has_plugin?('landrush')
-        config.landrush.enabled            = true
-        config.landrush.tld                = config.vm.hostname
-        config.landrush.guest_redirect_dns = false
-    elsif Vagrant.has_plugin?('vagrant-hostmanager')
-        config.hostmanager.enabled     = true
-        config.hostmanager.manage_host = true
-        config.hostmanager.ip_resolver = proc do |vm, resolving_vm|
-            if vm.id
-                `VBoxManage guestproperty get #{vm.id} "/VirtualBox/GuestInfo/Net/1/V4/IP"`.split()[1]
-            end
-        end
-        if options[:aliases].any?
-            config.hostmanager.aliases = ''
-            for host in options[:aliases]
-                config.hostmanager.aliases += host + '.' + config.vm.hostname + ' '
-            end
-        end
+  # Vm
+  config.vm.box           = app[:box]
+  config.vm.box_version   = app[:box_version]
+  config.vm.hostname      = app[:name] + '.dev'
+  config.vm.network       'private_network', type: 'dhcp'
+  config.vm.define        'localhost' do |localhost| end
+  config.vm.synced_folder '.', '/srv/app',
+    type: 'nfs',
+    mount_options: ['nolock', 'actimeo=1', 'fsc']
+
+  # Vm - Provider - Virtualbox
+  config.vm.provider :virtualbox do |virtualbox|
+    virtualbox.name   = app[:name]
+    virtualbox.memory = app[:box_memory]
+    virtualbox.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
+    virtualbox.customize ['modifyvm', :id, '--natdnsproxy1', 'on']
+  end
+
+  # Vm - Provision - Dotfiles
+  for dotfile in ['.ssh/config', '.gitconfig', '.gitignore', '.composer/auth.json']
+    if File.exists?(File.join(Dir.home, dotfile)) then
+      config.vm.provision dotfile, type: 'file', run: 'always' do |file|
+        file.source      = '~/' + dotfile
+        file.destination = '/home/' + config.ssh.username + '/' + dotfile
+      end
     end
+  end
 
-    # Network
-    config.vm.network 'private_network', type: 'dhcp'
-
-    # Ssh
-    config.ssh.forward_agent = true
-
-    # Folders
-    options[:folders].each do |host, guest|
-        config.vm.synced_folder host, guest,
-            type: 'nfs',
-            mount_options: ['nolock', 'actimeo=1', 'fsc']
+  # Vm - Provision - Setup
+  for playbook in ['ansible', 'app']
+    config.vm.provision playbook, type: 'ansible_local' do |ansible|
+      ansible.provisioning_path = '/srv/app/ansible'
+      ansible.playbook          = playbook + '.yml'
+      ansible.inventory_path    = '/etc/ansible/hosts'
+      ansible.tags              = ENV['ANSIBLE_TAGS']
+      ansible.extra_vars        = JSON.parse(ENV['ANSIBLE_EXTRA_VARS'] || '{"manala":{"update":true}}')
     end
+  end
 
-    # Providers
-    config.vm.provider :virtualbox do |vb|
-        vb.name   = ((options[:vendor] != '') ? options[:vendor] + '_' : '') + options[:app]
-        vb.memory = options[:memory]
-        vb.gui    = options[:debug]
-        vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
-        vb.customize ['modifyvm', :id, '--natdnsproxy1', 'on']
-    end
-
-    # Git
-    if File.exists?(File.join(Dir.home, '.gitconfig')) then
-        config.vm.provision :file do |file|
-            file.source      = '~/.gitconfig'
-            file.destination = '/home/vagrant/.gitconfig'
-        end
-    end
-
-    if File.exists?(File.join(Dir.home, '.gitignore')) then
-        config.vm.provision :file do |file|
-            file.source      = '~/.gitignore'
-            file.destination = '/home/vagrant/.gitignore'
-        end
-    end
-
-    # Composer
-    if File.exists?(File.join(Dir.home, '.composer/auth.json')) then
-        config.vm.provision :file do |file|
-            file.source      = '~/.composer/auth.json'
-            file.destination = '/home/vagrant/.composer/auth.json'
-        end
-    end
-
-    # Provisioners
-    config.vm.provision 'ansible' do |ansible|
-        ansible.playbook      = options[:ansible_playbook]
-        ansible.verbose       = options[:debug] ? 'vvvv' : false
-        ansible.extra_vars    = options[:ansible_vars]
-        ansible.sudo          = true
-        ansible.raw_arguments = ['--force-handlers']
-        ansible.groups        = {}
-        for group in options[:ansible_groups]
-            ansible.groups[group] = ['default']
-        end
-    end
+  # Plugins - Landrush
+  if Vagrant.has_plugin?('landrush')
+    config.landrush.enabled            = true
+    config.landrush.tld                = config.vm.hostname
+    config.landrush.guest_redirect_dns = false
+  end
 
 end

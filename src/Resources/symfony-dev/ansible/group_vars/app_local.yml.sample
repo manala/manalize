@@ -1,0 +1,32 @@
+---
+
+app_local_patterns:
+
+  ###############
+  # Environment #
+  ###############
+
+  environment_variables:
+    - XDEBUG_CONFIG:  remote_host={{ ansible_eth1.ipv4.address|regex_replace('^(.*)\.\d+$', '\1') }}.1 idekey=app
+    - PHP_IDE_CONFIG: serverName={{ ansible_fqdn }}
+
+  #######
+  # Apt #
+  #######
+
+  apt_repositories:
+    - blackfire
+
+  ###################
+  # PHP - Blackfire #
+  ###################
+
+  php_blackfire: false
+
+  php_blackfire_agent:
+    - server-id:    ...
+    - server-token: ...
+
+  php_blackfire_client:
+    - client-id:    ...
+    - client-token: ...

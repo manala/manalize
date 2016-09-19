@@ -21,6 +21,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Setups a full stack environment on top of Manala' ansible roles.
@@ -58,6 +59,10 @@ class Setup extends Command
         $io->setDecorated(true);
         $io->comment('<info>Start configuring the VM</info>');
 
+        if ($envType->is(EnvEnum::SYMFONY_DEV)) {
+            $this->emptyStorageDirectories($cwd);
+        }
+
         $vars = new Vars($io->ask('Vendor name', null, [$this, 'validateVar']), $io->ask('App name', null, [$this, 'validateVar']));
         $process = new SetupProcess($cwd);
 
@@ -83,6 +88,23 @@ class Setup extends Command
         $io->success('Environment successfully created');
 
         return $process->getExitCode();
+    }
+
+    /**
+     * Ensures storage directories are empty, otherwise remove them.
+     *
+     * @param Filesystem $fs
+     */
+    protected function emptyStorageDirectories($cwd)
+    {
+        $fs = new Filesystem();
+        $rootStorageDir = is_readable($cwd.'/var') ? $cwd.'/var' : $cwd.'/app';
+
+        foreach (['/cache', '/logs'] as $dir) {
+            if ($fs->exists($rootStorageDir.$dir)) {
+                $fs->remove($rootStorageDir.$dir);
+            }
+        }
     }
 
     /**

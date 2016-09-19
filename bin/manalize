@@ -12,6 +12,6 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-use Manala\Manalize\Application as Manala;
+use Manala\Manalize\Application;
 
-Manala::create()->run();
+Application::create()->run();

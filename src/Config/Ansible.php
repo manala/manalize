@@ -43,7 +43,7 @@ class Ansible extends Config
 
     public function getTemplate()
     {
-        return $this->getOrigin().'/group_vars/all.yml';
+        return $this->getOrigin().'/group_vars/app.yml';
     }
 
     public function getPath()

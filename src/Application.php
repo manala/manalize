@@ -43,6 +43,9 @@ class Application extends BaseApplication
 
     /**
      * {@inheritdoc}
+     *
+     * Runs the {@link Setup} command by default so that the cli doesn't expect
+     * its name as argument.
      */
     protected function getDefaultCommands()
     {
@@ -54,9 +57,6 @@ class Application extends BaseApplication
 
     /**
      * {@inheritdoc}
-     *
-     * Runs the {@link Setup} command by default so that the cli doesn't expect
-     * its name as argument.
      */
     public function getDefinition()
     {
