@@ -35,8 +35,8 @@
       ]
     }
   ],
-  "main": "bin/manalize",
-  "output": "manalize.phar",
+  "main": "bin/manala",
+  "output": "manala.phar",
   "chmod": "0755",
   "stub": true
 }

@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Process;
+namespace Manala\Process;
 
-use Manala\Manalize\Config\Config;
-use Manala\Manalize\Config\Dumper;
-use Manala\Manalize\Config\Vars;
-use Manala\Manalize\Env\Env;
+use Manala\Config\Config;
+use Manala\Config\Dumper;
+use Manala\Config\Vars;
+use Manala\Env\Env;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 

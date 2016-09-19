@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Tests\Config;
+namespace Manala\Tests\Config;
 
-use Manala\Manalize\Config\Make;
+use Manala\Config\Make;
 
 class MakeTest extends BaseTestConfig
 {

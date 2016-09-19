@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Tests\Functional;
+namespace Manala\Tests\Functional;
 
-use Manala\Manalize\Command\Setup;
+use Manala\Command\Setup;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;

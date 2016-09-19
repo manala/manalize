@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Env;
+namespace Manala\Env;
 
-use Manala\Manalize\Exception\InvalidEnvException;
+use Manala\Exception\InvalidEnvException;
 
 /**
  * Manala Env type.

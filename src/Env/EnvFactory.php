@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Env;
+namespace Manala\Env;
 
-use Manala\Manalize\Config\Ansible;
-use Manala\Manalize\Config\Make;
-use Manala\Manalize\Config\Vagrant;
+use Manala\Config\Ansible;
+use Manala\Config\Make;
+use Manala\Config\Vagrant;
 
 /**
  * Provides Env instances.

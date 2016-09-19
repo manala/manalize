@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize;
+namespace Manala;
 
-use Manala\Manalize\Command\Setup;
+use Manala\Command\Setup;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -22,7 +22,7 @@ use Symfony\Component\Console\Input\InputInterface;
  */
 class Application extends BaseApplication
 {
-    const NAME = 'manala/manalize';
+    const NAME = 'manala/manala';
     const VERSION = '1.0.0';
 
     /**

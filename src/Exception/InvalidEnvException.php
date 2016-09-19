@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Exception;
+namespace Manala\Exception;
 
-use Manala\Manalize\Env\EnvEnum;
+use Manala\Env\EnvEnum;
 
 class InvalidEnvException extends \InvalidArgumentException
 {

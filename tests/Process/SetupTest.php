@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Tests\Process;
+namespace Manala\Tests\Process;
 
-use Manala\Manalize\Config\Config;
-use Manala\Manalize\Config\Vars;
-use Manala\Manalize\Env\Env;
-use Manala\Manalize\Process\Setup;
+use Manala\Config\Config;
+use Manala\Config\Vars;
+use Manala\Env\Env;
+use Manala\Process\Setup;
 use Symfony\Component\Filesystem\Filesystem;
 
 class SetupTest extends \PHPUnit_Framework_TestCase

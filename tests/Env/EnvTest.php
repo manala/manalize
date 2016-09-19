@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Tests\Env;
+namespace Manala\Tests\Env;
 
-use Manala\Manalize\Config\Config;
-use Manala\Manalize\Env\Env;
+use Manala\Config\Config;
+use Manala\Env\Env;
 
 class EnvTest extends \PHPUnit_Framework_TestCase
 {

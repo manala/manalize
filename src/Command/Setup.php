@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Command;
+namespace Manala\Command;
 
-use Manala\Manalize\Config\Vars;
-use Manala\Manalize\Env\EnvEnum;
-use Manala\Manalize\Env\EnvFactory;
-use Manala\Manalize\Process\Setup as SetupProcess;
+use Manala\Config\Vars;
+use Manala\Env\EnvEnum;
+use Manala\Env\EnvFactory;
+use Manala\Process\Setup as SetupProcess;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -37,9 +37,9 @@ class Setup extends Command
     {
         $this
             ->setName('setup')
-            ->setDescription('Manalize your application on top of Manala')
-            ->addArgument('cwd', InputArgument::OPTIONAL, 'The path of the application to manalize', getcwd())
-            ->addOption('env', null, InputOption::VALUE_OPTIONAL, 'One of the available environments', 'symfony-dev');
+            ->setDescription('Configures your environment on top of Manala ansible roles')
+            ->addArgument('cwd', InputArgument::OPTIONAL, 'The path of the application for which to setup the environment', getcwd())
+            ->addOption('env', null, InputOption::VALUE_OPTIONAL, 'One of the supported environment types', 'symfony-dev');
     }
 
     /**

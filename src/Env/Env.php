@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Env;
+namespace Manala\Env;
 
-use Manala\Manalize\Config\Config;
+use Manala\Config\Config;
 
 /**
  * Manala Env.

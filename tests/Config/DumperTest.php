@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Tests\Config;
+namespace Manala\Tests\Config;
 
 class DumperTest extends \PHPUnit_Framework_TestCase
 {

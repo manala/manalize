@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Tests\Env;
+namespace Manala\Tests\Env;
 
-use Manala\Manalize\Config\Ansible;
-use Manala\Manalize\Config\Make;
-use Manala\Manalize\Config\Vagrant;
-use Manala\Manalize\Env\Env;
-use Manala\Manalize\Env\EnvEnum;
-use Manala\Manalize\Env\EnvFactory;
+use Manala\Config\Ansible;
+use Manala\Config\Make;
+use Manala\Config\Vagrant;
+use Manala\Env\Env;
+use Manala\Env\EnvEnum;
+use Manala\Env\EnvFactory;
 
 class EnvFactoryTest extends \PHPUnit_Framework_TestCase
 {

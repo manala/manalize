@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Tests\Env;
+namespace Manala\Tests\Env;
 
-use Manala\Manalize\Env\EnvEnum;
+use Manala\Env\EnvEnum;
 
 class EnvEnumTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,7 +24,7 @@ class EnvEnumTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        \Manala\Manalize\Exception\InvalidEnvException
+     * @expectedException        \Manala\Exception\InvalidEnvException
      * @expectedExceptionMessage The env "dummy" doesn't exist. Possible values: [symfony-dev]
      */
     public function testCreateUndefinedEnv()

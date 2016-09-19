@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Config;
+namespace Manala\Config;
 
 /**
  * Config dumper.
