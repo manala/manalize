@@ -1,0 +1,42 @@
+{
+  "finder": [
+    {
+      "in": "src"
+    },
+    {
+      "name": "autoload.php",
+      "in": "vendor"
+    },
+    {
+      "name": [
+        "autoload_real.php",
+        "ClassLoader.php",
+        "autoload_static.php"
+      ],
+      "in": [
+        "vendor/composer"
+      ]
+    },
+    {
+      "name": [
+        "*.php",
+        "LICENSE"
+      ],
+      "exclude": [
+        "Tests",
+        "Tester"
+      ],
+      "in": [
+        "vendor/symfony/console",
+        "vendor/symfony/filesystem",
+        "vendor/symfony/process",
+        "vendor/symfony/stopwatch",
+        "vendor/symfony/polyfill-mbstring"
+      ]
+    }
+  ],
+  "main": "bin/manalize",
+  "output": "manalize.phar",
+  "chmod": "0755",
+  "stub": true
+}

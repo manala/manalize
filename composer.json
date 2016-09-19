@@ -29,5 +29,6 @@
     },
     "autoload-dev": {
         "psr-4": { "Manala\\Manalize\\Tests\\": "tests/" }
-    }
+    },
+    "bin": ["bin/manalize"]
 }
