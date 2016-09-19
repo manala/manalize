@@ -20,7 +20,7 @@ use Manala\Exception\InvalidEnvException;
  */
 class EnvEnum
 {
-    const SYMFONY_DEV = 'symfony-dev';
+    const SYMFONY = 'symfony';
 
     private $name;
 
@@ -64,7 +64,7 @@ class EnvEnum
     public static function getPossibleEnvs()
     {
         return [
-            self::SYMFONY_DEV,
+            self::SYMFONY,
         ];
     }
 

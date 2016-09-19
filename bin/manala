@@ -13,5 +13,12 @@
 require_once __DIR__.'/../vendor/autoload.php';
 
 use Manala\Application;
+use Manala\Command;
+use Symfony\Component\Console\Application;
 
-Application::create()->run();
+$app = new Application('manala/manala', '1.0.0');
+$app->addCommands([
+      new Command\Setup(),
+      new Command\Build(),
+]);
+$app->run();

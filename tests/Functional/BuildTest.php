@@ -12,11 +12,15 @@
 namespace Manala\Tests\Functional;
 
 use Manala\Command\Setup;
+use Manala\Command\Build;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
-class SetupTest extends \PHPUnit_Framework_TestCase
+/**
+ * @group infra
+ */
+class BuildTest extends \PHPUnit_Framework_TestCase
 {
     private static $cwd;
 
@@ -35,14 +39,17 @@ class SetupTest extends \PHPUnit_Framework_TestCase
             ->setTimeout(null)
             ->run();
 
+        (new CommandTester(new Setup()))
+            ->setInputs(['manala', 'dummy'])
+            ->execute(['cwd' => $cwd]);
+
         self::$cwd = $cwd;
     }
 
     public function testExecute()
     {
-        $tester = new CommandTester(new Setup());
+        $tester = new CommandTester(new Build());
         $tester
-            ->setInputs(['manala', 'dummy'])
             ->execute(['cwd' => static::$cwd]);
 
         if (0 !== $tester->getStatusCode()) {
@@ -50,19 +57,16 @@ class SetupTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertSame(0, $tester->getStatusCode());
-        $this->assertContains('Environment successfully configured', $tester->getDisplay());
+        $this->assertContains('Environment successfully built', $tester->getDisplay());
 
-        $this->assertFileExists(self::$cwd.'/Vagrantfile');
-        $this->assertFileExists(self::$cwd.'/Makefile');
-        $this->assertFileExists(self::$cwd.'/ansible/group_vars/app.yml');
-        $this->assertFileExists(self::$cwd.'/ansible/app.yml');
-        $this->assertFileExists(self::$cwd.'/ansible/ansible.yml');
-
-        $this->assertContains(":name        => 'dummy.manala'",  file_get_contents(self::$cwd.'/Vagrantfile'));
+        foreach (['/vendor', '/.vagrant'] as $dir) {
+            $this->assertTrue(is_dir(self::$cwd.$dir));
+        }
     }
 
     public static function tearDownAfterClass()
     {
+        (new Process(sprintf('cd %s && vagrant destroy --force && cd %s', self::$cwd, getcwd())))->run();
         (new Filesystem())->remove(self::$cwd);
     }
 }

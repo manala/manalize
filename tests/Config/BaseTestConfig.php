@@ -16,7 +16,7 @@ use Manala\Env\EnvEnum;
 
 class BaseTestConfig extends \PHPUnit_Framework_TestCase
 {
-    const ENV = EnvEnum::SYMFONY_DEV;
+    const ENV = EnvEnum::SYMFONY;
 
     protected function assertOrigin(Config $config, $name)
     {

@@ -22,7 +22,7 @@ class EnvFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreateEnv()
     {
-        $envType = EnvEnum::create(EnvEnum::SYMFONY_DEV);
+        $envType = EnvEnum::create(EnvEnum::SYMFONY);
         $env = EnvFactory::createEnv($envType);
         $expectedConfigs = [new Ansible($envType), new Vagrant($envType), new Make($envType)];
 

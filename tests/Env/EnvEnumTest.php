@@ -17,15 +17,15 @@ class EnvEnumTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreate()
     {
-        $envType = EnvEnum::create(EnvEnum::SYMFONY_DEV);
+        $envType = EnvEnum::create(EnvEnum::SYMFONY);
 
         $this->assertInstanceOf(EnvEnum::class, $envType);
-        $this->assertSame('symfony-dev', (string) $envType);
+        $this->assertSame('symfony', (string) $envType);
     }
 
     /**
      * @expectedException        \Manala\Exception\InvalidEnvException
-     * @expectedExceptionMessage The env "dummy" doesn't exist. Possible values: [symfony-dev]
+     * @expectedExceptionMessage The env "dummy" doesn't exist. Possible values: [symfony]
      */
     public function testCreateUndefinedEnv()
     {

@@ -1,6 +1,6 @@
 {
     "name": "manala/manala",
-    "description": "Lightweight binary providing vagrant stacks provisionned through of manala ansible roles",
+    "description": "Lightweight binary providing vagrant stacks provisionned through manala ansible roles",
     "keywords": ["manala", "ansible", "vagrant", "docker"],
     "homepage": "https://github.com/manala/manala",
     "license": "MIT",
