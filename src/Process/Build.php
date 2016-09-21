@@ -11,12 +11,7 @@
 
 namespace Manala\Process;
 
-use Manala\Config\Config;
-use Manala\Config\Dumper;
-use Manala\Config\Vars;
-use Manala\Env\Env;
 use Manala\Process\Task\VagrantTask;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
 /**
@@ -49,7 +44,7 @@ class Build
         $vagrantTasks = [
             'up --no-provision',
             'provision',
-            'ssh -- "cd /srv/app && make install"'
+            'ssh -- "cd /srv/app && make install"',
         ];
 
         $this->createSubProcesses(array_merge($vagrantTasks, $tasks), $cwd);

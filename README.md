@@ -17,6 +17,9 @@ $ chmod +x /usr/local/bin/manala
 #### Manual build:
 ```sh
 $ git clone git@github.com:manala/manala
+$ make build
+$ mv manala.phar /usr/local/bin/manala
+$ chmod +x /usr/local/bin/manala
 ```
 
 Usage

@@ -12,18 +12,15 @@
 namespace Manala\Command;
 
 use Manala\Config\Vars;
+use Manala\Env\Dumper;
 use Manala\Env\EnvEnum;
-use Manala\Config\Dumper;
-use Manala\Env\Env;
 use Manala\Env\EnvFactory;
-use Manala\Process\Setup as SetupProcess;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Setups a full stack environment on top of Manala' ansible roles.
@@ -61,10 +58,10 @@ class Setup extends Command
         $io->comment(sprintf('Composing your <info>%s</info> environment', (string) $envType));
 
         $vars = new Vars($io->ask('Vendor name', null, [$this, 'validateVar']), $io->ask('App name', null, [$this, 'validateVar']));
-        $process = new SetupProcess($cwd);
+        $env = EnvFactory::createEnv($envType);
 
-        foreach ($this->doSetup(EnvFactory::createEnv($envType), $vars, $cwd) as $targetFile) {
-            $io->writeln(sprintf('- %s', str_replace($cwd.DIRECTORY_SEPARATOR, '', $targetFile)));
+        foreach (Dumper::dump($env, $vars, $cwd) as $dumpTarget) {
+            $io->writeln(sprintf('- %s', str_replace($cwd.DIRECTORY_SEPARATOR, '', $dumpTarget)));
         }
 
         $io->success('Environment successfully configured');
@@ -88,31 +85,5 @@ class Setup extends Command
         }
 
         return $value;
-    }
-
-    /**
-     * Prepare configuration dumps for the given process.
-     *
-     * @param Env  $env
-     * @param Vars $vars
-     *
-     * @return \Generator The dumped file path
-     */
-    private function doSetup(Env $env, Vars $vars, $cwd)
-    {
-        $fs = new Filesystem();
-
-        foreach ($env->getConfigs() as $config) {
-            $baseTarget = $cwd.DIRECTORY_SEPARATOR.$config->getPath();
-            $template = $config->getTemplate();
-
-            foreach ($config->getFiles() as $file) {
-                $target = str_replace($config->getOrigin(), $baseTarget, $file->getPathName());
-                $dump = ((string) $template === $file->getRealPath()) ? Dumper::dump($config, $vars) : file_get_contents($file);
-                $fs->dumpFile($target, $dump);
-
-                yield $target;
-            }
-        }
     }
 }

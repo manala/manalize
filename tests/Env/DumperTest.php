@@ -13,20 +13,20 @@ namespace Manala\Tests\Process;
 
 use Manala\Config\Config;
 use Manala\Config\Vars;
+use Manala\Env\Dumper;
 use Manala\Env\Env;
-use Manala\Process\Setup;
 use Symfony\Component\Filesystem\Filesystem;
 
-class SetupTest extends \PHPUnit_Framework_TestCase
+class DumperTest extends \PHPUnit_Framework_TestCase
 {
     public static function setUpBeforeClass()
     {
-        (new Filesystem())->mkdir(sys_get_temp_dir().'/Manala/SetupProcessTest');
+        (new Filesystem())->mkdir(sys_get_temp_dir().'/Manala/DumperTest');
     }
 
-    public function testPrepare()
+    public function testDump()
     {
-        $baseOrigin = sys_get_temp_dir().'/Manala/SetupProcessTest';
+        $baseOrigin = sys_get_temp_dir().'/Manala/DumperTest';
 
         @mkdir($baseOrigin.'/dummy');
         file_put_contents($baseOrigin.'/dummy/dummyconf', 'FooBar');
@@ -53,8 +53,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase
         $cwd = $baseOrigin.'/target';
         @mkdir($cwd);
 
-        $setup = new Setup($cwd);
-        $setup->prepare($env->reveal(), new Vars('manala'))->current();
+        Dumper::dump($env->reveal(), new Vars('manala'), $cwd)->current();
 
         $this->assertFileExists($cwd.'/dummy/dummyconf');
     }

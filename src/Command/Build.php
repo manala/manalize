@@ -11,14 +11,10 @@
 
 namespace Manala\Command;
 
-use Manala\Config\Vars;
-use Manala\Env\EnvEnum;
-use Manala\Env\EnvFactory;
 use Manala\Process\Build as BuildProcess;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
@@ -37,8 +33,8 @@ class Build extends Command
     {
         $this
             ->setName('build')
-            ->setDescription('Manalize your application on top of Manala')
-            ->addArgument('cwd', InputArgument::OPTIONAL, 'The path of the application to manalize', getcwd());
+            ->setDescription('Builds a virtual machine from the configured environment')
+            ->addArgument('cwd', InputArgument::OPTIONAL, 'The path of the application for which to build the vm', getcwd());
     }
 
     /**

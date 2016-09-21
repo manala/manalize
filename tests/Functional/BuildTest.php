@@ -11,8 +11,8 @@
 
 namespace Manala\Tests\Functional;
 
-use Manala\Command\Setup;
 use Manala\Command\Build;
+use Manala\Command\Setup;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;

@@ -12,34 +12,32 @@
 namespace Manala\Config;
 
 /**
- * Config dumper.
+ * Config' template renderer.
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-class Dumper
+class Renderer
 {
     private static $vendorKey = '{{ vendor }}';
     private static $appKey = '{{ app }}';
-    private static $hostKey = '{{ app_host }}';
 
     /**
-     * Dumps a rendered Config.
+     * Renders a config template.
      *
      * @param Config $config The whole Config for which to dump the template
      * @param Vars   $vars   The vars to insert
      */
-    public static function dump(Config $config, Vars $vars)
+    public static function render(Config $config, Vars $vars)
     {
         $template = $config->getTemplate();
 
         if (!is_writable($template) || !is_readable($template)) {
-            throw new \RuntimeException('The origin file is either not readable, not writable or it doesn\'t exist.');
+            throw new \RuntimeException(sprintf('The template file "%s" is either not readable, not writable or it doesn\'t exist.', $template));
         }
 
         $replaces = [
             self::$vendorKey => $vars->getVendor(),
             self::$appKey => $vars->getApp(),
-            self::$hostKey => $vars->getHost(),
         ];
 
         return strtr(file_get_contents($template), $replaces);
