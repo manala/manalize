@@ -46,12 +46,4 @@ class Vars
     {
         return $this->app;
     }
-
-    /**
-     * @return string
-     */
-    public function getHost()
-    {
-        return $this->app.($this->vendor ? '.'.$this->vendor : '');
-    }
 }
