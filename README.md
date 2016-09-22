@@ -10,7 +10,7 @@ Installation
 
 #### Download:
 ```sh
-$ curl -L https://github.com/manala/manala/releases/download/v0.1.0/manala.phar > /usr/local/bin/manala
+$ curl -L https://github.com/manala/manala/releases/download/v0.1.1/manala.phar > /usr/local/bin/manala
 $ chmod +x /usr/local/bin/manala
 ```
 
