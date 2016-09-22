@@ -23,5 +23,10 @@ help:
 
 ## Build
 build:
-	composer install --verbose --no-progress --no-interaction --prefer-dist --optimize-autoloader --no-dev
-	box build -v
+	rm -rf .build
+	mkdir .build
+	cp -r ./* .build
+	composer install --verbose --no-progress --no-interaction --prefer-dist --optimize-autoloader --no-dev --working-dir=.build/
+	cd .build && box build -v && cd ../
+	cp .build/manala.phar .
+	rm -rf .build
