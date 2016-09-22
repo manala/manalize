@@ -52,7 +52,7 @@ abstract class Config
      */
     public function getOrigin()
     {
-        return realpath(__DIR__.sprintf('/../Resources/%s/%s', $this->envType, $this->getPath()));
+        return __DIR__.'/../Resources/'.$this->envType.'/'.$this->getPath();
     }
 
     /**

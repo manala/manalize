@@ -20,7 +20,7 @@ class BaseTestConfig extends \PHPUnit_Framework_TestCase
 
     protected function assertOrigin(Config $config, $name)
     {
-        $this->assertSame(realpath($this->getOrigin($name)), $config->getOrigin());
+        $this->assertSame(realpath($this->getOrigin($name)), realpath($config->getOrigin()));
     }
 
     protected function getEnvType()

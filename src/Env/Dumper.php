@@ -38,7 +38,7 @@ class Dumper
 
             foreach ($config->getFiles() as $file) {
                 $target = str_replace($config->getOrigin(), $baseTarget, $file->getPathName());
-                $dump = ((string) $template === $file->getRealPath()) ? Renderer::render($config, $vars) : file_get_contents($file);
+                $dump = ((string) $template === $file->getPathname()) ? Renderer::render($config, $vars) : file_get_contents($file);
                 $fs->dumpFile($target, $dump);
 
                 yield $target;

@@ -61,7 +61,7 @@ class Setup extends Command
         $env = EnvFactory::createEnv($envType);
 
         foreach (Dumper::dump($env, $vars, $cwd) as $dumpTarget) {
-            $io->writeln(sprintf('- %s', str_replace($cwd.DIRECTORY_SEPARATOR, '', $dumpTarget)));
+            $io->writeln(sprintf('- %s', str_replace($cwd.'/', '', $dumpTarget)));
         }
 
         $io->success('Environment successfully configured');
