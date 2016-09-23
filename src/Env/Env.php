@@ -22,9 +22,6 @@ class Env
 {
     private $configs = [];
 
-    /**
-     * @param Config $configs
-     */
     public function __construct(Config ...$configs)
     {
         $this->configs = $configs;

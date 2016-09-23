@@ -28,12 +28,15 @@ class Ansible extends Config
         $originDirectory = $this->getOrigin();
 
         if (!is_readable($originDirectory)) {
-            throw new \InvalidArgumentException(sprintf('Unable to load an Ansible configuration from directory "%s" as it is either not readable or doesn\'t exist.', $originDirectory));
+            throw new \InvalidArgumentException(sprintf(
+                'Unable to load an Ansible configuration from directory "%s" as it is either not readable or doesn\'t exist.',
+                $originDirectory
+            ));
         }
 
         $iterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($originDirectory, \FilesystemIterator::SKIP_DOTS),
-             \RecursiveIteratorIterator::LEAVES_ONLY
+            \RecursiveIteratorIterator::LEAVES_ONLY
         );
 
         foreach ($iterator as $file) {

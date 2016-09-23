@@ -57,7 +57,10 @@ class Setup extends Command
         $io->setDecorated(true);
         $io->comment(sprintf('Composing your <info>%s</info> environment', (string) $envType));
 
-        $vars = new Vars($io->ask('Vendor name', null, [$this, 'validateVar']), $io->ask('App name', null, [$this, 'validateVar']));
+        $vars = new Vars(
+            $io->ask('Vendor name', null, [Vars::class, 'validate']),
+            $io->ask('App name', null, [Vars::class, 'validate'])
+        );
         $env = EnvFactory::createEnv($envType);
 
         foreach (Dumper::dump($env, $vars, $cwd) as $dumpTarget) {
@@ -67,23 +70,5 @@ class Setup extends Command
         $io->success('Environment successfully configured');
 
         return 0;
-    }
-
-    /**
-     * Checks that a given configuration value is properly formatted.
-     *
-     * @param string $value The value to assert
-     *
-     * @return string The validated value
-     *
-     * @throws \InvalidArgumentException If the value is incorrect
-     */
-    public function validateVar($value)
-    {
-        if (!preg_match('/^([-A-Z0-9])*$/i', $value)) {
-            throw new RuntimeException(sprintf('This value must contain only alphanumeric characters and hyphens.', $value));
-        }
-
-        return $value;
     }
 }

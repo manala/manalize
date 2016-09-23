@@ -34,9 +34,6 @@ class EnvEnum
         return new self($name);
     }
 
-    /**
-     * @return string
-     */
     public function __toString()
     {
         return $this->name;

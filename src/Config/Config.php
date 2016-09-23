@@ -68,7 +68,7 @@ abstract class Config
     /**
      * Returns the path name of the configuration file or directory.
      *
-     * Note: This needs to be concatened to a given working directory.
+     * Note: This needs to be concatenated to a given working directory.
      *
      * @return string
      */

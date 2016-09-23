@@ -21,9 +21,9 @@ use Symfony\Component\Process\Process;
 class VagrantTask extends Process
 {
     /**
-     * @param string   $cmd     The vagrant command to execute
-     * @param string   $cwd     The working directory
-     * @param int|null $timeout The process timeout
+     * @param string         $cmd     The vagrant command to execute
+     * @param string         $cwd     The working directory
+     * @param int|float|null $timeout The process timeout
      */
     public function __construct($cmd, $cwd, $timeout = 60)
     {

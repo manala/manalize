@@ -46,4 +46,25 @@ class Vars
     {
         return $this->app;
     }
+
+    /**
+     * Checks that a given configuration value is properly formatted.
+     *
+     * @param string $value The value to assert
+     *
+     * @return string The validated value
+     *
+     * @throws \InvalidArgumentException If the value is incorrect
+     */
+    public static function validate($value)
+    {
+        if (!preg_match('/^([-A-Z0-9])*$/i', $value)) {
+            throw new \InvalidArgumentException(sprintf(
+                'This value must contain only alphanumeric characters and hyphens.',
+                $value
+            ));
+        }
+
+        return $value;
+    }
 }

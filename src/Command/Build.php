@@ -60,7 +60,7 @@ class Build extends Command
         });
 
         if (!$process->isSuccessful()) {
-            $io->warning(['An error occured during the process execution:', $process->getErrorOutput()]);
+            $io->warning(['An error occurred during the process execution:', $process->getErrorOutput()]);
 
             return $process->getExitCode();
         }
@@ -85,23 +85,5 @@ class Build extends Command
                 $fs->remove($rootStorageDir.$dir);
             }
         }
-    }
-
-    /**
-     * Checks that a given configuration value is properly formatted.
-     *
-     * @param string $value The value to assert
-     *
-     * @return string The validated value
-     *
-     * @throws \InvalidArgumentException If the value is incorrect
-     */
-    public function validateVar($value)
-    {
-        if (!preg_match('/^([-A-Z0-9])*$/i', $value)) {
-            throw new \RuntimeException(sprintf('This value must contain only alphanumeric characters and hyphens.', $value));
-        }
-
-        return $value;
     }
 }

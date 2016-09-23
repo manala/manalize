@@ -37,9 +37,10 @@ class Build
     private $errorOutput;
 
     /**
-     * @param string $cwd
+     * @param string   $cwd
+     * @param string[] $tasks
      */
-    public function __construct($cwd, $tasks = [])
+    public function __construct($cwd, array $tasks = [])
     {
         $vagrantTasks = [
             'up --no-provision',
@@ -53,9 +54,11 @@ class Build
     /**
      * Starts and returns the running process.
      *
-     * @return \IteratorAggregate
+     * @param callable|null $callback
+     *
+     * @return int
      */
-    public function run($callback = null)
+    public function run(callable $callback = null)
     {
         foreach ($this->subProcesses as $process) {
             $process->run($callback);
@@ -64,7 +67,7 @@ class Build
             if (!$process->isSuccessful()) {
                 $this->errorOutput = $process->getErrorOutput();
 
-                break;
+                return $this->lastExitCode;
             }
         }
     }
