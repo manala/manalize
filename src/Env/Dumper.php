@@ -25,8 +25,11 @@ class Dumper
     /**
      * Creates and dumps final config files from stubs.
      *
-     * @param Env  $config The whole Config for which to dump the template
-     * @param Vars $vars   The vars to be used for rendering config templates
+     * @param Env    $env     The whole Config for which to dump the template
+     * @param Vars   $vars    The vars to be used for rendering config templates
+     * @param string $workDir
+     *
+     * @return \Generator
      */
     public static function dump(Env $env, Vars $vars, $workDir)
     {

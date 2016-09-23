@@ -17,8 +17,10 @@ class InvalidEnvException extends \InvalidArgumentException
 {
     public function __construct($invalidEnvName)
     {
-        parent::__construct(
-            sprintf('The env "%s" doesn\'t exist. Possible values: [%s]', $invalidEnvName, implode(' ', EnvEnum::getPossibleEnvs()))
-        );
+        parent::__construct(sprintf(
+            'The env "%s" doesn\'t exist. Possible values: [%s]',
+            $invalidEnvName,
+            implode(' ', EnvEnum::getPossibleEnvs())
+        ));
     }
 }

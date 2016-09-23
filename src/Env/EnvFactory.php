@@ -23,6 +23,8 @@ use Manala\Config\Vagrant;
 class EnvFactory
 {
     /**
+     * @param EnvEnum $type
+     *
      * @return Env
      */
     public static function createEnv(EnvEnum $type)

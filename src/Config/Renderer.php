@@ -26,13 +26,18 @@ class Renderer
      *
      * @param Config $config The whole Config for which to dump the template
      * @param Vars   $vars   The vars to insert
+     *
+     * @return string
      */
     public static function render(Config $config, Vars $vars)
     {
         $template = $config->getTemplate();
 
         if (!is_readable($template)) {
-            throw new \RuntimeException(sprintf('The template file "%s" is either not readable or doesn\'t exist.', $template));
+            throw new \RuntimeException(sprintf(
+                'The template file "%s" is either not readable or doesn\'t exist.',
+                $template
+            ));
         }
 
         $replaces = [
