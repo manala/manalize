@@ -45,7 +45,7 @@ final class AppVendor implements Variable
     /**
      * {@inheritdoc}
      */
-    public static function validate($value)
+    public static function validate($value = null)
     {
         if (!preg_match('/^([-A-Z0-9])*$/i', $value)) {
             throw new \InvalidArgumentException(sprintf(

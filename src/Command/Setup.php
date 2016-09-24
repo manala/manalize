@@ -12,9 +12,14 @@
 namespace Manala\Command;
 
 use Manala\Env\Config\Variable\AppVendor;
+use Manala\Env\Config\Variable\Dependency\Dependency;
+use Manala\Env\Config\Variable\Dependency\VersionBounded;
+use Manala\Env\Config\Variable\MakeTarget;
 use Manala\Env\Dumper;
 use Manala\Env\EnvEnum;
 use Manala\Env\EnvFactory;
+use Manala\Env\Metadata\MetadataBag;
+use Manala\Env\Metadata\MetadataParser;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -57,18 +62,53 @@ class Setup extends Command
         $io->setDecorated(true);
         $io->comment(sprintf('Composing your <info>%s</info> environment', (string) $envType));
 
-        $vars = new AppVendor(
+        $appVendor = new AppVendor(
             $io->ask('Vendor name', null, [AppVendor::class, 'validate']),
             $io->ask('App name', null, [AppVendor::class, 'validate'])
         );
-        $env = EnvFactory::createEnv($envType);
 
-        foreach (Dumper::dump($env, $vars, $cwd) as $dumpTarget) {
+        $envMetadata = MetadataParser::parse($envType);
+        $postProvisionTask = new MakeTarget('install', $envMetadata->get('script.post_provision'));
+        $env = EnvFactory::createEnv($envType, $appVendor, $postProvisionTask, $this->setupDependencies($io, $envMetadata));
+
+        foreach (Dumper::dump($env, $appVendor, $cwd) as $dumpTarget) {
             $io->writeln(sprintf('- %s', str_replace($cwd.'/', '', $dumpTarget)));
         }
 
         $io->success('Environment successfully configured');
 
         return 0;
+    }
+
+    private function setupDependencies(SymfonyStyle $io, MetadataBag $metadata)
+    {
+        foreach ($metadata->get('packages') as $name => $settings) {
+            $defaultEnabled = $settings['enabled'] ?: false;
+            $defaultVersion = isset($settings['default']) ? $settings['default'] : null;
+            $enabled = $settings['required'] ?: $io->confirm(sprintf('Install %s?', $name), $defaultEnabled);
+
+            if (null === $defaultVersion) {
+                yield new Dependency($name, $enabled);
+
+                continue;
+            }
+
+            if (false === $enabled) {
+                yield new VersionBounded($name, $enabled, $defaultVersion);
+
+                continue;
+            }
+
+            $versionConstraint = $settings['constraint'];
+            $requiredVersion = $io->ask(
+                sprintf('%s version? (%s)', $name, $versionConstraint),
+                $defaultVersion,
+                function ($version) use ($versionConstraint) {
+                    return VersionBounded::validate($version, $versionConstraint);
+                }
+            );
+
+            yield new VersionBounded($name, $enabled, $requiredVersion);
+        }
     }
 }

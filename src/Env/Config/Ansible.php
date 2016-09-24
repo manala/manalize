@@ -44,11 +44,17 @@ class Ansible extends Config
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getTemplate()
     {
-        return $this->getOrigin().'/group_vars/app.yml';
+        return new \SplFileInfo($this->getOrigin().'/group_vars/app.yml');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPath()
     {
         return 'ansible';

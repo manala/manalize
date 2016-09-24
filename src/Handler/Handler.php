@@ -13,7 +13,7 @@ namespace Manala\Handler;
 
 /**
  * To be implemented by classes containing logic mostly intended to be used by commands, allowing to
- * reuse its login from everywhere else.
+ * reuse its logic from everywhere else.
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */

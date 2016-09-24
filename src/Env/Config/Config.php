@@ -11,6 +11,7 @@
 
 namespace Manala\Env\Config;
 
+use Manala\Env\Config\Variable\Variable;
 use Manala\Env\EnvEnum;
 
 /**
@@ -26,11 +27,17 @@ abstract class Config
     protected $envType;
 
     /**
+     * @var Variable[]
+     */
+    protected $vars;
+
+    /**
      * @param EnvEnum $env
      */
-    public function __construct(EnvEnum $envType)
+    public function __construct(EnvEnum $envType, Variable ...$vars)
     {
         $this->envType = $envType;
+        $this->vars = $vars;
     }
 
     /**
@@ -52,18 +59,15 @@ abstract class Config
      */
     public function getOrigin()
     {
-        return MANALA_DIR.'/src/Resources/'.$this->envType.'/'.$this->getPath();
+        return new \SplFileInfo(MANALA_DIR.'/src/Resources/'.$this->envType.'/'.$this->getPath());
     }
 
     /**
      * Returns the template to render (or its path).
      *
-     * @return \SplFileInfo|string
+     * @return \SplFileInfo|null
      */
-    public function getTemplate()
-    {
-        return $this->getOrigin();
-    }
+    abstract public function getTemplate();
 
     /**
      * Returns the path name of the configuration file or directory.
@@ -73,4 +77,14 @@ abstract class Config
      * @return string
      */
     abstract public function getPath();
+
+    /**
+     * Returns the variables to be used for rendering the template.
+     *
+     * @return array|null
+     */
+    public function getVars()
+    {
+        return $this->vars;
+    }
 }
