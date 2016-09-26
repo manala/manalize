@@ -11,7 +11,7 @@
 
 namespace Manala\Env;
 
-use Manala\Config\Config;
+use Manala\Env\Config\Config;
 
 /**
  * Manala Env.
@@ -21,6 +21,7 @@ use Manala\Config\Config;
 class Env
 {
     private $configs = [];
+    private $dependencies = [];
 
     public function __construct(Config ...$configs)
     {
@@ -33,5 +34,13 @@ class Env
     public function getConfigs()
     {
         return $this->configs;
+    }
+
+    /**
+     * @return Var[]
+     */
+    public function getDependencies()
+    {
+        return $this->dependencies;
     }
 }

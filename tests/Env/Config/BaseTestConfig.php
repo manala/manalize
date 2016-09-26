@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Tests\Config;
+namespace Manala\Tests\Env\Config;
 
-use Manala\Config\Config;
+use Manala\Env\Config\Config;
 use Manala\Env\EnvEnum;
 
 class BaseTestConfig extends \PHPUnit_Framework_TestCase
@@ -30,6 +30,6 @@ class BaseTestConfig extends \PHPUnit_Framework_TestCase
 
     protected function getOrigin($name)
     {
-        return __DIR__.'/../../src/Resources/'.self::ENV.'/'.$name;
+        return MANALA_DIR.'/src/Resources/'.self::ENV.'/'.$name;
     }
 }

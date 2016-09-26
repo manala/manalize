@@ -9,7 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Config;
+namespace Manala\Env\Config;
+
+use Manala\Env\Config\Variable\Variable;
 
 /**
  * Config' template renderer.
@@ -18,9 +20,6 @@ namespace Manala\Config;
  */
 class Renderer
 {
-    private static $vendorKey = '{{ vendor }}';
-    private static $appKey = '{{ app }}';
-
     /**
      * Renders a config template.
      *
@@ -29,7 +28,7 @@ class Renderer
      *
      * @return string
      */
-    public static function render(Config $config, Vars $vars)
+    public static function render(Config $config, Variable $vars)
     {
         $template = $config->getTemplate();
 
@@ -40,11 +39,6 @@ class Renderer
             ));
         }
 
-        $replaces = [
-            self::$vendorKey => $vars->getVendor(),
-            self::$appKey => $vars->getApp(),
-        ];
-
-        return strtr(file_get_contents($template), $replaces);
+        return strtr(file_get_contents($template), $vars->getReplaces());
     }
 }

@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Config;
+namespace Manala\Env\Config\Variable;
 
 /**
- * Manala environment variables.
+ * Manala "app" and "vendor" environment variables.
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-class Vars
+final class AppVendor implements Variable
 {
-    private $vendor;
-    private $app;
+    private static $vendorPlaceholder = '{{ vendor }}';
+    private static $appPlaceholder = '{{ app }}';
 
     /**
      * @param string $vendor
@@ -32,29 +32,18 @@ class Vars
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    public function getVendor()
+    public function getReplaces()
     {
-        return $this->vendor;
+        return [
+            self::$vendorPlaceholder => $this->vendor,
+            self::$appPlaceholder    => $this->app,
+        ];
     }
 
     /**
-     * @return string
-     */
-    public function getApp()
-    {
-        return $this->app;
-    }
-
-    /**
-     * Checks that a given configuration value is properly formatted.
-     *
-     * @param string $value The value to assert
-     *
-     * @return string The validated value
-     *
-     * @throws \InvalidArgumentException If the value is incorrect
+     * {@inheritdoc}
      */
     public static function validate($value)
     {

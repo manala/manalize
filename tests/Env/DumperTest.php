@@ -11,8 +11,8 @@
 
 namespace Manala\Tests\Process;
 
-use Manala\Config\Config;
-use Manala\Config\Vars;
+use Manala\Env\Config\Config;
+use Manala\Env\Config\Variable\AppVendor;
 use Manala\Env\Dumper;
 use Manala\Env\Env;
 use Symfony\Component\Filesystem\Filesystem;
@@ -53,7 +53,7 @@ class DumperTest extends \PHPUnit_Framework_TestCase
         $cwd = $baseOrigin.'/target';
         @mkdir($cwd);
 
-        Dumper::dump($env->reveal(), new Vars('manala'), $cwd)->current();
+        Dumper::dump($env->reveal(), new AppVendor('manala'), $cwd)->current();
 
         $this->assertFileExists($cwd.'/dummy/dummyconf');
     }

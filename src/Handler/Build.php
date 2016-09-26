@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Process;
+namespace Manala\Handler;
 
-use Manala\Process\Task\VagrantTask;
+use Manala\Handler\Task\VagrantTask;
 use Symfony\Component\Process\Process;
 
 /**
- * Manala build process.
+ * Build Handler, firstly intended to be consumed by the Build command.
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
@@ -37,10 +37,9 @@ class Build
     private $errorOutput;
 
     /**
-     * @param string   $cwd
-     * @param string[] $tasks
+     * @param string $cwd
      */
-    public function __construct($cwd, array $tasks = [])
+    public function __construct($cwd)
     {
         $vagrantTasks = [
             'up --no-provision',
@@ -48,17 +47,17 @@ class Build
             'ssh -- "cd /srv/app && make install"',
         ];
 
-        $this->createSubProcesses(array_merge($vagrantTasks, $tasks), $cwd);
+        $this->createSubProcesses($vagrantTasks, $cwd);
     }
 
     /**
-     * Starts and returns the running process.
+     * Handles the Build through running sub processes.
      *
      * @param callable|null $callback
      *
-     * @return int
+     * @return int The last process exit code
      */
-    public function run(callable $callback = null)
+    public function handle(callable $callback = null)
     {
         foreach ($this->subProcesses as $process) {
             $process->run($callback);
@@ -67,21 +66,36 @@ class Build
             if (!$process->isSuccessful()) {
                 $this->errorOutput = $process->getErrorOutput();
 
-                return $this->lastExitCode;
+                throw new HandlingFailureException(sprintf(
+                    'An error occured while running process "%s". Use "%s::getErrorOutput()" for getting the error output.',
+                    $process->getCommandLine(),
+                    __CLASS__
+                ));
             }
         }
+
+        return $this->lastExitCode;
     }
 
+    /**
+     * @return int
+     */
     public function getExitCode()
     {
         return $this->lastExitCode;
     }
 
+    /**
+     * @return bool
+     */
     public function isSuccessful()
     {
         return 0 === $this->lastExitCode;
     }
 
+    /**
+     * @return string
+     */
     public function getErrorOutput()
     {
         return $this->errorOutput;

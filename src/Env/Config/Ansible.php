@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Config;
+namespace Manala\Env\Config;
 
 /**
  * Object representation of an Ansible configuration.

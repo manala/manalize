@@ -11,9 +11,9 @@
 
 namespace Manala\Env;
 
-use Manala\Config\Ansible;
-use Manala\Config\Make;
-use Manala\Config\Vagrant;
+use Manala\Env\Config\Ansible;
+use Manala\Env\Config\Make;
+use Manala\Env\Config\Vagrant;
 
 /**
  * Provides Env instances.

@@ -11,7 +11,8 @@
 
 namespace Manala\Command;
 
-use Manala\Process\Build as BuildProcess;
+use Manala\Handler\Build as BuildHandler;
+use Manala\Exception\HandlerFailureException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -54,20 +55,21 @@ class Build extends Command
         $io = new SymfonyStyle($input, $output);
         $io->comment('<info>Building your environment</info>');
 
-        $process = new BuildProcess($cwd);
-        $process->run(function ($type, $buffer) use ($io) {
-            $io->write($buffer);
-        });
+        $handler = new BuildHandler($cwd);
 
-        if (!$process->isSuccessful()) {
-            $io->warning(['An error occurred during the process execution:', $process->getErrorOutput()]);
+        try {
+            $handler->handle(function ($type, $buffer) use ($io) {
+                $io->write($buffer);
+            });
+        } catch (HandlerFailureException $e) {
+            $io->warning(['An error occurred during the process execution:', $handler->getErrorOutput()]);
 
-            return $process->getExitCode();
+            return $handler->getExitCode();
         }
 
         $io->success('Environment successfully built');
 
-        return $process->getExitCode();
+        return $handler->getExitCode();
     }
 
     /**

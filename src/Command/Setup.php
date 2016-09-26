@@ -11,8 +11,8 @@
 
 namespace Manala\Command;
 
-use Manala\Config\Vars;
 use Manala\Env\Dumper;
+use Manala\Env\Config\Variable\AppVendor;
 use Manala\Env\EnvEnum;
 use Manala\Env\EnvFactory;
 use Symfony\Component\Console\Command\Command;
@@ -57,9 +57,9 @@ class Setup extends Command
         $io->setDecorated(true);
         $io->comment(sprintf('Composing your <info>%s</info> environment', (string) $envType));
 
-        $vars = new Vars(
-            $io->ask('Vendor name', null, [Vars::class, 'validate']),
-            $io->ask('App name', null, [Vars::class, 'validate'])
+        $vars = new AppVendor(
+            $io->ask('Vendor name', null, [AppVendor::class, 'validate']),
+            $io->ask('App name', null, [AppVendor::class, 'validate'])
         );
         $env = EnvFactory::createEnv($envType);
 

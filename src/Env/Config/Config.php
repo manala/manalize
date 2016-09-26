@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Config;
+namespace Manala\Env\Config;
 
 use Manala\Env\EnvEnum;
 
@@ -52,7 +52,7 @@ abstract class Config
      */
     public function getOrigin()
     {
-        return __DIR__.'/../Resources/'.$this->envType.'/'.$this->getPath();
+        return MANALA_DIR.'/src/Resources/'.$this->envType.'/'.$this->getPath();
     }
 
     /**

@@ -9,20 +9,28 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Config;
+namespace Manala\Env\Config;
 
 /**
- * Vagrant configuration.
+ * Make.
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-class Vagrant extends Config
+class Make extends Config
 {
     /**
      * {@inheritdoc}
      */
     public function getPath()
     {
-        return 'Vagrantfile';
+        return 'Makefile';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTemplate()
+    {
+        return;
     }
 }

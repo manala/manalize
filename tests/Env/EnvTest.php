@@ -11,7 +11,7 @@
 
 namespace Manala\Tests\Env;
 
-use Manala\Config\Config;
+use Manala\Env\Config\Config;
 use Manala\Env\Env;
 
 class EnvTest extends \PHPUnit_Framework_TestCase

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Process\Task;
+namespace Manala\Handler\Task;
 
 use Symfony\Component\Process\Process;
 

@@ -11,9 +11,9 @@
 
 namespace Manala\Tests\Env;
 
-use Manala\Config\Ansible;
-use Manala\Config\Make;
-use Manala\Config\Vagrant;
+use Manala\Env\Config\Ansible;
+use Manala\Env\Config\Make;
+use Manala\Env\Config\Vagrant;
 use Manala\Env\Env;
 use Manala\Env\EnvEnum;
 use Manala\Env\EnvFactory;

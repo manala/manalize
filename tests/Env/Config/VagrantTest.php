@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Tests\Config;
+namespace Manala\Tests\Env\Config;
 
-use Manala\Config\Vagrant;
+use Manala\Env\Config\Vagrant;
 
 class VagrantTest extends BaseTestConfig
 {

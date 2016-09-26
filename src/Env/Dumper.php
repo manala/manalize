@@ -11,8 +11,8 @@
 
 namespace Manala\Env;
 
-use Manala\Config\Renderer;
-use Manala\Config\Vars;
+use Manala\Env\Config\Renderer;
+use Manala\Env\Config\Variable\Variable;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -31,7 +31,7 @@ class Dumper
      *
      * @return \Generator
      */
-    public static function dump(Env $env, Vars $vars, $workDir)
+    public static function dump(Env $env, Variable $vars, $workDir)
     {
         $fs = new Filesystem();
 

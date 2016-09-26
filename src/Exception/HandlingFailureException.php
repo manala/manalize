@@ -9,11 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Tests\Config;
+namespace Manala\Exception;
 
-class DumperTest extends \PHPUnit_Framework_TestCase
+class HandlingFailureException extends \RuntimeException
 {
-    public function testDump()
-    {
-    }
 }

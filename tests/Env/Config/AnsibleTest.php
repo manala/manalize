@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Tests\Config;
+namespace Manala\Tests\Env\Config;
 
-use Manala\Config\Ansible;
+use Manala\Env\Config\Ansible;
 
 class AnsibleTest extends BaseTestConfig
 {
