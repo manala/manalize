@@ -11,8 +11,8 @@
 
 namespace Manala\Command;
 
-use Manala\Handler\Build as BuildHandler;
 use Manala\Exception\HandlerFailureException;
+use Manala\Handler\Build as BuildHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

@@ -11,8 +11,8 @@
 
 namespace Manala\Command;
 
-use Manala\Env\Dumper;
 use Manala\Env\Config\Variable\AppVendor;
+use Manala\Env\Dumper;
 use Manala\Env\EnvEnum;
 use Manala\Env\EnvFactory;
 use Symfony\Component\Console\Command\Command;
