@@ -22,6 +22,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Checks if the host's environment meets Manala's requirements (Vagrant, Ansible, etc.).
@@ -46,8 +47,7 @@ class CheckRequirements extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->configureFormatter($output->getFormatter());
-
+        $output = new SymfonyStyle($input, $output);
         $violationList = new RequirementViolationList();
         $requirementChecker = new RequirementChecker(
             new HandlerFactoryResolver(),
@@ -61,42 +61,32 @@ class CheckRequirements extends Command
 
         if (count($violationList) > 0) {
             foreach ($violationList as $violation) {
-                $description = $this->getFormattedViolationDescription($violation);
-                $output->writeln($description);
+                $this->displayViolation($output, $violation);
             }
         }
 
         if (!$violationList->containsRequiredViolations()) {
-            $output->writeln('Congratulations ! Everything seems OK.');
+            $output->success('Congratulations ! Everything seems OK.');
             if ($violationList->containsRecommendedViolations()) {
                 $output->writeln('Yet, some recommendations have been emitted (see above).');
             }
         }
     }
 
-    /**
-     * @param OutputFormatterInterface $formatter
-     */
-    private function configureFormatter(OutputFormatterInterface $formatter)
+    private function displayViolation(SymfonyStyle $output, RequirementViolation $violation)
     {
-        $errorStyle = new OutputFormatterStyle('red');
-        $formatter->setStyle('error', $errorStyle);
+        $message = $violation->getLabel();
 
-        $warningStyle = new OutputFormatterStyle('yellow');
-        $formatter->setStyle('warning', $warningStyle);
-    }
+        if ($help = $violation->getHelp()) {
+            $message .= $help;
+        }
 
-    /**
-     * @param RequirementViolation $violation
-     *
-     * @return string Formatted violation description displayed to user
-     */
-    private function getFormattedViolationDescription(RequirementViolation $violation)
-    {
-        $resultPattern = $violation->isRequired() ? '<error>%s</error>' : '<warning>%s</warning>';
-        $displayedText = $violation->getLabel();
-        $displayedText .= $violation->getHelp() ? ' '.$violation->getHelp() : '';
-
-        return sprintf($resultPattern, $displayedText);
+        return $output->block(
+            $message,
+            strtoupper($violation->getLevelLabel()),
+            $violation->isRequired() ? 'fg=white;bg=red' : 'bg=yellow',
+            ' ',
+            true
+        );
     }
 }
