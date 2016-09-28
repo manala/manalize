@@ -68,7 +68,7 @@ install:
 	bin/console doctrine:database:create --if-not-exists --env=test
 	bin/console doctrine:schema:update --force --env=test
 	# Npm
-	if [ -a "package.json" ]; then npm install --no-spin; fi;
+	if [ -f "package.json" ]; then npm install --no-spin; fi;
 
 install@test: SYMFONY_ENV = test
 install@test:
@@ -103,11 +103,11 @@ install@prod:
 
 ## Build assets
 assets:
-	if [ -a "gulpfile" ]; then gulp --dev; fi;
+	if [ -f "gulpfile" ]; then gulp --dev; fi;
 
 assets@prod: SYMFONY_ENV = prod
 assets@prod:
-	if [ -a "gulpfile" ]; then gulp; fi;
+	if [ -f "gulpfile" ]; then gulp; fi;
 
 ##########
 # Deploy #
