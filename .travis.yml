@@ -20,7 +20,6 @@ cache:
 
 before_install:
     - phpenv config-rm xdebug.ini || true
-    - composer selfupdate
 
 install: composer update --prefer-dist --no-interaction --optimize-autoloader
 
