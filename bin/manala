@@ -17,6 +17,7 @@ use Symfony\Component\Console\Application;
 
 $app = new Application('manala/manala', '1.0.0');
 $app->addCommands([
+    new Command\CheckRequirements(),
     new Command\Setup(),
     new Command\Build(),
 ]);
