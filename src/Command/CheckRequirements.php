@@ -18,10 +18,9 @@ use Manala\Config\Requirement\Violation\RequirementViolation;
 use Manala\Config\Requirement\Violation\RequirementViolationLabelBuilder;
 use Manala\Config\Requirement\Violation\RequirementViolationList;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Formatter\OutputFormatterInterface;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Checks if the host's environment meets Manala's requirements (Vagrant, Ansible, etc.).
@@ -46,57 +45,48 @@ class CheckRequirements extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->configureFormatter($output->getFormatter());
-
+        $io = new SymfonyStyle($input, $output);
         $violationList = new RequirementViolationList();
         $requirementChecker = new RequirementChecker(
             new HandlerFactoryResolver(),
             new RequirementViolationLabelBuilder()
         );
 
+        $io->newLine();
+
         foreach (RequirementRepository::getRequirements() as $requirement) {
-            $output->writeln('Checking '.$requirement->getName());
+            $io->writeln('Checking '.$requirement->getName());
             $requirementChecker->check($requirement, $violationList);
         }
 
         if (count($violationList) > 0) {
             foreach ($violationList as $violation) {
-                $description = $this->getFormattedViolationDescription($violation);
-                $output->writeln($description);
+                $this->displayViolation($io, $violation);
             }
         }
 
         if (!$violationList->containsRequiredViolations()) {
-            $output->writeln('Congratulations ! Everything seems OK.');
+            $io->success('Congratulations ! Everything seems OK.');
             if ($violationList->containsRecommendedViolations()) {
-                $output->writeln('Yet, some recommendations have been emitted (see above).');
+                $io->note('Yet, some recommendations have been emitted (see above).');
             }
         }
     }
 
-    /**
-     * @param OutputFormatterInterface $formatter
-     */
-    private function configureFormatter(OutputFormatterInterface $formatter)
+    private function displayViolation(SymfonyStyle $io, RequirementViolation $violation)
     {
-        $errorStyle = new OutputFormatterStyle('red');
-        $formatter->setStyle('error', $errorStyle);
+        $message = $violation->getLabel();
 
-        $warningStyle = new OutputFormatterStyle('yellow');
-        $formatter->setStyle('warning', $warningStyle);
-    }
+        if ($help = $violation->getHelp()) {
+            $message .= $help;
+        }
 
-    /**
-     * @param RequirementViolation $violation
-     *
-     * @return string Formatted violation description displayed to user
-     */
-    private function getFormattedViolationDescription(RequirementViolation $violation)
-    {
-        $resultPattern = $violation->isRequired() ? '<error>%s</error>' : '<warning>%s</warning>';
-        $displayedText = $violation->getLabel();
-        $displayedText .= $violation->getHelp() ? ' '.$violation->getHelp() : '';
-
-        return sprintf($resultPattern, $displayedText);
+        return $io->block(
+            $message,
+            strtoupper($violation->getLevelLabel()),
+            $violation->isRequired() ? 'fg=white;bg=red' : 'fg=black;bg=yellow',
+            ' ',
+            true
+        );
     }
 }

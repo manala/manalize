@@ -25,21 +25,20 @@ class RequirementViolationLabelBuilder
      */
     public function buildViolationLabel(Requirement $requirement, $currentVersion = null)
     {
-        $label = sprintf('[%s] ', strtoupper($requirement->getLevelLabel()));
         $isRequired = $requirement->isRequired();
 
         if ($currentVersion === null) {
-            $label .= sprintf(
+            $label = sprintf(
                 $isRequired ?
-                    '%s is missing. Please install it before proceeding.' :
-                    'You should consider installing %s.',
+                    '%s is missing. Please install it before proceeding.'.PHP_EOL :
+                    'You should consider installing %s.'.PHP_EOL,
                 $requirement->getName()
             );
         } else {
-            $label .= sprintf(
+            $label = sprintf(
                 $isRequired ?
-                    "Your %s version %s doesn't allow you to use this. Required version is %s." :
-                    'Your %s current version is %s. We recommend you to upgrade to version %s.',
+                    'Your %s version %s doesn\'t allow you to use this. Required version is %s.'.PHP_EOL :
+                    'Your %s current version is %s. We recommend you to upgrade to version %s.'.PHP_EOL,
                 $requirement->getName(),
                 $currentVersion,
                 $requirement->getSemanticVersion()
