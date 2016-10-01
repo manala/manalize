@@ -11,7 +11,7 @@
 
 namespace Manala\Command;
 
-use Manala\Exception\HandlerFailureException;
+use Manala\Exception\HandlingFailureException;
 use Manala\Handler\Build as BuildHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -61,7 +61,7 @@ class Build extends Command
             $handler->handle(function ($type, $buffer) use ($io) {
                 $io->write($buffer);
             });
-        } catch (HandlerFailureException $e) {
+        } catch (HandlingFailureException $e) {
             $io->warning(['An error occurred during the process execution:', $handler->getErrorOutput()]);
 
             return $handler->getExitCode();
