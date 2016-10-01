@@ -11,6 +11,7 @@
 
 namespace Manala\Handler;
 
+use Manala\Exception\HandlingFailureException;
 use Manala\Handler\Task\VagrantTask;
 use Symfony\Component\Process\Process;
 
