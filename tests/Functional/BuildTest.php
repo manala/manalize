@@ -11,7 +11,6 @@
 
 namespace Manala\Tests\Functional;
 
-use Manala\Command\Build;
 use Manala\Command\Setup;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
@@ -48,16 +47,16 @@ class BuildTest extends \PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
-        $tester = new CommandTester(new Build());
-        $tester
-            ->execute(['cwd' => static::$cwd]);
+        $process = new Process('make setup', static::$cwd);
+        $process
+          ->setTimeout(null)
+          ->run();
 
-        if (0 !== $tester->getStatusCode()) {
-            echo $tester->getDisplay();
+        if (0 !== $process->getExitCode()) {
+            echo "stdout:\n".$process->getOutput()."\nstderr:\n".$process->getErrorOutput();
         }
 
-        $this->assertSame(0, $tester->getStatusCode());
-        $this->assertContains('Environment successfully built', $tester->getDisplay());
+        $this->assertSame(0, $process->getExitCode());
 
         foreach (['/vendor', '/.vagrant'] as $dir) {
             $this->assertTrue(is_dir(self::$cwd.$dir));

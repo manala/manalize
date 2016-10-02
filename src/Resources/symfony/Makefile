@@ -27,9 +27,7 @@ help:
 
 ## Setup environment & Install & Build application
 setup:
-	vagrant up --no-provision
-	vagrant provision
-	vagrant ssh -- "cd /srv/app && make install"
+	{{ setup_tasks }}
 
 ## Update environment
 update: export ANSIBLE_TAGS = manala.update

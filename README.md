@@ -30,11 +30,6 @@ Usage
 $ manala setup ~/my-awesome-project
 ```
 
-#### Build
-```
-$ manala build ~/my-awesome-project
-```
-
 #### Diff
 
 Get the diff:
