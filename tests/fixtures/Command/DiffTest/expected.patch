@@ -24,7 +24,7 @@ index cf8527f..4a788dd
 diff --git a/Vagrantfile b/Vagrantfile
 old mode 100644
 new mode 100755
-index b93cd8b..14a58a2
+index b93cd8b..cd09b13
 --- a/Vagrantfile
 +++ b/Vagrantfile
 @@ -2,7 +2,7 @@
@@ -32,7 +32,7 @@ index b93cd8b..14a58a2
  
  app = {
 -  :name        => 'dummy.manala',
-+  :name        => '{{ app }}.{{ vendor }}',
++  :name        => '{{ app }}',
    :box         => 'manala/app-dev-debian',
    :box_version => '~> 3.0.0',
    :box_memory  => 1024

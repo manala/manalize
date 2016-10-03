@@ -11,28 +11,28 @@
 
 namespace Manala\Tests\Env\Config\Variable;
 
-use Manala\Env\Config\Variable\AppVendor;
+use Manala\Env\Config\Variable\AppName;
 
-class AppVendorTest extends \PHPUnit_Framework_TestCase
+class AppNameTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetReplaces()
     {
-        $var = new AppVendor('manala', 'dummy-app');
+        $var = new AppName('dummy-app.manala');
 
-        $this->assertSame(['{{ vendor }}' => 'manala', '{{ app }}' => 'dummy-app'], $var->getReplaces());
+        $this->assertSame(['{{ app }}' => 'dummy-app.manala'], $var->getReplaces());
     }
 
     /**
      * @expectedException        \InvalidArgumentException
-     * @expectedExceptionMessage This value must contain only alphanumeric characters and hyphens
+     * @expectedExceptionMessage This value must contain only alphanumeric characters, dots and hyphens
      */
     public function testValidateFailsForNonAlphanumericAndNonHyphenChars()
     {
-        AppVendor::validate('dummy_app_with_underscores');
+        AppName::validate('dummy_app_with_underscores');
     }
 
     public function testValidate()
     {
-        $this->assertSame('dummy-app', AppVendor::validate('dummy-app'));
+        $this->assertSame('dummy-app', AppName::validate('dummy-app'));
     }
 }
