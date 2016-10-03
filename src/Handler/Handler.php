@@ -18,5 +18,5 @@ interface Handler
      *
      * @return mixed
      */
-    public function handle(callable $callback = null)
+    public function handle(callable $callback = null);
 }
