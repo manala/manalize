@@ -11,22 +11,23 @@
 
 namespace Manala\Tests\Functional;
 
-use Manala\Command\Build;
+use Manala\Command\Diff;
 use Manala\Command\Setup;
+use Manala\Env\EnvEnum;
+use Manala\Handler\Diff as DiffHandler;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
-/**
- * @group infra
- */
-class BuildTest extends \PHPUnit_Framework_TestCase
+class DiffTest extends \PHPUnit_Framework_TestCase
 {
+    const EXPECTED_PATCH_FILE = MANALA_DIR.'/tests/fixtures/Command/DiffTest/expected.patch';
+
     private static $cwd;
 
     public static function setUpBeforeClass()
     {
-        $cwd = sys_get_temp_dir().'/Manala/tests/build';
+        $cwd = sys_get_temp_dir().'/Manala/tests/diff';
         $fs = new Filesystem();
 
         if ($fs->exists($cwd)) {
@@ -43,30 +44,31 @@ class BuildTest extends \PHPUnit_Framework_TestCase
             ->setInputs(['manala', 'dummy'])
             ->execute(['cwd' => $cwd]);
 
+        // Tweak project files:
+        $fs->remove($cwd.'/ansible/deploy.yml');
+        file_put_contents($cwd.'/Makefile', " \n This line is expected in the patch", FILE_APPEND);
+
         self::$cwd = $cwd;
     }
 
     public function testExecute()
     {
-        $tester = new CommandTester(new Build());
-        $tester
-            ->execute(['cwd' => static::$cwd]);
+        $tester = new CommandTester(new Diff());
+        $tester->execute(['cwd' => static::$cwd, '--env' => EnvEnum::SYMFONY]);
 
-        if (0 !== $tester->getStatusCode()) {
+        if (DiffHandler::EXIT_SUCCESS_DIFF !== $tester->getStatusCode()) {
             echo $tester->getDisplay();
         }
 
-        $this->assertSame(0, $tester->getStatusCode());
-        $this->assertContains('Environment successfully built', $tester->getDisplay());
-
-        foreach (['/vendor', '/.vagrant'] as $dir) {
-            $this->assertTrue(is_dir(self::$cwd.$dir));
-        }
+        $this->assertSame(DiffHandler::EXIT_SUCCESS_DIFF, $tester->getStatusCode());
+        // Uncomment the following line in order to update the expected diff:
+        // /!\ Don't commit blindly the diff !
+        //file_put_contents(static::EXPECTED_PATCH_FILE, $tester->getDisplay(true));
+        $this->assertStringEqualsFile(static::EXPECTED_PATCH_FILE, $tester->getDisplay(true));
     }
 
     public static function tearDownAfterClass()
     {
-        (new Process(sprintf('cd %s && vagrant destroy --force && cd %s', self::$cwd, getcwd())))->run();
         (new Filesystem())->remove(self::$cwd);
     }
 }

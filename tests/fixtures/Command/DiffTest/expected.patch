@@ -1,0 +1,40 @@
+diff --git a/Makefile b/Makefile
+old mode 100644
+new mode 100755
+index 60340e4..bdee98d
+--- a/Makefile
++++ b/Makefile
+@@ -121,5 +121,3 @@ deploy@prod:
+ ##########
+ # Custom #
+ ##########
+- 
+- This line is expected in the patch
+\ No newline at end of file
+diff --git a/Vagrantfile b/Vagrantfile
+old mode 100644
+new mode 100755
+index b93cd8b..14a58a2
+--- a/Vagrantfile
++++ b/Vagrantfile
+@@ -2,7 +2,7 @@
+ # vi: set ft=ruby :
+ 
+ app = {
+-  :name        => 'dummy.manala',
++  :name        => '{{ app }}.{{ vendor }}',
+   :box         => 'manala/app-dev-debian',
+   :box_version => '~> 3.0.0',
+   :box_memory  => 1024
+diff --git a/ansible/deploy.yml b/ansible/deploy.yml
+new file mode 100644
+index 0000000..9ab9e15
+--- /dev/null
++++ b/ansible/deploy.yml
+@@ -0,0 +1,6 @@
++---
++
++- hosts: deploy
++  gather_facts: false
++  roles:
++    - manala.deploy
