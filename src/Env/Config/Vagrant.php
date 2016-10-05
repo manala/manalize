@@ -25,4 +25,12 @@ class Vagrant extends Config
     {
         return 'Vagrantfile';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTemplate()
+    {
+        return $this->getOrigin();
+    }
 }

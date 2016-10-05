@@ -12,7 +12,8 @@
 namespace Manala\Env\Config\Variable;
 
 /**
- * Must be implemented by classes representing a variable to be rendered.
+ * Must be implemented by classes representing a variable to be replaced when
+ * rendering a given config template.
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
@@ -34,5 +35,5 @@ interface Variable
      *
      * @throws \InvalidArgumentException If the value is incorrect
      */
-    public static function validate($value);
+    public static function validate($value = null);
 }

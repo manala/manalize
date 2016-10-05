@@ -31,6 +31,6 @@ class Make extends Config
      */
     public function getTemplate()
     {
-        return;
+        return $this->getOrigin();
     }
 }

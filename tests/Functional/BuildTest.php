@@ -40,7 +40,7 @@ class BuildTest extends \PHPUnit_Framework_TestCase
             ->run();
 
         (new CommandTester(new Setup()))
-            ->setInputs(['manala', 'dummy'])
+            ->setInputs(['manala', 'dummy', "\n", "\n", "\n", "\n", "\n", "\n"])
             ->execute(['cwd' => $cwd]);
 
         self::$cwd = $cwd;
@@ -66,7 +66,10 @@ class BuildTest extends \PHPUnit_Framework_TestCase
 
     public static function tearDownAfterClass()
     {
-        (new Process(sprintf('cd %s && vagrant destroy --force && cd %s', self::$cwd, getcwd())))->run();
+        (new Process(sprintf('cd %s && vagrant destroy --force && cd %s', self::$cwd, getcwd())))
+            ->setTimeout(null)
+            ->run();
+
         (new Filesystem())->remove(self::$cwd);
     }
 }

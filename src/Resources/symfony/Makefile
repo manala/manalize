@@ -60,15 +60,7 @@ provision-php: provision
 
 ## Install application
 install:
-	# Composer
-	composer install --verbose
-	# Doctrine
-	bin/console doctrine:database:create --if-not-exists
-	# Doctrine - Test
-	bin/console doctrine:database:create --if-not-exists --env=test
-	bin/console doctrine:schema:update --force --env=test
-	# Npm
-	if [ -f "package.json" ]; then npm install --no-spin; fi;
+	{{ install_tasks }}
 
 install@test: SYMFONY_ENV = test
 install@test:
