@@ -1,10 +1,20 @@
 diff --git a/Makefile b/Makefile
 old mode 100644
 new mode 100755
-index 60340e4..bdee98d
+index cf8527f..4a788dd
 --- a/Makefile
 +++ b/Makefile
-@@ -121,5 +121,3 @@ deploy@prod:
+@@ -60,8 +60,7 @@ provision-php: provision
+ 
+ ## Install application
+ install:
+-	composer install --verbose
+-	bin/console doctrine:database:create --if-not-exists
++	{{ install_tasks }}
+ 
+ install@test: SYMFONY_ENV = test
+ install@test:
+@@ -114,5 +113,3 @@ deploy@prod:
  ##########
  # Custom #
  ##########
@@ -38,3 +48,221 @@ index 0000000..9ab9e15
 +  gather_facts: false
 +  roles:
 +    - manala.deploy
+diff --git a/ansible/group_vars/app.yml b/ansible/group_vars/app.yml
+index 75acbe8..a944db3 100644
+--- a/ansible/group_vars/app.yml
++++ b/ansible/group_vars/app.yml
+@@ -1,26 +1,141 @@
++---
++
+ app_options:
+-    php: true
+-    php_version: '7.0'
+-    nodejs: false
+-    nodejs_version: '6'
+-    mysql: true
+-    mysql_version: '5.6'
+-    mongodb: false
+-    mongodb_version: '3.2'
+-    postgresql: false
+-    postgresql_version: '9.5'
+-    elasticsearch: false
+-    elasticsearch_version: '1.7'
+-    redis: false
+-    influxdb: false
++
++  php:                   ~
++  php_version:           ~
++  nodejs:                ~
++  nodejs_version:        ~
++  mysql:                 ~
++  mysql_version:         ~
++  mongodb:               ~
++  mongodb_version:       ~
++  postgresql:            ~
++  postgresql_version:    ~
++  elasticsearch:         ~
++  elasticsearch_version: ~
++  redis:                 ~
++  influxdb:              ~
++
+ app_patterns:
+-    motd_template: template/cow.j2
+-    motd_message: 'I can see clearly now - Jimmy Cliff'
+-    timezone_default: Etc/UTC
+-    environment_variables: [{ SYMFONY_ENV: '{{ app.env }}' }, { APP_SECRET: ThisTokenIsNotSoSecretChangeIt }, { APP_DATABASE_HOST: 127.0.0.1 }, { APP_DATABASE_PORT: null }, { APP_DATABASE_NAME: app }, { APP_DATABASE_USER: '{{ app.user }}' }, { APP_DATABASE_PASSWORD: null }, { APP_DATABASE_SERVER_VERSION: 5.6 }, { APP_DOMAIN: '{{ app.host }}' }]
+-    files_attributes: [{ path: '{{ app.dir }}{{ app.dir_release }}/var/logs', src: '{{ app.log_dir }}', state: link_directory }, { path: '{{ app.dir }}{{ app.dir_release }}/var/cache', src: '{{ app.cache_dir }}', state: link_directory }]
+-    npm_packages: [{ package: gulp, version: 3 }]
+-    php_extensions: [intl, curl, mbstring, xml, zip, gd]
+-    php_configs: [{ file: app_opcache.ini, template: 'configs/app_opcache.{{ env }}.j2' }, { file: app.ini, template: 'configs/app.{{ env }}.j2', config: [{ date.timezone: UTC }, { upload_max_filesize: 100M }, { post_max_size: 100M }] }]
+-    nginx_configs: [{ file: app_php_fpm, template: 'configs/app_php_fpm.{{ env }}.j2' }, { file: app_gzip, template: 'configs/app_gzip.{{ env }}.j2' }, { file: app.conf, config: [{ server: [{ server_name: '{{ app.host }}' }, { root: '{{ app.dir }}{{ app.dir_release }}/web' }, { access_log: '{{ app.log_dir }}/nginx.access.log' }, { error_log: '{{ app.log_dir }}/nginx.error.log' }, { include: conf.d/app_gzip }, { 'location /': [{ try_files: '$uri /app.php$is_args$args' }] }, { 'location ~ ^/(app(_[-\w]+)?)\.php(/|$)': [{ include: conf.d/app_php_fpm }] }, { 'location ~ ^/filemanager/(dialog|execute|upload|ajax_calls|force_download)\.php(/|$)': [{ include: conf.d/app_php_fpm }, { client_max_body_size: 100M }] }] }] }]
+-    supervisor_configs: [{ file: app.conf, template: 'configs/app_program.{{ env }}.j2', config: [{ workflow-worker: [{ command: 'php bin/console app:workflow:worker --run-max=1000 --shutdown-on-exception --no-interaction -vv' }, { directory: '{{ app.dir }}{{ app.dir_release }}' }, { user: '{{ app.user }}' }, { stdout_logfile: '{{ app.log_dir }}/supervisor.workflow-worker.log' }, { environment: 'SYMFONY_ENV="{{ app.env }}"' }, { autostart: false }] }] }]
++
++  ########
++  # Motd #
++  ########
++
++  motd_template: template/cow.j2
++  motd_message:  I can see clearly now - Jimmy Cliff
++
++  ############
++  # Timezone #
++  ############
++
++  timezone_default: Etc/UTC
++
++  ###############
++  # Environment #
++  ###############
++
++  environment_variables:
++    - SYMFONY_ENV:                 "{{ app.env }}"
++    - APP_SECRET:                  ThisTokenIsNotSoSecretChangeIt
++    - APP_DATABASE_HOST:           127.0.0.1
++    - APP_DATABASE_PORT:           null
++    - APP_DATABASE_NAME:           app
++    - APP_DATABASE_USER:           "{{ app.user }}"
++    - APP_DATABASE_PASSWORD:       null
++    - APP_DATABASE_SERVER_VERSION: 5.6
++    - APP_DOMAIN:                  "{{ app.host }}"
++
++  #########
++  # Files #
++  #########
++
++  files_attributes:
++    - path:  "{{ app.dir }}{{ app.dir_release }}/var/logs"
++      src:   "{{ app.log_dir }}"
++      state: link_directory
++    - path:  "{{ app.dir }}{{ app.dir_release }}/var/cache"
++      src:   "{{ app.cache_dir }}"
++      state: link_directory
++
++  #######
++  # Npm #
++  #######
++
++  npm_packages:
++    - package: gulp
++      version: 3
++
++  #######
++  # Php #
++  #######
++
++  php_extensions:
++    # Symfony
++    - intl
++    - curl
++    - mbstring
++    - xml
++    # Composer
++    - zip
++    # App
++    - gd
++
++  php_configs:
++    - file: app_opcache.ini
++      template: configs/app_opcache.{{ env }}.j2
++    - file: app.ini
++      template: configs/app.{{ env }}.j2
++      config:
++        - date.timezone: UTC
++        # App
++        - upload_max_filesize: 100M
++        - post_max_size:       100M
++
++  #########
++  # Nginx #
++  #########
++
++  nginx_configs:
++    # Php fpm
++    - file:     app_php_fpm
++      template: configs/app_php_fpm.{{ env }}.j2
++    # Gzip
++    - file:     app_gzip
++      template: configs/app_gzip.{{ env }}.j2
++    # App
++    - file: app.conf
++      config:
++        - server:
++          - server_name: "{{ app.host }}"
++          #- server_name: "*.ngrok.io"
++          - root:        "{{ app.dir }}{{ app.dir_release }}/web"
++          - access_log:  "{{ app.log_dir }}/nginx.access.log"
++          - error_log:   "{{ app.log_dir }}/nginx.error.log"
++          - include:     conf.d/app_gzip
++          - location /:
++            - try_files: $uri /app.php$is_args$args
++          - location ~ ^/(app(_[-\w]+)?)\.php(/|$):
++            - include: conf.d/app_php_fpm
++            #- internal;
++          - location ~ ^/filemanager/(dialog|execute|upload|ajax_calls|force_download)\.php(/|$):
++            - include: conf.d/app_php_fpm
++            - client_max_body_size: 100M
++
++  ##############
++  # Supervisor #
++  ##############
++
++  supervisor_configs:
++    - file:     app.conf
++      template: configs/app_program.{{ env }}.j2
++      config:
++        - workflow-worker:
++          - command:        php bin/console app:workflow:worker --run-max=1000 --shutdown-on-exception --no-interaction -vv
++          - directory:      "{{ app.dir }}{{ app.dir_release }}"
++          - user:           "{{ app.user }}"
++          - stdout_logfile: "{{ app.log_dir }}/supervisor.workflow-worker.log"
++          - environment:    "SYMFONY_ENV=\"{{ app.env }}\""
++          # Dev
++          - autostart:       false
+diff --git a/manala.yml b/manala.yml
+new file mode 100644
+index 0000000..c5009d0
+--- /dev/null
++++ b/manala.yml
+@@ -0,0 +1,42 @@
++packages:
++    php:
++        enabled:    true
++        required:   true
++        default:    '7.0'
++        constraint: '5.4|5.5|5.6|7.0'
++    mysql:
++        enabled:    true
++        required:   false
++        default:    '5.6'
++        constraint: '5.6|5.7'
++    postgresql:
++        enabled:    false
++        required:   false
++        default:    '9.5'
++        constraint: '9.4|9.5'
++    mongodb:
++        enabled:    false
++        required:   false
++        default:    '3.2'
++        constraint: '3.0|3.2'
++    elasticsearch:
++        enabled:    false
++        required:   false
++        default:    '1.7'
++        constraint: '1.5|1.6|1.7|2'
++    nodejs:
++        enabled:    false
++        required:   false
++        default:    '6'
++        constraint: '0.10|0.12|4|5|6'
++    redis:
++        required:   false
++        enabled:    false
++    influxdb:
++        required:   false
++        enabled:    false
++
++script:
++    post_provision:
++        - composer install --verbose
++        - bin/console doctrine:database:create --if-not-exists

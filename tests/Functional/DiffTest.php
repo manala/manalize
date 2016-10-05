@@ -41,7 +41,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
             ->run();
 
         (new CommandTester(new Setup()))
-            ->setInputs(['manala', 'dummy'])
+            ->setInputs(['manala', 'dummy', "\n", "\n", "\n", "\n", "\n"])
             ->execute(['cwd' => $cwd]);
 
         // Tweak project files:
