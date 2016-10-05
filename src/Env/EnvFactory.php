@@ -15,7 +15,6 @@ use Manala\Env\Config\Ansible;
 use Manala\Env\Config\Make;
 use Manala\Env\Config\Vagrant;
 use Manala\Env\Config\Variable\AppName;
-use Manala\Env\Config\Variable\MakeTarget;
 
 /**
  * Provides Env instances.
@@ -24,16 +23,12 @@ use Manala\Env\Config\Variable\MakeTarget;
  */
 class EnvFactory
 {
-    public static function createEnv(
-        EnvEnum $type,
-        AppName $AppName,
-        MakeTarget $postProvisionTask,
-        \Traversable $dependencies
-    ) {
+    public static function createEnv(EnvEnum $type, AppName $AppName, \Traversable $makeTargets, \Traversable $dependencies)
+    {
         return new Env(
-            new Ansible($type, ...$dependencies),
             new Vagrant($type, $AppName),
-            new Make($type, $postProvisionTask)
+            new Ansible($type, ...$dependencies),
+            new Make($type, ...$makeTargets)
         );
     }
 }

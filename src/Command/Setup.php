@@ -69,7 +69,7 @@ class Setup extends Command
         $env = EnvFactory::createEnv(
             $envType,
             new AppName($appName),
-            new MakeTarget('install', $envMetadata->get('script.post_provision')),
+            $this->getMakeTargets($envMetadata),
             $this->setupDependencies($io, $envMetadata)
         );
 
@@ -111,6 +111,13 @@ class Setup extends Command
             );
 
             yield new VersionBounded($name, $enabled, $requiredVersion);
+        }
+    }
+
+    private function getMakeTargets(MetadataBag $metadata)
+    {
+        foreach ($metadata->get('make_targets') as $name => $scripts) {
+            yield new MakeTarget($name, $scripts);
         }
     }
 }

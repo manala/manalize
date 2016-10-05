@@ -1,10 +1,24 @@
 diff --git a/Makefile b/Makefile
 old mode 100644
 new mode 100755
-index cf8527f..4a788dd
+index 6544f4c..0113c9b
 --- a/Makefile
 +++ b/Makefile
-@@ -60,8 +60,7 @@ provision-php: provision
+@@ -27,12 +27,7 @@ help:
+ 
+ ## Setup environment & Install & Build application
+ setup:
+-	if [ -d  "./var/cache" ]; then rm -rf ./var/cache && mkdir ./var/cache; fi;
+-	if [ -d "./var/logs" ]; then rm -rf ./var/logs && mkdir ./var/logs; fi;
+-	if [ -d "./var/sessions" ]; then rm -rf ./var/sessions && mkdir ./var/sessions; fi;
+-	vagrant up --no-provision
+-	vagrant provision
+-	vagrant ssh -- "cd /srv/app && make install"
++	{{ setup_tasks }}
+ 
+ ## Update environment
+ update: export ANSIBLE_TAGS = manala.update
+@@ -63,8 +58,7 @@ provision-php: provision
  
  ## Install application
  install:
@@ -14,7 +28,7 @@ index cf8527f..4a788dd
  
  install@test: SYMFONY_ENV = test
  install@test:
-@@ -114,5 +113,3 @@ deploy@prod:
+@@ -117,5 +111,3 @@ deploy@prod:
  ##########
  # Custom #
  ##########
