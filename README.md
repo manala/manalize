@@ -44,7 +44,8 @@ $ manala diff ~/my-awesome-project
 
 Apply the diff:
 ```
-$ manala diff ~/my-awesome-project | git apply
+$ cd ~/my-awesome-project
+$ manala diff | git apply
 ```
 
 License
