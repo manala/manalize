@@ -56,7 +56,6 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $tester = new CommandTester(new Diff());
         $tester->execute(['cwd' => static::$cwd, '--env' => EnvEnum::SYMFONY]);
 
-        file_put_contents('test.patch', $tester->getDisplay(true));
         if (DiffHandler::EXIT_SUCCESS_DIFF !== $tester->getStatusCode()) {
             echo $tester->getDisplay();
         }
