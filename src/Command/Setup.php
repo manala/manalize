@@ -11,7 +11,7 @@
 
 namespace Manala\Command;
 
-use Manala\Env\Config\Variable\AppVendor;
+use Manala\Env\Config\Variable\AppName;
 use Manala\Env\Config\Variable\Dependency\Dependency;
 use Manala\Env\Config\Variable\Dependency\VersionBounded;
 use Manala\Env\Config\Variable\MakeTarget;
@@ -60,16 +60,18 @@ class Setup extends Command
 
         $io = new SymfonyStyle($input, $output);
         $io->setDecorated(true);
-        $io->comment(sprintf('Composing your <info>%s</info> environment', (string) $envType));
+        $io->comment(sprintf('Start composing your <info>%s</info> environment', (string) $envType));
 
-        $appVendor = new AppVendor(
-            $io->ask('Vendor name', null, [AppVendor::class, 'validate']),
-            $io->ask('App name', null, [AppVendor::class, 'validate'])
-        );
+        $defaultAppName = strtolower(basename($cwd));
+        $appName = $io->ask('Application name', AppName::validate($defaultAppName, false) ? $defaultAppName : 'app', [AppName::class, 'validate']);
 
         $envMetadata = MetadataParser::parse($envType);
-        $postProvisionTask = new MakeTarget('install', $envMetadata->get('script.post_provision'));
-        $env = EnvFactory::createEnv($envType, $appVendor, $postProvisionTask, $this->setupDependencies($io, $envMetadata));
+        $env = EnvFactory::createEnv(
+            $envType,
+            new AppName($appName),
+            new MakeTarget('install', $envMetadata->get('script.post_provision')),
+            $this->setupDependencies($io, $envMetadata)
+        );
 
         foreach (Dumper::dump($env, $cwd) as $dumpTarget) {
             $io->writeln(sprintf('- %s', str_replace($cwd.'/', '', $dumpTarget)));

@@ -41,7 +41,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
             ->run();
 
         (new CommandTester(new Setup()))
-            ->setInputs(['manala', 'dummy', "\n", "\n", "\n", "\n", "\n"])
+            ->setInputs(['dummy.manala', "\n", "\n", "\n", "\n", "\n"])
             ->execute(['cwd' => $cwd]);
 
         // Tweak project files:
@@ -56,6 +56,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $tester = new CommandTester(new Diff());
         $tester->execute(['cwd' => static::$cwd, '--env' => EnvEnum::SYMFONY]);
 
+        file_put_contents('test.patch', $tester->getDisplay(true));
         if (DiffHandler::EXIT_SUCCESS_DIFF !== $tester->getStatusCode()) {
             echo $tester->getDisplay();
         }
@@ -63,7 +64,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(DiffHandler::EXIT_SUCCESS_DIFF, $tester->getStatusCode());
         // Uncomment the following line in order to update the expected diff:
         // /!\ Don't commit blindly the diff !
-        //file_put_contents(static::EXPECTED_PATCH_FILE, $tester->getDisplay(true));
+        // file_put_contents(static::EXPECTED_PATCH_FILE, $tester->getDisplay(true));
         $this->assertStringEqualsFile(static::EXPECTED_PATCH_FILE, $tester->getDisplay(true));
     }
 

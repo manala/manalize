@@ -42,7 +42,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase
     {
         $tester = new CommandTester(new Setup());
         $tester
-            ->setInputs(['manala', 'dummy', "\n", "\n", "\n", "\n", "\n", "\n"])
+            ->setInputs(['foo-bar.manala', "\n", "\n", "\n", "\n", "\n", "\n"])
             ->execute(['cwd' => static::$cwd]);
 
         if (0 !== $tester->getStatusCode()) {
@@ -73,7 +73,30 @@ class SetupTest extends \PHPUnit_Framework_TestCase
         $this->assertContains("elasticsearch_version: '1.7'", $appVars);
         $this->assertContains('redis: false', $appVars);
         $this->assertContains('influxdb: false', $appVars);
-        $this->assertContains(":name        => 'dummy.manala'",  file_get_contents(self::$cwd.'/Vagrantfile'));
+        $this->assertContains(":name        => 'foo-bar.manala'",  file_get_contents(self::$cwd.'/Vagrantfile'));
+    }
+
+    public function testExecuteWithDefaultAppNameUsesTheCurrentDirectoryName()
+    {
+        $tester = new CommandTester(new Setup());
+        $tester
+            ->setInputs(["\n", "\n", "\n", "\n", "\n", "\n", "\n"])
+            ->execute(['cwd' => static::$cwd]);
+
+        if (0 !== $tester->getStatusCode()) {
+            echo $tester->getDisplay();
+        }
+
+        $this->assertSame(0, $tester->getStatusCode());
+        $this->assertContains('Environment successfully configured', $tester->getDisplay());
+
+        $this->assertFileExists(self::$cwd.'/Vagrantfile');
+        $this->assertFileExists(self::$cwd.'/Makefile');
+        $this->assertFileExists(self::$cwd.'/ansible/group_vars/app.yml');
+        $this->assertFileExists(self::$cwd.'/ansible/app.yml');
+        $this->assertFileExists(self::$cwd.'/ansible/ansible.yml');
+
+        $this->assertContains(":name        => 'manala'",  file_get_contents(self::$cwd.'/Vagrantfile'));
     }
 
     public static function tearDownAfterClass()
