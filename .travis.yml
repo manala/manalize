@@ -11,9 +11,6 @@ matrix:
         - php: 7.0
           env: CHECK_PHP_SYNTAX="yes"
         - php: 5.6
-        - php: hhvm
-    allow_failures:
-        - php: hhvm
 
 cache:
     directories:
