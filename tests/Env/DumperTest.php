@@ -12,7 +12,6 @@
 namespace Manala\Tests\Process;
 
 use Manala\Env\Config\Config;
-use Manala\Env\Config\Variable\AppName;
 use Manala\Env\Dumper;
 use Manala\Env\Env;
 use Symfony\Component\Filesystem\Filesystem;

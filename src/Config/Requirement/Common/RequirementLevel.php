@@ -19,8 +19,8 @@ final class RequirementLevel
     public static function getLabels()
     {
         return [
-            RequirementLevel::RECOMMENDED => 'Recommended',
-            RequirementLevel::REQUIRED => 'Required',
+            self::RECOMMENDED => 'Recommended',
+            self::REQUIRED => 'Required',
         ];
     }
 }
