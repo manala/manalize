@@ -3,7 +3,7 @@ Manala
 
 [![Build Status](https://travis-ci.org/manala/manala.svg?branch=master)](https://travis-ci.org/manala/manala)
 
-#### /!\ This project is still in progress, use it carefully.
+#### :warning: This project is still in progress, use it carefully.
 
 Installation
 -------------
@@ -33,6 +33,18 @@ $ manala setup ~/my-awesome-project
 #### Build
 ```
 $ manala build ~/my-awesome-project
+```
+
+#### Diff
+
+Get the diff:
+```
+$ manala diff ~/my-awesome-project
+```
+
+Apply the diff:
+```
+$ manala diff ~/my-awesome-project | git apply
 ```
 
 License
