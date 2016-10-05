@@ -71,7 +71,7 @@ class Setup extends Command
         $postProvisionTask = new MakeTarget('install', $envMetadata->get('script.post_provision'));
         $env = EnvFactory::createEnv($envType, $appVendor, $postProvisionTask, $this->setupDependencies($io, $envMetadata));
 
-        foreach (Dumper::dump($env, $appVendor, $cwd) as $dumpTarget) {
+        foreach (Dumper::dump($env, $cwd) as $dumpTarget) {
             $io->writeln(sprintf('- %s', str_replace($cwd.'/', '', $dumpTarget)));
         }
 

@@ -24,7 +24,6 @@ class Renderer
      * Renders a config template.
      *
      * @param Config $config The whole Config for which to dump the template
-     * @param Vars   $vars   The vars to insert
      *
      * @return string
      */

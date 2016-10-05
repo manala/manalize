@@ -53,7 +53,7 @@ class DumperTest extends \PHPUnit_Framework_TestCase
         $cwd = $baseOrigin.'/target';
         @mkdir($cwd);
 
-        Dumper::dump($env->reveal(), new AppVendor('manala'), $cwd)->current();
+        Dumper::dump($env->reveal(), $cwd)->current();
 
         $this->assertFileExists($cwd.'/dummy/dummyconf');
     }
