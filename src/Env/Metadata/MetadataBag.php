@@ -44,8 +44,7 @@ final class MetadataBag
     /**
      * Checks if a given metadata option exists.
      *
-     * @param $path The dot path of the option for which to
-     *              check the existance
+     * @param string $path The dot path of the option for which to check the existence
      *
      * @return bool
      */
@@ -56,7 +55,7 @@ final class MetadataBag
 
     /**
      * @param array  $elements                    The elements to iterate over
-     * @param string $path                        The path for wich to find the value
+     * @param string $path                        The path for which to find the value
      * @param bool   $throwExceptionOnInvalidPath
      *
      * @return mixed

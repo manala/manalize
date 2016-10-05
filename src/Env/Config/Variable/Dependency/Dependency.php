@@ -62,7 +62,7 @@ class Dependency implements Variable
     /**
      * {@inheritdoc}
      */
-    public static function validate($value = null)
+    public static function validate($value)
     {
     }
 }

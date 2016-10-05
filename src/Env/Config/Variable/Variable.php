@@ -35,5 +35,5 @@ interface Variable
      *
      * @throws \InvalidArgumentException If the value is incorrect
      */
-    public static function validate($value = null);
+    public static function validate($value);
 }

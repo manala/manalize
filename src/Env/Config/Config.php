@@ -31,9 +31,6 @@ abstract class Config
      */
     protected $vars;
 
-    /**
-     * @param EnvEnum $env
-     */
     public function __construct(EnvEnum $envType, Variable ...$vars)
     {
         $this->envType = $envType;
@@ -81,7 +78,7 @@ abstract class Config
     /**
      * Returns the variables to be used for rendering the template.
      *
-     * @return array|null
+     * @return Variable[]
      */
     public function getVars()
     {

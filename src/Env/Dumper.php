@@ -12,7 +12,6 @@
 namespace Manala\Env;
 
 use Manala\Env\Config\Renderer;
-use Manala\Env\Config\Variable\Variable;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**

@@ -11,6 +11,7 @@
 
 namespace Manala\Env\Config;
 
+use Manala\Env\Config\Variable\Variable;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -54,7 +55,13 @@ class Renderer
         return $rendered;
     }
 
-    private static function renderYaml($content, $vars)
+    /**
+     * @param string     $content
+     * @param Variable[] $vars
+     *
+     * @return string
+     */
+    private static function renderYaml($content, array $vars)
     {
         $content = Yaml::parse($content);
 
@@ -72,6 +79,6 @@ class Renderer
             }
         }
 
-        return Yaml::dump($rendered);
+        return isset($rendered) ? Yaml::dump($rendered) : '';
     }
 }

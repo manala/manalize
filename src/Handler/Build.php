@@ -68,7 +68,7 @@ class Build
                 $this->errorOutput = $process->getErrorOutput();
 
                 throw new HandlingFailureException(sprintf(
-                    'An error occured while running process "%s". Use "%s::getErrorOutput()" for getting the error output.',
+                    'An error occurred while running process "%s". Use "%s::getErrorOutput()" for getting the error output.',
                     $process->getCommandLine(),
                     __CLASS__
                 ));

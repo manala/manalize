@@ -24,13 +24,12 @@ use Manala\Env\Config\Variable\MakeTarget;
  */
 class EnvFactory
 {
-    /**
-     * @param EnvEnum $type
-     *
-     * @return Env
-     */
-    public static function createEnv(EnvEnum $type, AppName $AppName, MakeTarget $postProvisionTask, \Traversable $dependencies)
-    {
+    public static function createEnv(
+        EnvEnum $type,
+        AppName $AppName,
+        MakeTarget $postProvisionTask,
+        \Traversable $dependencies
+    ) {
         return new Env(
             new Ansible($type, ...$dependencies),
             new Vagrant($type, $AppName),
