@@ -20,5 +20,6 @@ $app->addCommands([
     new Command\CheckRequirements(),
     new Command\Setup(),
     new Command\Build(),
+    new Command\Diff(),
 ]);
 $app->run();

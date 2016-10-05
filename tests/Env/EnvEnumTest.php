@@ -25,7 +25,7 @@ class EnvEnumTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException        \Manala\Exception\InvalidEnvException
-     * @expectedExceptionMessage The env "dummy" doesn't exist. Possible values: [symfony]
+     * @expectedExceptionMessage The env "dummy" doesn't exist. Possible values: ["symfony"]
      */
     public function testCreateUndefinedEnv()
     {
