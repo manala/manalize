@@ -44,7 +44,6 @@ app_patterns:
     - APP_DATABASE_NAME:           app
     - APP_DATABASE_USER:           "{{ app.user }}"
     - APP_DATABASE_PASSWORD:       null
-    - APP_DATABASE_SERVER_VERSION: 5.6
     - APP_DOMAIN:                  "{{ app.host }}"
 
   #########
@@ -119,23 +118,37 @@ app_patterns:
           - location ~ ^/(app(_[-\w]+)?)\.php(/|$):
             - include: conf.d/app_php_fpm
             #- internal;
-          - location ~ ^/filemanager/(dialog|execute|upload|ajax_calls|force_download)\.php(/|$):
-            - include: conf.d/app_php_fpm
-            - client_max_body_size: 100M
+
+  ########
+  # Cron #
+  ########
+
+  #cron_files:
+  #  - file: app
+  #    user: "{{ app.user }}"
+  #    environment:
+  #      - SYMFONY_ENV: "{{ app.env }}"
+  #    jobs:
+  #      - name:   foo-bar
+  #        job:    "cd {{ app.dir }}{{ app.dir_release }} && php bin/console app:foo:bar --no-interaction -vv >> {{ app.log_dir }}/cron.foo-bar.log 2>&1"
+  #        minute: 0
+  #        hour:   7
+  #        # Dev
+  #        state:  absent
 
   ##############
   # Supervisor #
   ##############
 
-  supervisor_configs:
-    - file:     app.conf
-      template: configs/app_program.{{ env }}.j2
-      config:
-        - workflow-worker:
-          - command:        php bin/console app:workflow:worker --run-max=1000 --shutdown-on-exception --no-interaction -vv
-          - directory:      "{{ app.dir }}{{ app.dir_release }}"
-          - user:           "{{ app.user }}"
-          - stdout_logfile: "{{ app.log_dir }}/supervisor.workflow-worker.log"
-          - environment:    "SYMFONY_ENV=\"{{ app.env }}\""
-          # Dev
-          - autostart:       false
+  #supervisor_configs:
+  #  - file:     app.conf
+  #    template: configs/app_program.{{ env }}.j2
+  #    config:
+  #      - foo-bar:
+  #        - command:        php bin/console app:foo:bar --no-interaction -vv
+  #        - directory:      "{{ app.dir }}{{ app.dir_release }}"
+  #        - user:           "{{ app.user }}"
+  #        - stdout_logfile: "{{ app.log_dir }}/supervisor.foo-bar.log"
+  #        - environment:    "SYMFONY_ENV=\"{{ app.env }}\""
+  #        # Dev
+  #        - autostart:       false

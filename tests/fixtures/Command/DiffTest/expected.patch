@@ -63,10 +63,10 @@ index 0000000..9ab9e15
 +  roles:
 +    - manala.deploy
 diff --git a/ansible/group_vars/app.yml b/ansible/group_vars/app.yml
-index 75acbe8..a944db3 100644
+index 54967b2..32b6a1f 100644
 --- a/ansible/group_vars/app.yml
 +++ b/ansible/group_vars/app.yml
-@@ -1,26 +1,141 @@
+@@ -1,25 +1,154 @@
 +---
 +
  app_options:
@@ -104,13 +104,12 @@ index 75acbe8..a944db3 100644
 -    motd_template: template/cow.j2
 -    motd_message: 'I can see clearly now - Jimmy Cliff'
 -    timezone_default: Etc/UTC
--    environment_variables: [{ SYMFONY_ENV: '{{ app.env }}' }, { APP_SECRET: ThisTokenIsNotSoSecretChangeIt }, { APP_DATABASE_HOST: 127.0.0.1 }, { APP_DATABASE_PORT: null }, { APP_DATABASE_NAME: app }, { APP_DATABASE_USER: '{{ app.user }}' }, { APP_DATABASE_PASSWORD: null }, { APP_DATABASE_SERVER_VERSION: 5.6 }, { APP_DOMAIN: '{{ app.host }}' }]
+-    environment_variables: [{ SYMFONY_ENV: '{{ app.env }}' }, { APP_SECRET: ThisTokenIsNotSoSecretChangeIt }, { APP_DATABASE_HOST: 127.0.0.1 }, { APP_DATABASE_PORT: null }, { APP_DATABASE_NAME: app }, { APP_DATABASE_USER: '{{ app.user }}' }, { APP_DATABASE_PASSWORD: null }, { APP_DOMAIN: '{{ app.host }}' }]
 -    files_attributes: [{ path: '{{ app.dir }}{{ app.dir_release }}/var/logs', src: '{{ app.log_dir }}', state: link_directory }, { path: '{{ app.dir }}{{ app.dir_release }}/var/cache', src: '{{ app.cache_dir }}', state: link_directory }]
 -    npm_packages: [{ package: gulp, version: 3 }]
 -    php_extensions: [intl, curl, mbstring, xml, zip, gd]
 -    php_configs: [{ file: app_opcache.ini, template: 'configs/app_opcache.{{ env }}.j2' }, { file: app.ini, template: 'configs/app.{{ env }}.j2', config: [{ date.timezone: UTC }, { upload_max_filesize: 100M }, { post_max_size: 100M }] }]
--    nginx_configs: [{ file: app_php_fpm, template: 'configs/app_php_fpm.{{ env }}.j2' }, { file: app_gzip, template: 'configs/app_gzip.{{ env }}.j2' }, { file: app.conf, config: [{ server: [{ server_name: '{{ app.host }}' }, { root: '{{ app.dir }}{{ app.dir_release }}/web' }, { access_log: '{{ app.log_dir }}/nginx.access.log' }, { error_log: '{{ app.log_dir }}/nginx.error.log' }, { include: conf.d/app_gzip }, { 'location /': [{ try_files: '$uri /app.php$is_args$args' }] }, { 'location ~ ^/(app(_[-\w]+)?)\.php(/|$)': [{ include: conf.d/app_php_fpm }] }, { 'location ~ ^/filemanager/(dialog|execute|upload|ajax_calls|force_download)\.php(/|$)': [{ include: conf.d/app_php_fpm }, { client_max_body_size: 100M }] }] }] }]
--    supervisor_configs: [{ file: app.conf, template: 'configs/app_program.{{ env }}.j2', config: [{ workflow-worker: [{ command: 'php bin/console app:workflow:worker --run-max=1000 --shutdown-on-exception --no-interaction -vv' }, { directory: '{{ app.dir }}{{ app.dir_release }}' }, { user: '{{ app.user }}' }, { stdout_logfile: '{{ app.log_dir }}/supervisor.workflow-worker.log' }, { environment: 'SYMFONY_ENV="{{ app.env }}"' }, { autostart: false }] }] }]
+-    nginx_configs: [{ file: app_php_fpm, template: 'configs/app_php_fpm.{{ env }}.j2' }, { file: app_gzip, template: 'configs/app_gzip.{{ env }}.j2' }, { file: app.conf, config: [{ server: [{ server_name: '{{ app.host }}' }, { root: '{{ app.dir }}{{ app.dir_release }}/web' }, { access_log: '{{ app.log_dir }}/nginx.access.log' }, { error_log: '{{ app.log_dir }}/nginx.error.log' }, { include: conf.d/app_gzip }, { 'location /': [{ try_files: '$uri /app.php$is_args$args' }] }, { 'location ~ ^/(app(_[-\w]+)?)\.php(/|$)': [{ include: conf.d/app_php_fpm }] }] }] }]
 +
 +  ########
 +  # Motd #
@@ -137,7 +136,6 @@ index 75acbe8..a944db3 100644
 +    - APP_DATABASE_NAME:           app
 +    - APP_DATABASE_USER:           "{{ app.user }}"
 +    - APP_DATABASE_PASSWORD:       null
-+    - APP_DATABASE_SERVER_VERSION: 5.6
 +    - APP_DOMAIN:                  "{{ app.host }}"
 +
 +  #########
@@ -212,23 +210,37 @@ index 75acbe8..a944db3 100644
 +          - location ~ ^/(app(_[-\w]+)?)\.php(/|$):
 +            - include: conf.d/app_php_fpm
 +            #- internal;
-+          - location ~ ^/filemanager/(dialog|execute|upload|ajax_calls|force_download)\.php(/|$):
-+            - include: conf.d/app_php_fpm
-+            - client_max_body_size: 100M
++
++  ########
++  # Cron #
++  ########
++
++  #cron_files:
++  #  - file: app
++  #    user: "{{ app.user }}"
++  #    environment:
++  #      - SYMFONY_ENV: "{{ app.env }}"
++  #    jobs:
++  #      - name:   foo-bar
++  #        job:    "cd {{ app.dir }}{{ app.dir_release }} && php bin/console app:foo:bar --no-interaction -vv >> {{ app.log_dir }}/cron.foo-bar.log 2>&1"
++  #        minute: 0
++  #        hour:   7
++  #        # Dev
++  #        state:  absent
 +
 +  ##############
 +  # Supervisor #
 +  ##############
 +
-+  supervisor_configs:
-+    - file:     app.conf
-+      template: configs/app_program.{{ env }}.j2
-+      config:
-+        - workflow-worker:
-+          - command:        php bin/console app:workflow:worker --run-max=1000 --shutdown-on-exception --no-interaction -vv
-+          - directory:      "{{ app.dir }}{{ app.dir_release }}"
-+          - user:           "{{ app.user }}"
-+          - stdout_logfile: "{{ app.log_dir }}/supervisor.workflow-worker.log"
-+          - environment:    "SYMFONY_ENV=\"{{ app.env }}\""
-+          # Dev
-+          - autostart:       false
++  #supervisor_configs:
++  #  - file:     app.conf
++  #    template: configs/app_program.{{ env }}.j2
++  #    config:
++  #      - foo-bar:
++  #        - command:        php bin/console app:foo:bar --no-interaction -vv
++  #        - directory:      "{{ app.dir }}{{ app.dir_release }}"
++  #        - user:           "{{ app.user }}"
++  #        - stdout_logfile: "{{ app.log_dir }}/supervisor.foo-bar.log"
++  #        - environment:    "SYMFONY_ENV=\"{{ app.env }}\""
++  #        # Dev
++  #        - autostart:       false
