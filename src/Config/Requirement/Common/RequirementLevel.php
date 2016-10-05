@@ -15,4 +15,12 @@ final class RequirementLevel
 {
     const REQUIRED = 1;
     const RECOMMENDED = 2;
+
+    public static function getLabels()
+    {
+        return [
+            RequirementLevel::RECOMMENDED => 'Recommended',
+            RequirementLevel::REQUIRED => 'Required',
+        ];
+    }
 }

@@ -54,12 +54,14 @@ final class VersionBounded extends Dependency
     }
 
     /**
-     * Checks that the required dependency version matches the supported constraint.
+     * @param string $version
+     * @param string $constraint
      *
-     * @param string|null $version
-     * @param string|null $constraint
+     * @return string The version if it satisfies the constraint
+     *
+     * @throws \InvalidArgumentException If the version does not satisfy the constraint
      */
-    public static function validate($version = null, $constraint = null)
+    public static function validate($version, $constraint = null)
     {
         if (false === Semver::satisfies($version, $constraint)) {
             throw new \InvalidArgumentException(sprintf(

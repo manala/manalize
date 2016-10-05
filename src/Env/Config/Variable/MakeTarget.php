@@ -18,12 +18,12 @@ namespace Manala\Env\Config\Variable;
  */
 final class MakeTarget implements Variable
 {
+    /** @var string */
     private $name;
+
+    /** @var string[] */
     private $commands;
 
-    /**
-     * @param string $name
-     */
     public function __construct($name, array $commands)
     {
         $this->name = $name;
@@ -35,22 +35,17 @@ final class MakeTarget implements Variable
      */
     public function getReplaces()
     {
-        $replaces = '';
-
-        for ($i = 0; $i < count($this->commands); ++$i) {
-            $command = $this->commands[$i];
-            $replaces .= 0 < $i ? "\n\t$command" : $command;
-        }
-
         return [
-            sprintf('{{ %s_tasks }}', $this->name) => $replaces,
+            sprintf('{{ %s_tasks }}', $this->name) => array_reduce($this->commands, function ($previous, $command) {
+                return $previous === null ? "$command" : "$previous\n\t$command";
+            }),
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function validate($value = null)
+    public static function validate($value)
     {
     }
 }

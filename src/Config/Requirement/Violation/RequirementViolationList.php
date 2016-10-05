@@ -50,6 +50,8 @@ class RequirementViolationList extends \ArrayObject
     /**
      * Does the violation list contain at least one violation with the given level ?
      *
+     * @param string $level
+     *
      * @return bool
      */
     private function containsViolations($level)

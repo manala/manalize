@@ -42,7 +42,7 @@ final class AppName implements Variable
     /**
      * {@inheritdoc}
      */
-    public static function validate($value = null, $throwException = true)
+    public static function validate($value, $throwException = true)
     {
         $isValid = preg_match('/^([-.A-Z0-9])*$/i', $value);
 
