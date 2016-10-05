@@ -136,6 +136,7 @@ class Diff implements Handler
 
         $this->fs->mkdir($tmpPath);
         $this->fs->mirror($templatePath, $tmpPath);
+        $this->fs->remove("$tmpPath/manala.yml");
 
         return $tmpPath;
     }
