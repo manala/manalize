@@ -14,7 +14,6 @@ namespace Manala\Command;
 use Manala\Env\Config\Variable\AppName;
 use Manala\Env\Config\Variable\Dependency\Dependency;
 use Manala\Env\Config\Variable\Dependency\VersionBounded;
-use Manala\Env\Config\Variable\MakeTarget;
 use Manala\Env\Dumper;
 use Manala\Env\EnvEnum;
 use Manala\Env\EnvFactory;
@@ -69,7 +68,6 @@ class Setup extends Command
         $env = EnvFactory::createEnv(
             $envType,
             new AppName($appName),
-            $this->getMakeTargets($envMetadata),
             $this->setupDependencies($io, $envMetadata)
         );
 
@@ -111,13 +109,6 @@ class Setup extends Command
             );
 
             yield new VersionBounded($name, $enabled, $requiredVersion);
-        }
-    }
-
-    private function getMakeTargets(MetadataBag $metadata)
-    {
-        foreach ($metadata->get('make_targets') as $name => $scripts) {
-            yield new MakeTarget($name, $scripts);
         }
     }
 }
