@@ -103,7 +103,8 @@ build@prod:
 ##########
 
 ## Deploy application
-deploy: deploy@prod
+deploy@demo:
+	ansible-playbook ansible/deploy.yml --inventory-file=ansible/hosts --limit=deploy_demo
 deploy@prod:
 	ansible-playbook ansible/deploy.yml --inventory-file=ansible/hosts --limit=deploy_prod
 
