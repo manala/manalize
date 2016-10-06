@@ -6,7 +6,6 @@
 ###########
 
 manala_deploy_removed:
-  - web/app_dev.php
   - web/app_test.php
 
 #########
@@ -14,5 +13,5 @@ manala_deploy_removed:
 #########
 
 manala_deploy_tasks:
-  - make: install@prod
-  - make: build@prod
+  - make: install@demo
+  - make: build@demo

@@ -1,7 +1,7 @@
 diff --git a/Makefile b/Makefile
 old mode 100644
 new mode 100755
-index 663fec9..67b3890
+index acd1c23..67b3890
 --- a/Makefile
 +++ b/Makefile
 @@ -27,12 +27,7 @@ help:
@@ -13,7 +13,7 @@ index 663fec9..67b3890
 -	if [ -d "./var/sessions" ]; then rm -rf ./var/sessions && mkdir ./var/sessions; fi;
 -	vagrant up --no-provision
 -	vagrant provision
--	vagrant ssh -- "cd /srv/app && make install"
+-	vagrant ssh -- "cd /srv/app && make install && make build"
 +	{{ setup_tasks }}
  
  ## Update environment

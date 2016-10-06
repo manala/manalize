@@ -46,4 +46,4 @@ make_targets:
         - if [ -d "./var/sessions" ]; then rm -rf ./var/sessions && mkdir ./var/sessions; fi;
         - vagrant up --no-provision
         - vagrant provision
-        - vagrant ssh -- "cd /srv/app && make install"
+        - vagrant ssh -- "cd /srv/app && make install && make build"
