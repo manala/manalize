@@ -25,7 +25,7 @@ class EnvFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $envType = EnvEnum::create(EnvEnum::SYMFONY);
         $host = new AppName('rch');
-        $env = EnvFactory::createEnv($envType, $host, new \ArrayObject(), new \ArrayObject());
+        $env = EnvFactory::createEnv($envType, $host, new \ArrayObject());
         $expectedConfigs = [new Vagrant($envType, $host), new Ansible($envType), new Make($envType)];
 
         $this->assertInstanceOf(Env::class, $env);
