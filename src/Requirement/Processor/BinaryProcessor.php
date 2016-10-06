@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Config\Requirement\Processor;
+namespace Manala\Requirement\Processor;
 
 class BinaryProcessor extends AbstractProcessor
 {

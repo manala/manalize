@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Config\Requirement\Processor;
+namespace Manala\Requirement\Processor;
 
-use Manala\Config\Requirement\Exception\MissingRequirementException;
+use Manala\Requirement\Exception\MissingRequirementException;
 
 class VagrantPluginProcessor extends AbstractProcessor
 {

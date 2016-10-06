@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Config\Requirement\Factory;
+namespace Manala\Requirement\Factory;
 
-use Manala\Config\Requirement\Requirement;
+use Manala\Requirement\Requirement;
 
 /**
  * This resolver implements the abstract factory pattern: it returns the proper factory that instantiates the concrete

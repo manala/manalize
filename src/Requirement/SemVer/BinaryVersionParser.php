@@ -9,22 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Config\Requirement\SemVer;
+namespace Manala\Requirement\SemVer;
 
-class VagrantPluginVersionParser implements VersionParserInterface
+class BinaryVersionParser implements VersionParserInterface
 {
     /**
-     * Example: landrush (0.18.0).
+     * Example: ansible 1.9.4 [...].
      */
-    const OUTPUT_PATTERN = '/%s\s\(([0-9]+\.[0-9]+\.[0-9]+)\)/';
+    const OUTPUT_PATTERN = '/^[a-zA-Z0-9]+\s([0-9]+\.[0-9]+\.[0-9]+)/';
 
     /**
      * {@inheritdoc}
      */
     public function getVersion($name, $consoleOutput)
     {
-        $pattern = sprintf(self::OUTPUT_PATTERN, $name);
-        preg_match($pattern, $consoleOutput, $matches);
+        preg_match(self::OUTPUT_PATTERN, $consoleOutput, $matches);
         $version = isset($matches[1]) ? $matches[1] : 0;
 
         return $version;

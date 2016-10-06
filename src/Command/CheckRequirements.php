@@ -11,12 +11,12 @@
 
 namespace Manala\Command;
 
-use Manala\Config\Requirement\Factory\HandlerFactoryResolver;
-use Manala\Config\Requirement\RequirementChecker;
-use Manala\Config\Requirement\RequirementRepository;
-use Manala\Config\Requirement\Violation\RequirementViolation;
-use Manala\Config\Requirement\Violation\RequirementViolationLabelBuilder;
-use Manala\Config\Requirement\Violation\RequirementViolationList;
+use Manala\Requirement\Factory\HandlerFactoryResolver;
+use Manala\Requirement\RequirementChecker;
+use Manala\Requirement\RequirementRepository;
+use Manala\Requirement\Violation\RequirementViolation;
+use Manala\Requirement\Violation\RequirementViolationLabelBuilder;
+use Manala\Requirement\Violation\RequirementViolationList;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

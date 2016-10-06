@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Config\Requirement;
+namespace Manala\Requirement;
 
 /**
  * Class that represents a host's requirement: name of the required binary (eg. Ansible, vagrant, etc.), required version, etc.

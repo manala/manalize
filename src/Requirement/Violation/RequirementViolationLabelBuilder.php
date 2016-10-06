@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Config\Requirement\Violation;
+namespace Manala\Requirement\Violation;
 
-use Manala\Config\Requirement\Requirement;
+use Manala\Requirement\Requirement;
 
 class RequirementViolationLabelBuilder
 {

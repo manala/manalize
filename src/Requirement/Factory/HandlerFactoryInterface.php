@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Config\Requirement\Factory;
+namespace Manala\Requirement\Factory;
 
-use Manala\Config\Requirement\Processor\AbstractProcessor;
-use Manala\Config\Requirement\SemVer\VersionParserInterface;
+use Manala\Requirement\Processor\AbstractProcessor;
+use Manala\Requirement\SemVer\VersionParserInterface;
 
 /**
  * Interface for factories that instantiate the proper processor and version parser for a given type of requirement

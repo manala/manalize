@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Config\Requirement\Violation;
+namespace Manala\Requirement\Violation;
 
-use Manala\Config\Requirement\Common\RequirementLevel;
+use Manala\Requirement\Common\RequirementLevel;
 
 /**
  * Iterable collection of requirement violations.

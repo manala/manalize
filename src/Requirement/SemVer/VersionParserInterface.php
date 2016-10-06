@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Config\Requirement\SemVer;
+namespace Manala\Requirement\SemVer;
 
 interface VersionParserInterface
 {

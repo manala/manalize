@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Config\Requirement\Violation;
+namespace Manala\Requirement\Violation;
 
-use Manala\Config\Requirement\Common\RequirementLevel;
-use Manala\Config\Requirement\Common\RequirementLevelHolderInterface;
-use Manala\Config\Requirement\Common\RequirementLevelHolderTrait;
+use Manala\Requirement\Common\RequirementLevel;
+use Manala\Requirement\Common\RequirementLevelHolderInterface;
+use Manala\Requirement\Common\RequirementLevelHolderTrait;
 
 /**
  * Class that represents a requirement violation. It contains the name of the required binary (Ansible, vagrant, etc.),

@@ -11,16 +11,16 @@
 
 namespace Manala\Tests\Config\Requirement;
 
-use Manala\Config\Requirement\Common\RequirementLevel;
-use Manala\Config\Requirement\Exception\MissingRequirementException;
-use Manala\Config\Requirement\Factory\HandlerFactoryInterface;
-use Manala\Config\Requirement\Factory\HandlerFactoryResolver;
-use Manala\Config\Requirement\Processor\AbstractProcessor;
-use Manala\Config\Requirement\Requirement;
-use Manala\Config\Requirement\RequirementChecker;
-use Manala\Config\Requirement\SemVer\BinaryVersionParser;
-use Manala\Config\Requirement\Violation\RequirementViolationLabelBuilder;
-use Manala\Config\Requirement\Violation\RequirementViolationList;
+use Manala\Requirement\Common\RequirementLevel;
+use Manala\Requirement\Exception\MissingRequirementException;
+use Manala\Requirement\Factory\HandlerFactoryInterface;
+use Manala\Requirement\Factory\HandlerFactoryResolver;
+use Manala\Requirement\Processor\AbstractProcessor;
+use Manala\Requirement\Requirement;
+use Manala\Requirement\RequirementChecker;
+use Manala\Requirement\SemVer\BinaryVersionParser;
+use Manala\Requirement\Violation\RequirementViolationLabelBuilder;
+use Manala\Requirement\Violation\RequirementViolationList;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 

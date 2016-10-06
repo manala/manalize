@@ -11,7 +11,7 @@
 
 namespace Manala\Tests\Config\Requirement\SemVer;
 
-use Manala\Config\Requirement\SemVer\VagrantPluginVersionParser;
+use Manala\Requirement\SemVer\VagrantPluginVersionParser;
 
 class VagrantPluginVersionParserTest extends \PHPUnit_Framework_TestCase
 {

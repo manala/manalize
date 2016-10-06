@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Config\Requirement;
+namespace Manala\Requirement;
 
-use Manala\Config\Requirement\Common\RequirementLevel;
+use Manala\Requirement\Common\RequirementLevel;
 
 class RequirementRepository
 {

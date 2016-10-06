@@ -9,24 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Config\Requirement\Factory;
+namespace Manala\Requirement\Factory;
 
-use Manala\Config\Requirement\Processor\BinaryProcessor;
-use Manala\Config\Requirement\SemVer\BinaryVersionParser;
+use Manala\Requirement\Processor\VagrantPluginProcessor;
+use Manala\Requirement\SemVer\VagrantPluginVersionParser;
 
 /**
- * Factory that instantiates the concrete processor and version parser to handle binary requirements.
+ * Factory that instantiates the concrete processor and version parser to handle vagrant plugin requirements.
  *
  * @author Xavier Roldo <xavier.roldo@elao.com>
  */
-class BinaryHandlerFactory implements HandlerFactoryInterface
+class VagrantPluginHandlerFactory implements HandlerFactoryInterface
 {
     /**
      * {@inheritdoc}
      */
     public function getProcessor()
     {
-        return new BinaryProcessor();
+        return new VagrantPluginProcessor();
     }
 
     /**
@@ -34,6 +34,6 @@ class BinaryHandlerFactory implements HandlerFactoryInterface
      */
     public function getVersionParser()
     {
-        return new BinaryVersionParser();
+        return new VagrantPluginVersionParser();
     }
 }

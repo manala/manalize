@@ -11,7 +11,7 @@
 
 namespace Manala\Tests\Config\Requirement\SemVer;
 
-use Manala\Config\Requirement\SemVer\BinaryVersionParser;
+use Manala\Requirement\SemVer\BinaryVersionParser;
 
 class BinaryVersionParserTest extends \PHPUnit_Framework_TestCase
 {

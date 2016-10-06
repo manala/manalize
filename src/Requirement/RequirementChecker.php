@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Config\Requirement;
+namespace Manala\Requirement;
 
 use Composer\Semver\Semver;
-use Manala\Config\Requirement\Exception\MissingRequirementException;
-use Manala\Config\Requirement\Factory\HandlerFactoryResolver;
-use Manala\Config\Requirement\Violation\RequirementViolation;
-use Manala\Config\Requirement\Violation\RequirementViolationLabelBuilder;
-use Manala\Config\Requirement\Violation\RequirementViolationList;
+use Manala\Requirement\Exception\MissingRequirementException;
+use Manala\Requirement\Factory\HandlerFactoryResolver;
+use Manala\Requirement\Violation\RequirementViolation;
+use Manala\Requirement\Violation\RequirementViolationLabelBuilder;
+use Manala\Requirement\Violation\RequirementViolationList;
 
 /**
  * Service that checks if the current host's environment satisfies a requirement.

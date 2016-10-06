@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Config\Requirement\Common;
+namespace Manala\Requirement\Common;
 
 /**
  * Interface to be implemented by requirement level holders (Eg Requirement, Violation).
