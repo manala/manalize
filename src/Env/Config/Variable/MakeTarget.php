@@ -36,9 +36,7 @@ final class MakeTarget implements Variable
     public function getReplaces()
     {
         return [
-            sprintf('{{ %s_tasks }}', $this->name) => array_reduce($this->commands, function ($previous, $command) {
-                return $previous === null ? "$command" : "$previous\n\t$command";
-            }),
+            sprintf('{{ %s_tasks }}', $this->name) => implode("\n\t", $this->commands),
         ];
     }
 
