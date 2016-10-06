@@ -77,6 +77,29 @@ YAML;
 
         $this->assertContains($expectedDeps, file_get_contents(self::$cwd.'/ansible/group_vars/app.yml'));
         $this->assertContains(":name        => 'foo-bar.manala'",  file_get_contents(self::$cwd.'/Vagrantfile'));
+
+        $this->assertStringEqualsFile(self::$cwd.'/ansible/.manala.yml', <<<'YAML'
+envs:
+    symfony:
+        vars:
+            '{{ app }}': foo-bar.manala
+            '{{ php_version }}': '7.0'
+            '{{ php_enabled }}': 'true'
+            '{{ mysql_version }}': '5.6'
+            '{{ mysql_enabled }}': 'true'
+            '{{ postgresql_version }}': '9.5'
+            '{{ postgresql_enabled }}': 'false'
+            '{{ mongodb_version }}': '3.2'
+            '{{ mongodb_enabled }}': 'false'
+            '{{ elasticsearch_version }}': '1.7'
+            '{{ elasticsearch_enabled }}': 'false'
+            '{{ nodejs_version }}': '6'
+            '{{ nodejs_enabled }}': 'false'
+            '{{ redis_enabled }}': 'false'
+            '{{ influxdb_enabled }}': 'false'
+
+YAML
+        );
     }
 
     public function testExecuteWithDefaultAppNameUsesTheCurrentDirectoryName()

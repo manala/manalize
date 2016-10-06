@@ -48,6 +48,15 @@ class DumperTest extends \PHPUnit_Framework_TestCase
         $env
             ->getConfigs()
             ->willReturn([$config->reveal()]);
+        $env
+            ->export()
+            ->willReturn([
+                'env' => 'dummy',
+                'vars' => [
+                    '{{ app }}' => 'dummy',
+                    '{{ version }}' => '1.2.0',
+                ],
+            ]);
 
         $cwd = $baseOrigin.'/target';
         @mkdir($cwd);
@@ -55,6 +64,15 @@ class DumperTest extends \PHPUnit_Framework_TestCase
         Dumper::dump($env->reveal(), $cwd)->current();
 
         $this->assertFileExists($cwd.'/dummy/dummyconf');
+        $this->assertStringEqualsFile($cwd.'/ansible/.manala.yml', <<<'YAML'
+envs:
+    dummy:
+        vars:
+            '{{ app }}': dummy
+            '{{ version }}': 1.2.0
+
+YAML
+        );
     }
 
     public static function tearDownAfterClass()

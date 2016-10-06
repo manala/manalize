@@ -12,6 +12,7 @@
 namespace Manala\Env;
 
 use Manala\Env\Config\Config;
+use Manala\Env\Config\Variable\Variable;
 
 /**
  * Manala Env.
@@ -20,10 +21,14 @@ use Manala\Env\Config\Config;
  */
 class Env
 {
+    /** @var string */
+    private $name;
+
     private $configs = [];
 
-    public function __construct(Config ...$configs)
+    public function __construct($name, Config ...$configs)
     {
+        $this->name = $name;
         $this->configs = $configs;
     }
 
@@ -33,5 +38,30 @@ class Env
     public function getConfigs()
     {
         return $this->configs;
+    }
+
+    public function export()
+    {
+        $vars = [];
+        foreach ($this->getVars() as $var) {
+            foreach ($var->getReplaces() as $placeholder => $value) {
+                $vars[$placeholder] = $value;
+            }
+        }
+
+        return [
+            'env' => $this->name,
+            'vars' => $vars,
+        ];
+    }
+
+    /**
+     * @return Variable[]
+     */
+    private function getVars()
+    {
+        return array_reduce($this->getConfigs(), function ($previous, Config $config) {
+            return array_merge($previous, $config->getVars());
+        }, []);
     }
 }
