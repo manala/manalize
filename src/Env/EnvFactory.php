@@ -23,12 +23,12 @@ use Manala\Env\Config\Variable\AppName;
  */
 class EnvFactory
 {
-    public static function createEnv(EnvEnum $type, AppName $AppName, \Traversable $makeTargets, \Traversable $dependencies)
+    public static function createEnv(EnvEnum $type, AppName $AppName, \Traversable $dependencies)
     {
         return new Env(
             new Vagrant($type, $AppName),
             new Ansible($type, ...$dependencies),
-            new Make($type, ...$makeTargets)
+            new Make($type)
         );
     }
 }

@@ -27,7 +27,12 @@ help:
 
 ## Setup environment & Install & Build application
 setup:
-	{{ setup_tasks }}
+	if [ -d  "./var/cache" ]; then rm -rf ./var/cache && mkdir ./var/cache; fi;
+	if [ -d "./var/logs" ]; then rm -rf ./var/logs && mkdir ./var/logs; fi;
+	if [ -d "./var/sessions" ]; then rm -rf ./var/sessions && mkdir ./var/sessions; fi;
+	vagrant up --no-provision
+	vagrant provision
+	vagrant ssh -- "cd /srv/app && make install && make build"
 
 ## Update environment
 update: export ANSIBLE_TAGS = manala.update
@@ -58,7 +63,8 @@ provision-php: provision
 
 ## Install application
 install:
-	{{ install_tasks }}
+	composer install --verbose
+	bin/console doctrine:database:create --if-not-exists
 
 install@test: SYMFONY_ENV = test
 install@test:
