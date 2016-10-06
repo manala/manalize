@@ -49,7 +49,7 @@ final class VersionBounded extends Dependency
     public function getReplaces()
     {
         return [
-            sprintf('%s_version', $this->getName()) => $this->getVersion(),
+            sprintf('{{ %s_version }}', $this->getName()) => $this->getVersion(),
         ] + parent::getReplaces();
     }
 

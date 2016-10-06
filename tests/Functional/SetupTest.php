@@ -58,21 +58,24 @@ class SetupTest extends \PHPUnit_Framework_TestCase
         $this->assertFileExists(self::$cwd.'/ansible/app.yml');
         $this->assertFileExists(self::$cwd.'/ansible/ansible.yml');
 
-        $appVars = file_get_contents(self::$cwd.'/ansible/group_vars/app.yml');
-        $this->assertContains('php: true', $appVars);
-        $this->assertContains("php_version: '7.0'", $appVars);
-        $this->assertContains('nodejs: false', $appVars);
-        $this->assertContains("nodejs_version: '6'", $appVars);
-        $this->assertContains('mysql: true', $appVars);
-        $this->assertContains("mysql_version: '5.6'", $appVars);
-        $this->assertContains('mongodb: false', $appVars);
-        $this->assertContains("mongodb_version: '3.2'", $appVars);
-        $this->assertContains('postgresql: false', $appVars);
-        $this->assertContains("postgresql_version: '9.5'", $appVars);
-        $this->assertContains('elasticsearch: false', $appVars);
-        $this->assertContains("elasticsearch_version: '1.7'", $appVars);
-        $this->assertContains('redis: false', $appVars);
-        $this->assertContains('influxdb: false', $appVars);
+        $expectedDeps = <<<'YAML'
+  php:                   true
+  php_version:           7.0
+  nodejs:                false
+  nodejs_version:        6
+  mysql:                 true
+  mysql_version:         5.6
+  mongodb:               false
+  mongodb_version:       3.2
+  postgresql:            false
+  postgresql_version:    9.5
+  elasticsearch:         false
+  elasticsearch_version: 1.7
+  redis:                 false
+  influxdb:              false
+YAML;
+
+        $this->assertContains($expectedDeps, file_get_contents(self::$cwd.'/ansible/group_vars/app.yml'));
         $this->assertContains(":name        => 'foo-bar.manala'",  file_get_contents(self::$cwd.'/Vagrantfile'));
     }
 

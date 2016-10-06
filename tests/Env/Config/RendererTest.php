@@ -37,52 +37,6 @@ class RendererTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('foo bar baz', Renderer::render($config->reveal()));
     }
 
-    public function testRenderYaml()
-    {
-        $template = <<<'YAML'
-key_1: ~
-key_2: ~
-
-YAML;
-        file_put_contents(self::$tempdir.'/template.yml', $template);
-        $var = $this->prophesize(Variable::class);
-        $var->getReplaces()->willReturn(['key_1' => 'foobar', 'key_2' => 'barbaz']);
-        $config = $this->prophesize(Config::class);
-        $config->getVars()->willReturn([$var->reveal()]);
-        $config->getTemplate()->willReturn(new \SplFileInfo(self::$tempdir.'/template.yml'));
-
-        $expected = <<<'YAML'
-key_1: foobar
-key_2: barbaz
-
-YAML;
-        $this->assertSame($expected, Renderer::render($config->reveal()));
-    }
-
-    public function testRenderYamlWithReplacesAtDeepLevel()
-    {
-        $template = <<<'YAML'
-first_level:
-    key_1: foo
-    key_2: bar
-YAML;
-        file_put_contents(self::$tempdir.'/template.yml', $template);
-        $var = $this->prophesize(Variable::class);
-        $var->getReplaces()->willReturn(['key_1' => 'foobar', 'key_2' => 'barbaz']);
-        $config = $this->prophesize(Config::class);
-        $config->getVars()->willReturn([$var->reveal()]);
-        $config->getTemplate()->willReturn(new \SplFileInfo(self::$tempdir.'/template.yml'));
-
-        $expected = <<<'YAML'
-first_level:
-    key_1: foobar
-    key_2: barbaz
-
-YAML;
-
-        $this->assertSame($expected, Renderer::render($config->reveal()));
-    }
-
     public static function tearDownAfterClass()
     {
         @unlink(self::$tempdir.'/template');
