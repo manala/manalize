@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Tests\Config\Requirement\SemVer;
+namespace Manala\Tests\Requirement\SemVer;
 
-use Manala\Requirement\SemVer\VagrantPluginVersionParser;
+use Manala\Requirement\SemVer\BinaryVersionParser;
 
-class VagrantPluginVersionParserTest extends \PHPUnit_Framework_TestCase
+class BinaryVersionParserTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @param string $name
@@ -24,7 +24,7 @@ class VagrantPluginVersionParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testBinaryVersionParser($name, $consoleOutput, $expectedVersion)
     {
-        $parser = new VagrantPluginVersionParser();
+        $parser = new BinaryVersionParser();
 
         $this->assertEquals($parser->getVersion($name, $consoleOutput), $expectedVersion);
     }
@@ -33,21 +33,22 @@ class VagrantPluginVersionParserTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [
-                'landrush',
-                'landrush (0.18.0)
-                 vagrant-share (1.1.5, system)',
-                '0.18.0',
+                'vagrant',
+                'Vagrant 1.8.4',
+                '1.8.4',
             ],
             [
-                'vagrant-plugin',
-                'vagrant-share (1.1.5, system)
-                 vagrant-plugin (1.11.15)',
-                '1.11.15',
+                'php',
+                'PHP 7.0.8 (cli) (built: Jun 23 2016 16:32:40) ( NTS )
+                 Copyright (c) 1997-2016 The PHP Group
+                 Zend Engine v3.0.0, Copyright (c) 1998-2016 Zend Technologies',
+                '7.0.8',
             ],
             [
-                'anotherPlugin',
-                'anotherPlugin (1.9.14)',
-                '1.9.14',
+                'ansible',
+                'ansible 1.9.4
+                configured module search path = None',
+                '1.9.4',
             ],
         ];
     }

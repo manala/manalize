@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Tests\Config\Requirement;
+namespace Manala\Tests\Requirement;
 
 use Manala\Requirement\Common\RequirementLevel;
 use Manala\Requirement\Exception\MissingRequirementException;
