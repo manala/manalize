@@ -88,15 +88,14 @@ install@prod:
 	bin/console doctrine:migrations:migrate --no-debug --no-interaction
 
 ##########
-# Assets #
+# Build #
 ##########
 
-## Build assets
-assets:
+build:
 	if [ -f "gulpfile" ]; then gulp --dev; fi;
-
-assets@prod: SYMFONY_ENV = prod
-assets@prod:
+build@demo:
+	if [ -f "gulpfile" ]; then gulp; fi;
+build@prod:
 	if [ -f "gulpfile" ]; then gulp; fi;
 
 ##########

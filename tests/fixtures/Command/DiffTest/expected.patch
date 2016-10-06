@@ -1,7 +1,7 @@
 diff --git a/Makefile b/Makefile
 old mode 100644
 new mode 100755
-index 6544f4c..0113c9b
+index 08ebf3c..20c7d3c
 --- a/Makefile
 +++ b/Makefile
 @@ -27,12 +27,7 @@ help:
@@ -28,7 +28,7 @@ index 6544f4c..0113c9b
  
  install@test: SYMFONY_ENV = test
  install@test:
-@@ -117,5 +111,3 @@ deploy@prod:
+@@ -118,5 +112,3 @@ deploy@prod:
  ##########
  # Custom #
  ##########
