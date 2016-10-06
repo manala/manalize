@@ -61,9 +61,9 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertSame(DiffHandler::EXIT_SUCCESS_DIFF, $tester->getStatusCode());
-        // Uncomment the following line in order to update the expected diff:
-        // /!\ Don't commit blindly the diff !
-        // file_put_contents(static::EXPECTED_PATCH_FILE, $tester->getDisplay(true));
+
+        UPDATE_FIXTURES ? file_put_contents(static::EXPECTED_PATCH_FILE, $tester->getDisplay(true)) : null;
+
         $this->assertStringEqualsFile(static::EXPECTED_PATCH_FILE, $tester->getDisplay(true));
     }
 
