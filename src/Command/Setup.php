@@ -65,11 +65,8 @@ class Setup extends Command
         $appName = $io->ask('Application name', AppName::validate($defaultAppName, false) ? $defaultAppName : 'app', [AppName::class, 'validate']);
 
         $envMetadata = MetadataParser::parse($envType);
-        $env = EnvFactory::createEnv(
-            $envType,
-            new AppName($appName),
-            $this->setupDependencies($io, $envMetadata)
-        );
+        $dependencies = $this->setupDependencies($io, $envMetadata);
+        $env = EnvFactory::createEnv($envType, new AppName($appName), $dependencies);
 
         foreach (Dumper::dump($env, $cwd) as $dumpTarget) {
             $io->writeln(sprintf('- %s', str_replace($cwd.'/', '', $dumpTarget)));

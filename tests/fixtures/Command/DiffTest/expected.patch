@@ -14,18 +14,21 @@ index acd1c23..a62e250
 diff --git a/Vagrantfile b/Vagrantfile
 old mode 100644
 new mode 100755
-index b93cd8b..cd09b13
+index b93cd8b..b5960a9
 --- a/Vagrantfile
 +++ b/Vagrantfile
-@@ -2,7 +2,7 @@
+@@ -2,9 +2,9 @@
  # vi: set ft=ruby :
  
  app = {
 -  :name        => 'dummy.manala',
 +  :name        => '{{ app }}',
    :box         => 'manala/app-dev-debian',
-   :box_version => '~> 3.0.0',
+-  :box_version => '~> 3.0.0',
++  :box_version => '{{ box_version }}',
    :box_memory  => 1024
+ }
+ 
 diff --git a/ansible/deploy.yml b/ansible/deploy.yml
 new file mode 100644
 index 0000000..9ab9e15
