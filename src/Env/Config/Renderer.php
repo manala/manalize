@@ -11,9 +11,6 @@
 
 namespace Manala\Env\Config;
 
-use Manala\Env\Config\Variable\Variable;
-use Symfony\Component\Yaml\Yaml;
-
 /**
  * Config' template renderer.
  *
@@ -40,45 +37,12 @@ class Renderer
         }
 
         $vars = $config->getVars();
-        $content = file_get_contents($template);
-
-        if ('yml' === $template->getExtension()) {
-            return self::renderYaml($content, $vars);
-        }
-
-        $rendered = $content;
+        $rendered = file_get_contents($template);
 
         foreach ($vars as $var) {
             $rendered = strtr($rendered, $var->getReplaces());
         }
 
         return $rendered;
-    }
-
-    /**
-     * @param string     $content
-     * @param Variable[] $vars
-     *
-     * @return string
-     */
-    private static function renderYaml($content, array $vars)
-    {
-        $content = Yaml::parse($content);
-
-        foreach ($content as $k => $v) {
-            $rendered[$k] = $v;
-
-            foreach ($vars as $var) {
-                if (!is_array($rendered[$k])) {
-                    $rendered = array_merge($rendered, array_intersect_key($var->getReplaces(), $rendered));
-
-                    break;
-                }
-
-                $rendered[$k] = array_merge($rendered[$k], array_intersect_key($var->getReplaces(), $rendered[$k]));
-            }
-        }
-
-        return isset($rendered) ? Yaml::dump($rendered) : '';
     }
 }

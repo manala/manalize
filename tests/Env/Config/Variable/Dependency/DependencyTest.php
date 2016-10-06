@@ -19,7 +19,7 @@ class DependencyTest extends \PHPUnit_Framework_TestCase
     {
         $var = new Dependency('brainfuck', true);
 
-        $this->assertSame(['brainfuck' => true], $var->getReplaces());
+        $this->assertSame(['{{ brainfuck_enabled }}' => 'true'], $var->getReplaces());
     }
 
     public function testValidateDoesNothing()
