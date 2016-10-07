@@ -13,6 +13,7 @@ namespace Manala\Env;
 
 use Manala\Env\Config\Renderer;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Manala environment config dumper.
@@ -33,8 +34,15 @@ class Dumper
     {
         $fs = new Filesystem();
 
+        $export = $env->export();
+        $fs->dumpFile("$workDir/ansible/.manala.yml", Yaml::dump([
+            'envs' => [
+                $export['env'] => ['vars' => $export['vars']],
+            ],
+        ], 5));
+
         foreach ($env->getConfigs() as $config) {
-            $baseTarget = $workDir.DIRECTORY_SEPARATOR.$config->getPath();
+            $baseTarget = "$workDir/{$config->getPath()}";
             $template = $config->getTemplate();
 
             foreach ($config->getFiles() as $file) {

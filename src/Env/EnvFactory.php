@@ -26,6 +26,7 @@ class EnvFactory
     public static function createEnv(EnvEnum $type, AppName $appName, \Traversable $dependencies)
     {
         return new Env(
+            (string) $type,
             new Vagrant($type, $appName),
             new Ansible($type, ...$dependencies),
             new Make($type)
