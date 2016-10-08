@@ -12,13 +12,6 @@
 
 require_once __DIR__.'/../bootstrap.php';
 
-use Manala\Manalize\Command;
-use Symfony\Component\Console\Application;
+use Manala\Manalize\Application;
 
-$app = new Application('manala/manalize', '1.0.0');
-$app->addCommands([
-    new Command\CheckRequirements(),
-    new Command\Setup(),
-    new Command\Diff(),
-]);
-$app->run();
+(new Application)->run();

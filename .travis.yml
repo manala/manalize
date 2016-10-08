@@ -22,8 +22,11 @@ before_install:
     - sudo apt-get update && sudo apt-get install git-man && sudo apt-get install -y git
     - git --version
     - phpenv config-rm xdebug.ini || true
+    - export PATH="$PATH:$HOME/.composer/vendor/bin"
 
-install: composer update --prefer-dist --no-interaction --optimize-autoloader
+install:
+    - composer global require kherge/box --prefer-dist --no-interaction --optimize-autoloader
+    - composer update --prefer-dist --no-interaction --optimize-autoloader
 
 script:
     - phpunit --exclude-group infra
