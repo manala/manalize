@@ -17,7 +17,8 @@
         "symfony/filesystem": "~3.1",
         "symfony/process": "~3.1",
         "symfony/stopwatch": "~3.1",
-        "composer/semver": "^1.4"
+        "composer/semver": "^1.4",
+        "nikic/iter": "^1.4"
     },
     "require-dev": {
         "symfony/console": "~3.2@dev",

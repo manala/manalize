@@ -4,7 +4,7 @@
 app = {
   :name        => '{{ app }}',
   :box         => 'manala/app-dev-debian',
-  :box_version => '~> 3.0.0',
+  :box_version => '{{ box_version }}',
   :box_memory  => 1024
 }
 

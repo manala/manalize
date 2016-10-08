@@ -15,6 +15,7 @@ use Manala\Env\Config\Ansible;
 use Manala\Env\Config\Make;
 use Manala\Env\Config\Vagrant;
 use Manala\Env\Config\Variable\AppName;
+use Manala\Env\Config\Variable\VagrantBoxVersion;
 use Manala\Env\Env;
 use Manala\Env\EnvEnum;
 use Manala\Env\EnvFactory;
@@ -24,9 +25,10 @@ class EnvFactoryTest extends \PHPUnit_Framework_TestCase
     public function testCreateEnv()
     {
         $envType = EnvEnum::create(EnvEnum::SYMFONY);
-        $host = new AppName('rch');
-        $env = EnvFactory::createEnv($envType, $host, new \ArrayObject());
-        $expectedConfigs = [new Vagrant($envType, $host), new Ansible($envType), new Make($envType)];
+        $appName = new AppName('rch');
+        $boxVersion = new VagrantBoxVersion('~> 3.0.0');
+        $env = EnvFactory::createEnv($envType, $appName, $this->prophesize(\Iterator::class)->reveal());
+        $expectedConfigs = [new Vagrant($envType, $appName, $boxVersion), new Ansible($envType), new Make($envType)];
 
         $this->assertInstanceOf(Env::class, $env);
         $this->assertEquals($expectedConfigs, $env->getConfigs());

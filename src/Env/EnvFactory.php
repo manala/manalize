@@ -15,6 +15,7 @@ use Manala\Env\Config\Ansible;
 use Manala\Env\Config\Make;
 use Manala\Env\Config\Vagrant;
 use Manala\Env\Config\Variable\AppName;
+use Manala\Env\Config\Variable\VagrantBoxVersionResolver;
 
 /**
  * Provides Env instances.
@@ -23,11 +24,11 @@ use Manala\Env\Config\Variable\AppName;
  */
 class EnvFactory
 {
-    public static function createEnv(EnvEnum $type, AppName $appName, \Traversable $dependencies)
+    public static function createEnv(EnvEnum $type, AppName $appName, \Iterator $dependencies)
     {
         return new Env(
             (string) $type,
-            new Vagrant($type, $appName),
+            new Vagrant($type, $appName, VagrantBoxVersionResolver::resolve($dependencies)),
             new Ansible($type, ...$dependencies),
             new Make($type)
         );
