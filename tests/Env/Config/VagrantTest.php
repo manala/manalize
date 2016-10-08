@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Tests\Env\Config;
+namespace Manala\Manalize\Tests\Env\Config;
 
-use Manala\Env\Config\Vagrant;
+use Manala\Manalize\Env\Config\Vagrant;
 
 class VagrantTest extends BaseTestConfig
 {

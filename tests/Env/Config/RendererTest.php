@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Tests\Config;
+namespace Manala\Manalize\Tests\Config;
 
-use Manala\Env\Config\Config;
-use Manala\Env\Config\Renderer;
-use Manala\Env\Config\Variable\Variable;
+use Manala\Manalize\Env\Config\Config;
+use Manala\Manalize\Env\Config\Renderer;
+use Manala\Manalize\Env\Config\Variable\Variable;
 
 class RendererTest extends \PHPUnit_Framework_TestCase
 {

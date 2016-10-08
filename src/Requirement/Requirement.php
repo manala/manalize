@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Requirement;
+namespace Manala\Manalize\Requirement;
 
 /**
  * Class that represents a host's requirement: name of the required binary (eg. Ansible, vagrant, etc.), required version, etc.

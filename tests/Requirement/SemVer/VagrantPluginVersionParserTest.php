@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Tests\Requirement\SemVer;
+namespace Manala\Manalize\Tests\Requirement\SemVer;
 
-use Manala\Requirement\SemVer\VagrantPluginVersionParser;
+use Manala\Manalize\Requirement\SemVer\VagrantPluginVersionParser;
 
 class VagrantPluginVersionParserTest extends \PHPUnit_Framework_TestCase
 {

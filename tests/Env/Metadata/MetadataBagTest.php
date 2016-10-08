@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Tests\Env\Config\Dependency;
+namespace Manala\Manalize\Tests\Env\Config\Dependency;
 
-use Manala\Env\Metadata\MetadataBag;
+use Manala\Manalize\Env\Metadata\MetadataBag;
 
 class MetadataBagTest extends \PHPUnit_Framework_TestCase
 {

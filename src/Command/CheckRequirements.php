@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Command;
+namespace Manala\Manalize\Command;
 
-use Manala\Requirement\Factory\HandlerFactoryResolver;
-use Manala\Requirement\RequirementChecker;
-use Manala\Requirement\RequirementRepository;
-use Manala\Requirement\Violation\RequirementViolation;
-use Manala\Requirement\Violation\RequirementViolationLabelBuilder;
-use Manala\Requirement\Violation\RequirementViolationList;
+use Manala\Manalize\Requirement\Factory\HandlerFactoryResolver;
+use Manala\Manalize\Requirement\RequirementChecker;
+use Manala\Manalize\Requirement\RequirementRepository;
+use Manala\Manalize\Requirement\Violation\RequirementViolation;
+use Manala\Manalize\Requirement\Violation\RequirementViolationLabelBuilder;
+use Manala\Manalize\Requirement\Violation\RequirementViolationList;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

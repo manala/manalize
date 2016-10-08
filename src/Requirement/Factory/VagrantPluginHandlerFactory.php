@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Requirement\Factory;
+namespace Manala\Manalize\Requirement\Factory;
 
-use Manala\Requirement\Processor\VagrantPluginProcessor;
-use Manala\Requirement\SemVer\VagrantPluginVersionParser;
+use Manala\Manalize\Requirement\Processor\VagrantPluginProcessor;
+use Manala\Manalize\Requirement\SemVer\VagrantPluginVersionParser;
 
 /**
  * Factory that instantiates the concrete processor and version parser to handle vagrant plugin requirements.

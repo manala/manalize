@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Env\Config\Variable;
+namespace Manala\Manalize\Env\Config\Variable;
 
-use Manala\Env\Config\Variable\Dependency\Dependency;
-use Manala\Env\Config\Variable\Dependency\VersionBounded;
+use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
+use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
 use function iter\search;
 
 /**

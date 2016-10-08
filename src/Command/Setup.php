@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Command;
+namespace Manala\Manalize\Command;
 
-use Manala\Env\Config\Variable\AppName;
-use Manala\Env\Config\Variable\Dependency\Dependency;
-use Manala\Env\Config\Variable\Dependency\VersionBounded;
-use Manala\Env\Dumper;
-use Manala\Env\EnvEnum;
-use Manala\Env\EnvFactory;
-use Manala\Env\Metadata\MetadataBag;
-use Manala\Env\Metadata\MetadataParser;
+use Manala\Manalize\Env\Config\Variable\AppName;
+use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
+use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
+use Manala\Manalize\Env\Dumper;
+use Manala\Manalize\Env\EnvEnum;
+use Manala\Manalize\Env\EnvFactory;
+use Manala\Manalize\Env\Metadata\MetadataBag;
+use Manala\Manalize\Env\Metadata\MetadataParser;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

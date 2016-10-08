@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Requirement\Processor;
+namespace Manala\Manalize\Requirement\Processor;
 
-use Manala\Requirement\Exception\MissingRequirementException;
+use Manala\Manalize\Requirement\Exception\MissingRequirementException;
 
 class VagrantPluginProcessor extends AbstractProcessor
 {

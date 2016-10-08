@@ -38,8 +38,8 @@
     }
   ],
   "files": ["bootstrap.php", "LICENSE"],
-  "main": "bin/manala",
-  "output": "manala.phar",
+  "main": "bin/manalize",
+  "output": "manalize.phar",
   "chmod": "0755",
   "stub": true
 }

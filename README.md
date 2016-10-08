@@ -1,7 +1,7 @@
-Manala
-======
+Manalize
+=========
 
-[![Build Status](https://travis-ci.org/manala/manala.svg?branch=master)](https://travis-ci.org/manala/manala)
+[![Build Status](https://travis-ci.org/manalize/manalize.svg?branch=master)](https://travis-ci.org/manala/manalize)
 
 #### :warning: This project is still in progress, use it carefully.
 
@@ -10,16 +10,17 @@ Installation
 
 #### Download:
 ```sh
-$ curl -L https://github.com/manala/manala/releases/download/v0.1.1/manala.phar > /usr/local/bin/manala
-$ chmod +x /usr/local/bin/manala
+$ curl -L https://github.com/manala/manalize/releases/download/v0.1.1/manalize.phar > /usr/local/bin/manalize
+$ chmod +x /usr/local/bin/manalize
 ```
 
 #### Manual build:
 ```sh
-$ git clone git@github.com:manala/manala
+$ git clone git@github.com:manala/manalize
+$ cd manalize
 $ make build
-$ mv manala.phar /usr/local/bin/manala
-$ chmod +x /usr/local/bin/manala
+$ mv manalize.phar /usr/local/bin/manalize
+$ chmod +x /usr/local/bin/manalize
 ```
 
 Usage
@@ -27,20 +28,20 @@ Usage
 
 #### Setup
 ```
-$ manala setup ~/my-awesome-project
+$ manalize setup ~/my-awesome-project
 ```
 
 #### Diff
 
 Get the diff:
 ```
-$ manala diff ~/my-awesome-project
+$ manalize diff ~/my-awesome-project
 ```
 
 Apply the diff:
 ```
 $ cd ~/my-awesome-project
-$ manala diff | git apply
+$ manalize diff | git apply
 ```
 
 License

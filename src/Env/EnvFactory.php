@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Env;
+namespace Manala\Manalize\Env;
 
-use Manala\Env\Config\Ansible;
-use Manala\Env\Config\Make;
-use Manala\Env\Config\Vagrant;
-use Manala\Env\Config\Variable\AppName;
-use Manala\Env\Config\Variable\VagrantBoxVersionResolver;
+use Manala\Manalize\Env\Config\Ansible;
+use Manala\Manalize\Env\Config\Make;
+use Manala\Manalize\Env\Config\Vagrant;
+use Manala\Manalize\Env\Config\Variable\AppName;
+use Manala\Manalize\Env\Config\Variable\VagrantBoxVersionResolver;
 
 /**
  * Provides Env instances.

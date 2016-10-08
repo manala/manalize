@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Tests\Env\Config\Variable\Dependency;
+namespace Manala\Manalize\Tests\Env\Config\Variable\Dependency;
 
-use Manala\Env\Config\Variable\Dependency\Dependency;
+use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
 
 class DependencyTest extends \PHPUnit_Framework_TestCase
 {

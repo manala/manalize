@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Env;
+namespace Manala\Manalize\Env;
 
-use Manala\Env\Config\Config;
-use Manala\Env\Config\Variable\Variable;
+use Manala\Manalize\Env\Config\Config;
+use Manala\Manalize\Env\Config\Variable\Variable;
 
 /**
  * Manala Env.

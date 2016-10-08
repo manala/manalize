@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Tests\Functional;
+namespace Manala\Manalize\Tests\Functional;
 
-use Manala\Command\Setup;
+use Manala\Manalize\Command\Setup;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
@@ -84,7 +84,7 @@ RUBY;
 YAML;
 
         $this->assertContains($expectedDeps, file_get_contents(self::$cwd.'/ansible/group_vars/app.yml'));
-        $this->assertStringEqualsFile(self::$cwd.'/ansible/.manala.yml', <<<'YAML'
+        $this->assertStringEqualsFile(self::$cwd.'/ansible/.manalize.yml', <<<'YAML'
 envs:
     symfony:
         vars:
@@ -155,7 +155,7 @@ YAML;
 RUBY;
 
         $this->assertContains($expectedBox, file_get_contents(self::$cwd.'/Vagrantfile'));
-        $this->assertStringEqualsFile(self::$cwd.'/ansible/.manala.yml', <<<'YAML'
+        $this->assertStringEqualsFile(self::$cwd.'/ansible/.manalize.yml', <<<'YAML'
 envs:
     symfony:
         vars:
@@ -224,7 +224,7 @@ YAML;
   :box_version => '~> 3.0.0'
 RUBY;
         $this->assertContains($expectedBox, file_get_contents(self::$cwd.'/Vagrantfile'));
-        $this->assertStringEqualsFile(self::$cwd.'/ansible/.manala.yml', <<<'YAML'
+        $this->assertStringEqualsFile(self::$cwd.'/ansible/.manalize.yml', <<<'YAML'
 envs:
     symfony:
         vars:

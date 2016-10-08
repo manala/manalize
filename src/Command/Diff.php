@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Command;
+namespace Manala\Manalize\Command;
 
-use Manala\Env\EnvEnum;
-use Manala\Exception\HandlingFailureException;
-use Manala\Handler\Diff as DiffHandler;
+use Manala\Manalize\Env\EnvEnum;
+use Manala\Manalize\Exception\HandlingFailureException;
+use Manala\Manalize\Handler\Diff as DiffHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -42,20 +42,31 @@ class Diff extends Command
 {$this->getDescription()}
 
 The command output can be redirect to a file in order to create a patch to apply later, or for sharing:
-<info>
-manala diff > my_patch.patch 
-</>
+
+  <info>$ manalize diff > my_patch.patch</>
+
 You can apply the generated patch by executing one of the following command in the project working directory:
+
 Using <comment>git</>:
-<info>
-$ manala diff | git apply
-$ git apply my_patch.patch
-</>
+
+  From the command output:
+
+    <info>$ manalize diff | git apply</>
+
+  Or from an existing patch file:
+
+    <info>$ git apply my_patch.patch</>
+
 Using <comment>patch</>:
-<info>
-$ manala diff | patch -p1
-$ patch -p1 < my_patch.patch
-</>
+
+  From the command output:
+
+    <info>$ manalize diff | patch -p1</>
+
+  Or from an existing patch file:
+
+    <info>$ patch -p1 < my_patch.patch</>
+
 As the <comment>git diff</> util, the command exit code is 1 if a diff is detected, 0 otherwise.
 EOTXT
             )

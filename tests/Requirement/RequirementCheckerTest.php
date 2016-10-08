@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Tests\Requirement;
+namespace Manala\Manalize\Tests\Requirement;
 
-use Manala\Requirement\Common\RequirementLevel;
-use Manala\Requirement\Exception\MissingRequirementException;
-use Manala\Requirement\Factory\HandlerFactoryInterface;
-use Manala\Requirement\Factory\HandlerFactoryResolver;
-use Manala\Requirement\Processor\AbstractProcessor;
-use Manala\Requirement\Requirement;
-use Manala\Requirement\RequirementChecker;
-use Manala\Requirement\SemVer\BinaryVersionParser;
-use Manala\Requirement\Violation\RequirementViolationLabelBuilder;
-use Manala\Requirement\Violation\RequirementViolationList;
+use Manala\Manalize\Requirement\Common\RequirementLevel;
+use Manala\Manalize\Requirement\Exception\MissingRequirementException;
+use Manala\Manalize\Requirement\Factory\HandlerFactoryInterface;
+use Manala\Manalize\Requirement\Factory\HandlerFactoryResolver;
+use Manala\Manalize\Requirement\Processor\AbstractProcessor;
+use Manala\Manalize\Requirement\Requirement;
+use Manala\Manalize\Requirement\RequirementChecker;
+use Manala\Manalize\Requirement\SemVer\BinaryVersionParser;
+use Manala\Manalize\Requirement\Violation\RequirementViolationLabelBuilder;
+use Manala\Manalize\Requirement\Violation\RequirementViolationList;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Env\Config;
+namespace Manala\Manalize\Env\Config;
 
-use Manala\Env\Config\Variable\Variable;
-use Manala\Env\EnvEnum;
+use Manala\Manalize\Env\Config\Variable\Variable;
+use Manala\Manalize\Env\EnvEnum;
 
 /**
  * Represents a config part of a Manala environment.
@@ -56,7 +56,7 @@ abstract class Config
      */
     public function getOrigin()
     {
-        return new \SplFileInfo(MANALA_DIR.'/src/Resources/'.$this->envType.'/'.$this->getPath());
+        return new \SplFileInfo(MANALIZE_DIR.'/src/Resources/'.$this->envType.'/'.$this->getPath());
     }
 
     /**

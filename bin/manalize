@@ -2,7 +2,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -12,10 +12,10 @@
 
 require_once __DIR__.'/../bootstrap.php';
 
-use Manala\Command;
+use Manala\Manalize\Command;
 use Symfony\Component\Console\Application;
 
-$app = new Application('manala/manala', '1.0.0');
+$app = new Application('manala/manalize', '1.0.0');
 $app->addCommands([
     new Command\CheckRequirements(),
     new Command\Setup(),
