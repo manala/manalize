@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Requirement;
+namespace Manala\Manalize\Requirement;
 
 use Composer\Semver\Semver;
-use Manala\Requirement\Exception\MissingRequirementException;
-use Manala\Requirement\Factory\HandlerFactoryResolver;
-use Manala\Requirement\Violation\RequirementViolation;
-use Manala\Requirement\Violation\RequirementViolationLabelBuilder;
-use Manala\Requirement\Violation\RequirementViolationList;
+use Manala\Manalize\Requirement\Exception\MissingRequirementException;
+use Manala\Manalize\Requirement\Factory\HandlerFactoryResolver;
+use Manala\Manalize\Requirement\Violation\RequirementViolation;
+use Manala\Manalize\Requirement\Violation\RequirementViolationLabelBuilder;
+use Manala\Manalize\Requirement\Violation\RequirementViolationList;
 
 /**
  * Service that checks if the current host's environment satisfies a requirement.

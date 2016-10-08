@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Tests\Env;
+namespace Manala\Manalize\Tests\Env;
 
-use Manala\Env\EnvEnum;
+use Manala\Manalize\Env\EnvEnum;
 
 class EnvEnumTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,7 +24,7 @@ class EnvEnumTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        \Manala\Exception\InvalidEnvException
+     * @expectedException        \Manala\Manalize\Exception\InvalidEnvException
      * @expectedExceptionMessage The env "dummy" doesn't exist. Possible values: ["symfony"]
      */
     public function testCreateUndefinedEnv()

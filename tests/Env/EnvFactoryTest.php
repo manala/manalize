@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Tests\Env;
+namespace Manala\Manalize\Tests\Env;
 
-use Manala\Env\Config\Ansible;
-use Manala\Env\Config\Make;
-use Manala\Env\Config\Vagrant;
-use Manala\Env\Config\Variable\AppName;
-use Manala\Env\Config\Variable\VagrantBoxVersion;
-use Manala\Env\Env;
-use Manala\Env\EnvEnum;
-use Manala\Env\EnvFactory;
+use Manala\Manalize\Env\Config\Ansible;
+use Manala\Manalize\Env\Config\Make;
+use Manala\Manalize\Env\Config\Vagrant;
+use Manala\Manalize\Env\Config\Variable\AppName;
+use Manala\Manalize\Env\Config\Variable\VagrantBoxVersion;
+use Manala\Manalize\Env\Env;
+use Manala\Manalize\Env\EnvEnum;
+use Manala\Manalize\Env\EnvFactory;
 
 class EnvFactoryTest extends \PHPUnit_Framework_TestCase
 {

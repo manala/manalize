@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Requirement\Factory;
+namespace Manala\Manalize\Requirement\Factory;
 
-use Manala\Requirement\Processor\BinaryProcessor;
-use Manala\Requirement\SemVer\BinaryVersionParser;
+use Manala\Manalize\Requirement\Processor\BinaryProcessor;
+use Manala\Manalize\Requirement\SemVer\BinaryVersionParser;
 
 /**
  * Factory that instantiates the concrete processor and version parser to handle binary requirements.

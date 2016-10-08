@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Env\Metadata;
+namespace Manala\Manalize\Env\Metadata;
 
-use Manala\Env\EnvEnum;
+use Manala\Manalize\Env\EnvEnum;
 use Symfony\Component\Yaml\Parser;
 
 /**
@@ -19,7 +19,7 @@ use Symfony\Component\Yaml\Parser;
  */
 final class MetadataParser
 {
-    const METADATA_PATH = MANALA_DIR.'/src/Resources/%s/manala.yml';
+    const METADATA_PATH = MANALIZE_DIR.'/src/Resources/%s/manala.yml';
 
     /**
      * Parses metadata for a given env type.

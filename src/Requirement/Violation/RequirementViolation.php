@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Requirement\Violation;
+namespace Manala\Manalize\Requirement\Violation;
 
-use Manala\Requirement\Common\RequirementLevel;
-use Manala\Requirement\Common\RequirementLevelHolderInterface;
-use Manala\Requirement\Common\RequirementLevelHolderTrait;
+use Manala\Manalize\Requirement\Common\RequirementLevel;
+use Manala\Manalize\Requirement\Common\RequirementLevelHolderInterface;
+use Manala\Manalize\Requirement\Common\RequirementLevelHolderTrait;
 
 /**
  * Class that represents a requirement violation. It contains the name of the required binary (Ansible, vagrant, etc.),

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Tests\Process;
+namespace Manala\Manalize\Tests\Process;
 
-use Manala\Env\Config\Config;
-use Manala\Env\Dumper;
-use Manala\Env\Env;
+use Manala\Manalize\Env\Config\Config;
+use Manala\Manalize\Env\Dumper;
+use Manala\Manalize\Env\Env;
 use Symfony\Component\Filesystem\Filesystem;
 
 class DumperTest extends \PHPUnit_Framework_TestCase
@@ -64,7 +64,7 @@ class DumperTest extends \PHPUnit_Framework_TestCase
         Dumper::dump($env->reveal(), $cwd)->current();
 
         $this->assertFileExists($cwd.'/dummy/dummyconf');
-        $this->assertStringEqualsFile($cwd.'/ansible/.manala.yml', <<<'YAML'
+        $this->assertStringEqualsFile($cwd.'/ansible/.manalize.yml', <<<'YAML'
 envs:
     dummy:
         vars:

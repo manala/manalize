@@ -1,8 +1,8 @@
 {
-    "name": "manala/manala",
+    "name": "manala/manalize",
     "description": "Lightweight binary providing vagrant stacks provisionned through manala ansible roles",
     "keywords": ["manala", "ansible", "vagrant", "docker"],
-    "homepage": "https://github.com/manala/manala",
+    "homepage": "https://github.com/manala/manalize",
     "license": "MIT",
     "authors": [
         {
@@ -27,10 +27,10 @@
         "friendsofphp/php-cs-fixer": "~1.1"
     },
     "autoload": {
-        "psr-4": { "Manala\\": "src/" }
+        "psr-4": { "Manala\\Manalize\\": "src/" }
     },
     "autoload-dev": {
-        "psr-4": { "Manala\\Tests\\": "tests/" }
+        "psr-4": { "Manala\\Manalize\\Tests\\": "tests/" }
     },
-    "bin": ["bin/manala"]
+    "bin": ["bin/manalize"]
 }

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Exception;
+namespace Manala\Manalize\Exception;
 
-use Manala\Env\EnvEnum;
+use Manala\Manalize\Env\EnvEnum;
 
 class InvalidEnvException extends \InvalidArgumentException
 {

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Requirement\Common;
+namespace Manala\Manalize\Requirement\Common;
 
 /**
  * Interface to be implemented by requirement level holders (Eg Requirement, Violation).

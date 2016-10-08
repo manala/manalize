@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Env;
+namespace Manala\Manalize\Env;
 
-use Manala\Env\Config\Renderer;
+use Manala\Manalize\Env\Config\Renderer;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
@@ -35,7 +35,7 @@ class Dumper
         $fs = new Filesystem();
 
         $export = $env->export();
-        $fs->dumpFile("$workDir/ansible/.manala.yml", Yaml::dump([
+        $fs->dumpFile("$workDir/ansible/.manalize.yml", Yaml::dump([
             'envs' => [
                 $export['env'] => ['vars' => $export['vars']],
             ],

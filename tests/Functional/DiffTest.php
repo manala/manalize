@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Tests\Functional;
+namespace Manala\Manalize\Tests\Functional;
 
-use Manala\Command\Diff;
-use Manala\Command\Setup;
-use Manala\Env\EnvEnum;
-use Manala\Handler\Diff as DiffHandler;
+use Manala\Manalize\Command\Diff;
+use Manala\Manalize\Command\Setup;
+use Manala\Manalize\Env\EnvEnum;
+use Manala\Manalize\Handler\Diff as DiffHandler;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
 class DiffTest extends \PHPUnit_Framework_TestCase
 {
-    const EXPECTED_PATCH_FILE = MANALA_DIR.'/tests/fixtures/Command/DiffTest/expected.patch';
+    const EXPECTED_PATCH_FILE = MANALIZE_DIR.'/tests/fixtures/Command/DiffTest/expected.patch';
 
     private static $cwd;
 

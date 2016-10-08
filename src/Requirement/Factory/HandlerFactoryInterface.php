@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Requirement\Factory;
+namespace Manala\Manalize\Requirement\Factory;
 
-use Manala\Requirement\Processor\AbstractProcessor;
-use Manala\Requirement\SemVer\VersionParserInterface;
+use Manala\Manalize\Requirement\Processor\AbstractProcessor;
+use Manala\Manalize\Requirement\SemVer\VersionParserInterface;
 
 /**
  * Interface for factories that instantiate the proper processor and version parser for a given type of requirement

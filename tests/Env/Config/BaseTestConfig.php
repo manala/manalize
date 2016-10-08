@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Tests\Env\Config;
+namespace Manala\Manalize\Tests\Env\Config;
 
-use Manala\Env\Config\Config;
-use Manala\Env\EnvEnum;
+use Manala\Manalize\Env\Config\Config;
+use Manala\Manalize\Env\EnvEnum;
 
 class BaseTestConfig extends \PHPUnit_Framework_TestCase
 {
@@ -30,6 +30,6 @@ class BaseTestConfig extends \PHPUnit_Framework_TestCase
 
     protected function getOrigin($name)
     {
-        return MANALA_DIR.'/src/Resources/'.self::ENV.'/'.$name;
+        return MANALIZE_DIR.'/src/Resources/'.self::ENV.'/'.$name;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Env\Config\Variable\Dependency;
+namespace Manala\Manalize\Env\Config\Variable\Dependency;
 
 use Composer\Semver\Semver;
 

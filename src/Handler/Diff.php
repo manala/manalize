@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Manala package.
+ * This file is part of the Manalize project.
  *
  * (c) Manala <contact@manala.io>
  *
@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Handler;
+namespace Manala\Manalize\Handler;
 
-use Manala\Env\EnvEnum;
-use Manala\Exception\HandlingFailureException;
+use Manala\Manalize\Env\EnvEnum;
+use Manala\Manalize\Exception\HandlingFailureException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
@@ -144,6 +144,6 @@ class Diff implements Handler
     private function getEnvResourcesPath()
     {
         // TODO: Replace by a EnvResourcesLocator
-        return MANALA_DIR.'/src/Resources/'.$this->envType;
+        return MANALIZE_DIR.'/src/Resources/'.$this->envType;
     }
 }

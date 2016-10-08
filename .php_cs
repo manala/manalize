@@ -1,7 +1,7 @@
 <?php
 
 $header = <<<EOF
-This file is part of the Manala package.
+This file is part of the Manalize project.
 
 (c) Manala <contact@manala.io>
 
@@ -10,8 +10,8 @@ file that was distributed with this source code.
 EOF;
 
 
-$finder = Symfony\CS\Finder\DefaultFinder::create()
-    ->in(array(__DIR__.'/src', __DIR__.'/tests'))
+$finder = Symfony\CS\Finder::create()
+    ->in(array(__DIR__.'/src', __DIR__.'/tests', __DIR__.'/bin'))
 ;
 
 Symfony\CS\Fixer\Contrib\HeaderCommentFixer::setHeader($header);
