@@ -1,7 +1,7 @@
 Manalize
 =========
 
-[![Build Status](https://travis-ci.org/manalize/manalize.svg?branch=master)](https://travis-ci.org/manala/manalize)
+[![Build Status](https://travis-ci.org/manala/manalize.svg?branch=master)](https://travis-ci.org/manala/manalize)
 
 #### :warning: This project is still in progress, use it carefully.
 
