@@ -33,7 +33,7 @@ trait RequirementLevelHolderTrait
      */
     public function getLevelLabel()
     {
-        return RequirementLevel::getLabels()[$this->label];
+        return RequirementLevel::getLabels()[$this->level];
     }
 
     /**
