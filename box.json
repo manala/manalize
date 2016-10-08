@@ -31,7 +31,9 @@
         "vendor/symfony/filesystem",
         "vendor/symfony/process",
         "vendor/symfony/stopwatch",
-        "vendor/symfony/polyfill-mbstring"
+        "vendor/symfony/polyfill-mbstring",
+        "vendor/composer/semver",
+        "vendor/nikic/iter"
       ]
     }
   ],
