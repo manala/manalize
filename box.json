@@ -1,45 +1,18 @@
 {
   "finder": [
+    { "in": "src" },
     {
-      "in": "src"
-    },
-    {
-      "name": "autoload.php",
+      "name": ["*.php", "LICENSE"],
+      "exclude": ["Tests", "Tester"],
       "in": "vendor"
-    },
-    {
-      "name": [
-        "autoload_real.php",
-        "ClassLoader.php",
-        "autoload_static.php"
-      ],
-      "in": [
-        "vendor/composer"
-      ]
-    },
-    {
-      "name": [
-        "*.php",
-        "LICENSE"
-      ],
-      "exclude": [
-        "Tests",
-        "Tester"
-      ],
-      "in": [
-        "vendor/symfony/console",
-        "vendor/symfony/filesystem",
-        "vendor/symfony/process",
-        "vendor/symfony/stopwatch",
-        "vendor/symfony/polyfill-mbstring",
-        "vendor/composer/semver",
-        "vendor/nikic/iter"
-      ]
     }
   ],
   "files": ["bootstrap.php", "LICENSE"],
+  "compactors": "Herrera\\Box\\Compactor\\Php",
+  "compression": "GZ",
   "main": "bin/manalize",
   "output": "manalize.phar",
   "chmod": "0755",
-  "stub": true
+  "stub": true,
+  "web": false
 }
