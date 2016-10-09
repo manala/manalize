@@ -27,14 +27,8 @@ class DiffTest extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        $cwd = sys_get_temp_dir().'/Manala/tests/diff';
+        $cwd = manala_get_tmp_dir('tests_diff_');
         $fs = new Filesystem();
-
-        if ($fs->exists($cwd)) {
-            $fs->remove($cwd);
-        }
-
-        $fs->mkdir($cwd);
 
         (new Process('composer create-project symfony/framework-standard-edition:3.1.* . --no-install --no-progress --no-interaction', $cwd))
             ->setTimeout(null)
@@ -69,6 +63,6 @@ class DiffTest extends \PHPUnit_Framework_TestCase
 
     public static function tearDownAfterClass()
     {
-        (new Filesystem())->remove(self::$cwd);
+        (new Filesystem())->remove(MANALIZE_TMP_ROOT_DIR);
     }
 }

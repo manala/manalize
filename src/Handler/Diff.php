@@ -128,11 +128,7 @@ class Diff implements Handler
 
     private function copyToTmpLocation($templatePath)
     {
-        $tmpPath = sys_get_temp_dir().'/Manala/diff';
-
-        if ($this->fs->exists($tmpPath)) {
-            $this->fs->remove($tmpPath);
-        }
+        $tmpPath = manala_get_tmp_dir('diff_');
 
         $this->fs->mkdir($tmpPath);
         $this->fs->mirror($templatePath, $tmpPath);
