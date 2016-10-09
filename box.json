@@ -3,7 +3,7 @@
     { "in": "src" },
     {
       "name": ["*.php", "LICENSE"],
-      "exclude": ["Tests", "Tester"],
+      "exclude": ["Tests", "Tester", "Test", "test", "tests"],
       "in": "vendor"
     }
   ],
