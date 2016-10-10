@@ -11,9 +11,7 @@
 
 namespace Manala\Manalize\Tests\Functional;
 
-use Manala\Manalize\Command\Setup;
-use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Filesystem\Filesystem;
+use Manala\Manalize\Handler\Setup;
 use Symfony\Component\Process\Process;
 
 /**
@@ -25,17 +23,8 @@ class BuildTest extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        $cwd = manala_get_tmp_dir('tests_build_');
-
-        (new Process('composer create-project symfony/framework-standard-edition:3.1.* . --no-install --no-progress --no-interaction', $cwd))
-            ->setTimeout(null)
-            ->run();
-
-        (new CommandTester(new Setup()))
-            ->setInputs(['manala.dummy', "\n", "\n", "\n", "\n", "\n", "\n"])
-            ->execute(['cwd' => $cwd]);
-
-        self::$cwd = $cwd;
+        self::$cwd = manala_get_tmp_dir('tests_build_');
+        self::createManalizedProject(self::$cwd, 'build-test');
     }
 
     public function testExecute()
@@ -62,6 +51,6 @@ class BuildTest extends \PHPUnit_Framework_TestCase
             ->setTimeout(null)
             ->run();
 
-        (new Filesystem())->remove(MANALIZE_TMP_ROOT_DIR);
+        parent::tearDownAfterClass();
     }
 }

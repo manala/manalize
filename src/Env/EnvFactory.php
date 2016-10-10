@@ -24,7 +24,7 @@ use Manala\Manalize\Env\Config\Variable\VagrantBoxVersionResolver;
  */
 class EnvFactory
 {
-    public static function createEnv(EnvEnum $type, AppName $appName, \Iterator $dependencies)
+    public static function createEnv(EnvEnum $type, AppName $appName, \Traversable $dependencies)
     {
         return new Env(
             (string) $type,

@@ -16,7 +16,7 @@ use Manala\Manalize\Command\Setup;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
-class SelfUpdateTest extends \PHPUnit_Framework_TestCase
+class SelfUpdateTest extends TestCase
 {
     private static $cwd;
 
@@ -103,10 +103,5 @@ class SelfUpdateTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         (new Filesystem())->remove(self::$cwd);
-    }
-
-    public static function tearDownAfterClass()
-    {
-        (new Filesystem())->remove(MANALIZE_TMP_ROOT_DIR);
     }
 }
