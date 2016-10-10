@@ -25,14 +25,7 @@ class BuildTest extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        $cwd = sys_get_temp_dir().'/Manala/tests/build';
-        $fs = new Filesystem();
-
-        if ($fs->exists($cwd)) {
-            $fs->remove($cwd);
-        }
-
-        $fs->mkdir($cwd);
+        $cwd = manala_get_tmp_dir('tests_build_');
 
         (new Process('composer create-project symfony/framework-standard-edition:3.1.* . --no-install --no-progress --no-interaction', $cwd))
             ->setTimeout(null)
@@ -69,6 +62,6 @@ class BuildTest extends \PHPUnit_Framework_TestCase
             ->setTimeout(null)
             ->run();
 
-        (new Filesystem())->remove(self::$cwd);
+        (new Filesystem())->remove(MANALIZE_TMP_ROOT_DIR);
     }
 }

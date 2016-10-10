@@ -22,14 +22,8 @@ class SetupTest extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        $cwd = sys_get_temp_dir().'/Manala';
-        $fs = new Filesystem();
-
-        if ($fs->exists($cwd)) {
-            $fs->remove($cwd);
-        }
-
-        $fs->mkdir($cwd);
+        $cwd = manala_get_tmp_dir('tests_setup_');
+        mkdir($cwd = $cwd.'/manalized-app');
 
         (new Process('composer create-project symfony/framework-standard-edition:3.1.* . --no-install --no-progress --no-interaction', $cwd))
             ->setTimeout(null)
@@ -219,7 +213,7 @@ YAML;
         $this->assertContains($expectedDeps, file_get_contents(self::$cwd.'/ansible/group_vars/app.yml'));
 
         $expectedBox = <<<'RUBY'
-  :name        => 'manala',
+  :name        => 'manalized-app',
   :box         => 'manala/app-dev-debian',
   :box_version => '~> 3.0.0'
 RUBY;
@@ -228,7 +222,7 @@ RUBY;
 envs:
     symfony:
         vars:
-            '{{ app }}': manala
+            '{{ app }}': manalized-app
             '{{ box_version }}': '~> 3.0.0'
             '{{ php_version }}': '7.0'
             '{{ php_enabled }}': 'true'
@@ -251,6 +245,6 @@ YAML
 
     public static function tearDownAfterClass()
     {
-        (new Filesystem())->remove(self::$cwd);
+        (new Filesystem())->remove(MANALIZE_TMP_ROOT_DIR);
     }
 }

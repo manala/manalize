@@ -3,4 +3,21 @@
 require_once __DIR__.'/vendor/autoload.php';
 
 define('MANALIZE_DIR', __DIR__);
+define('MANALIZE_TMP_ROOT_DIR', sys_get_temp_dir().'/Manala');
 define('UPDATE_FIXTURES', filter_var(getenv('UPDATE_FIXTURES'), FILTER_VALIDATE_BOOLEAN));
+
+/**
+ * Creates a unique tmp dir.
+ *
+ * @param string $prefix
+ *
+ * @return string The path to the tmp dir created
+ */
+function manala_get_tmp_dir($prefix = '')
+{
+    $tmp = @tempnam(MANALIZE_TMP_ROOT_DIR, $prefix);
+    unlink($tmp);
+    mkdir($tmp, 0777, true);
+
+    return $tmp;
+}
