@@ -12,7 +12,8 @@
 namespace Manala\Manalize\Command;
 
 use GuzzleHttp\Client;
-use Manala\Manalize\Application;
+use Manala\Manalize\Exception\HandlingFailureException;
+use Manala\Manalize\Handler\SelfUpdate as SelfUpdateHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -55,10 +56,10 @@ class SelfUpdate extends Command
             return 1;
         }
 
-        $this->client = new Client();
+        $handler = new SelfUpdateHandler(realpath($_SERVER['argv'][0]) ?: $_SERVER['argv'][0]);
 
         try {
-            $latestTag = $this->getLatestTag();
+            $latestTag = $handler->getLatestTag();
         } catch (\Exception $e) {
             $io->error($e->getMessage());
 
@@ -72,15 +73,8 @@ class SelfUpdate extends Command
         }
 
         try {
-            $this->updateBuild($latestTag);
-        } catch (\PharException $e) {
-            $io->error([
-                sprintf('The latest manalize build is corrupted (%s).', $e->getMessage()),
-                'Please try to run the command again.',
-            ]);
-
-            return 1;
-        } catch (\Exception $e) {
+            $handler->handle();
+        } catch (HandlingFailureException $e) {
             $reason = $e->getMessage();
             $io->error([
                 'Unable to download the latest manalize build.'.($reason ? "\nReason: $reason" : ''),
@@ -88,56 +82,17 @@ class SelfUpdate extends Command
               ]);
 
             return 1;
+        } catch (\PharException $e) {
+            $io->error([
+                sprintf('The latest manalize build is corrupted (%s).', $e->getMessage()),
+                'Please try to run the command again.',
+            ]);
+
+            return 1;
         }
 
         $io->success(sprintf('manalize successfully updated to %s.', $latestTag));
 
         return 0;
-    }
-
-    private function getLatestTag()
-    {
-        $response = $this->client->get(
-            sprintf('https://api.github.com/repos/%s/releases/latest', Application::REPOSITORY_NAME),
-            ['headers' => ['User-Agent' => Application::REPOSITORY_NAME]]
-        );
-
-        if (200 !== $response->getStatusCode()) {
-            throw new \Exception($response->getReasonPhrase());
-        }
-
-        $raw = $response->getBody();
-        $release = json_decode($raw, true);
-
-        if (!$raw || !$release) {
-            throw new \Exception();
-        }
-
-        return $release['tag_name'];
-    }
-
-    private function updateBuild($latestTag)
-    {
-        $localFilename = realpath($_SERVER['argv'][0]) ?: $_SERVER['argv'][0];
-        $tempFilename = basename($localFilename, '.phar').'-tmp.phar';
-
-        $response = $this->client->get(
-            sprintf('https://github.com/%s/releases/download/%s/manalize.phar', Application::REPOSITORY_NAME, $latestTag),
-            ['save_to' => $tempFilename]
-        );
-
-        if (200 !== $response->getStatusCode()) {
-            throw new \Exception($response->getReasonPhrase());
-        }
-
-        // Keep the previous build permissions
-        chmod($tempFilename, fileperms($localFilename));
-
-        // Check that the phar is valid
-        $phar = new \Phar($tempFilename);
-        unset($phar);
-
-        // Replace the old build by the new one
-        rename($tempFilename, $localFilename);
     }
 }

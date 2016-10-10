@@ -71,11 +71,11 @@ class SelfUpdateTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteWithAlreadyUpToDateBuild()
     {
-        $latestBuild = json_decode(file_get_contents(
-            sprintf('https://api.github.com/repos/%s/releases/latest', Application::REPOSITORY_NAME),
-            null,
-            stream_context_create(['http' => ['header' => 'User-Agent: '.Application::REPOSITORY_NAME]])
-        ), true);
+        $releaseUri = sprintf('https://api.github.com/repos/%s/releases/latest', Application::REPOSITORY_NAME);
+        $latestBuild = json_decode(
+            file_get_contents($releaseUri, null, stream_context_create(['http' => ['header' => 'User-Agent: '.Application::REPOSITORY_NAME]])),
+            true
+        );
 
         $latestTag = $latestBuild['tag_name'];
 
