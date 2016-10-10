@@ -15,6 +15,10 @@ define('UPDATE_FIXTURES', filter_var(getenv('UPDATE_FIXTURES'), FILTER_VALIDATE_
  */
 function manala_get_tmp_dir($prefix = '')
 {
+    if (!is_dir(MANALIZE_TMP_ROOT_DIR)) {
+        @mkdir(MANALIZE_TMP_ROOT_DIR);
+    }
+
     $tmp = @tempnam(MANALIZE_TMP_ROOT_DIR, $prefix);
     unlink($tmp);
     mkdir($tmp, 0777, true);
