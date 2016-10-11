@@ -14,11 +14,10 @@ namespace Manala\Manalize\Command;
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
 use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
-use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvEnum;
-use Manala\Manalize\Env\EnvFactory;
 use Manala\Manalize\Env\Metadata\MetadataBag;
 use Manala\Manalize\Env\Metadata\MetadataParser;
+use Manala\Manalize\Handler\Setup as SetupHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -65,12 +64,11 @@ class Setup extends Command
         $appName = $io->ask('Application name', AppName::validate($defaultAppName, false) ? $defaultAppName : 'app', [AppName::class, 'validate']);
 
         $envMetadata = MetadataParser::parse($envType);
-        $dependencies = $this->setupDependencies($io, $envMetadata);
-        $env = EnvFactory::createEnv($envType, new AppName($appName), $dependencies);
+        $handler = new SetupHandler($cwd, new AppName($appName), $envType, $this->setupDependencies($io, $envMetadata));
 
-        foreach (Dumper::dump($env, $cwd) as $dumpTarget) {
-            $io->writeln(sprintf('- %s', str_replace($cwd.'/', '', $dumpTarget)));
-        }
+        $handler->handle(function ($target) use ($io) {
+            $io->writeln(sprintf('- %s', $target));
+        });
 
         $io->success('Environment successfully configured');
 

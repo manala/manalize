@@ -19,7 +19,7 @@ use Symfony\Component\Process\Process;
 /**
  * @author Maxime STEINHAUSSER <maxime.steinhausser@gmail.com>
  */
-class Diff implements Handler
+class Diff
 {
     const EXIT_SUCCESS_DIFF = 1;
     const EXIT_SUCCESS_NO_DIFF = 0;
@@ -59,7 +59,7 @@ class Diff implements Handler
     /**
      * {@inheritdoc}
      */
-    public function handle(callable $callback = null)
+    public function handle(callable $notifier)
     {
         $resourcesPath = $this->copyToTmpLocation($this->getEnvResourcesPath());
 
@@ -67,7 +67,7 @@ class Diff implements Handler
 
         $process = new Process("git diff --diff-filter=d --no-index --patch $colorOpt . $resourcesPath", $this->cwd);
 
-        $process->run(function ($type, $buffer) use ($resourcesPath, $callback) {
+        $process->run(function ($type, $buffer) use ($resourcesPath, $notifier) {
             $buffer = strtr($buffer, [
                 "b$resourcesPath" => 'b',
                 "a$resourcesPath" => 'a',
@@ -75,7 +75,7 @@ class Diff implements Handler
                 'b/./' => 'b/',
             ]);
 
-            $callback($type, $buffer);
+            $notifier($type, $buffer);
         });
 
         $this->lastExitCode = $process->getExitCode();
