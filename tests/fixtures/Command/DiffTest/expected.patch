@@ -1,7 +1,7 @@
 diff --git a/Makefile b/Makefile
 old mode 100644
 new mode 100755
-index acd1c23..a62e250
+index e122780..a5871ef
 --- a/Makefile
 +++ b/Makefile
 @@ -117,5 +117,3 @@ deploy@prod:
