@@ -13,10 +13,8 @@ namespace Manala\Manalize\Tests\Functional;
 
 use Manala\Manalize\Command\Setup;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Process\Process;
 
-class SetupTest extends \PHPUnit_Framework_TestCase
+class SetupTest extends TestCase
 {
     private static $cwd;
 
@@ -25,9 +23,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase
         $cwd = manala_get_tmp_dir('tests_setup_');
         mkdir($cwd = $cwd.'/manalized-app');
 
-        (new Process('composer create-project symfony/framework-standard-edition:3.1.* . --no-install --no-progress --no-interaction', $cwd))
-            ->setTimeout(null)
-            ->run();
+        self::createSymfonyStandardProject($cwd);
 
         self::$cwd = $cwd;
     }
@@ -241,10 +237,5 @@ envs:
 
 YAML
         );
-    }
-
-    public static function tearDownAfterClass()
-    {
-        (new Filesystem())->remove(MANALIZE_TMP_ROOT_DIR);
     }
 }

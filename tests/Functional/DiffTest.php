@@ -12,14 +12,12 @@
 namespace Manala\Manalize\Tests\Functional;
 
 use Manala\Manalize\Command\Diff;
-use Manala\Manalize\Command\Setup;
 use Manala\Manalize\Env\EnvEnum;
 use Manala\Manalize\Handler\Diff as DiffHandler;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Process\Process;
 
-class DiffTest extends \PHPUnit_Framework_TestCase
+class DiffTest extends TestCase
 {
     const EXPECTED_PATCH_FILE = MANALIZE_DIR.'/tests/fixtures/Command/DiffTest/expected.patch';
 
@@ -30,13 +28,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $cwd = manala_get_tmp_dir('tests_diff_');
         $fs = new Filesystem();
 
-        (new Process('composer create-project symfony/framework-standard-edition:3.1.* . --no-install --no-progress --no-interaction', $cwd))
-            ->setTimeout(null)
-            ->run();
-
-        (new CommandTester(new Setup()))
-            ->setInputs(['dummy.manala', "\n", "\n", "\n", "\n", "\n"])
-            ->execute(['cwd' => $cwd]);
+        self::createManalizedProject($cwd);
 
         // Tweak project files:
         $fs->remove($cwd.'/ansible/deploy.yml');
@@ -59,10 +51,5 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         UPDATE_FIXTURES ? file_put_contents(static::EXPECTED_PATCH_FILE, $tester->getDisplay(true)) : null;
 
         $this->assertStringEqualsFile(static::EXPECTED_PATCH_FILE, $tester->getDisplay(true));
-    }
-
-    public static function tearDownAfterClass()
-    {
-        (new Filesystem())->remove(MANALIZE_TMP_ROOT_DIR);
     }
 }
