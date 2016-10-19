@@ -12,32 +12,13 @@
 namespace Manala\Manalize\Env\Config\Variable;
 
 /**
- * The "name" var.
+ * The "app" var.
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-final class AppName implements Variable
+final class AppName extends SingleValue
 {
-    private $name;
-    private static $template = '{{ app }}';
-
-    /**
-     * @param string $name
-     */
-    public function __construct($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReplaces()
-    {
-        return [
-            self::$template => $this->name,
-        ];
-    }
+    protected static $placeholder = '{{ app }}';
 
     /**
      * {@inheritdoc}

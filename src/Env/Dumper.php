@@ -13,7 +13,6 @@ namespace Manala\Manalize\Env;
 
 use Manala\Manalize\Env\Config\Renderer;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Manala environment config dumper.
@@ -25,21 +24,16 @@ class Dumper
     /**
      * Creates and dumps final config files from stubs.
      *
-     * @param Env    $env     The whole Config for which to dump the template
-     * @param string $workDir
+     * @param Env    $env     The Env for which to dump the rendered config templates
+     * @param string $workDir The manalized project directory
      *
-     * @return \Generator
+     * @return \Generator The dumped file paths
      */
     public static function dump(Env $env, $workDir)
     {
         $fs = new Filesystem();
 
-        $export = $env->export();
-        $fs->dumpFile("$workDir/ansible/.manalize.yml", Yaml::dump([
-            'envs' => [
-                $export['env'] => ['vars' => $export['vars']],
-            ],
-        ], 5));
+        $fs->dumpFile("$workDir/ansible/.manalize", serialize($env));
 
         foreach ($env->getConfigs() as $config) {
             $baseTarget = "$workDir/{$config->getPath()}";

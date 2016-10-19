@@ -25,11 +25,11 @@ class VagrantBoxVersionResolver
     /**
      * Resolves the vagrant box version.
      *
-     * @param \Iterator $dependencies
+     * @param \Traversable $dependencies
      *
      * @return VagrantBoxVersion
      */
-    public static function resolve(\Iterator $dependencies)
+    public static function resolve(\Traversable $dependencies)
     {
         $php = self::getDependency('php', $dependencies);
 
@@ -41,7 +41,7 @@ class VagrantBoxVersionResolver
     }
 
     /**
-     * @return string
+     * @return float
      */
     private static function resolveFromPhpVersion($phpVersion)
     {
@@ -49,15 +49,15 @@ class VagrantBoxVersionResolver
     }
 
     /**
-     * @param string   $name
-     * @param Iterator $dependencies
+     * @param string       $name
+     * @param \Traversable $dependencies
      *
-     * @return VersionBounded|false
+     * @return VersionBounded|null
      */
-    private static function getDependency($name, \Iterator $dependencies)
+    private static function getDependency($name, \Traversable $dependencies)
     {
-        return search(function (Dependency $dependency) {
-            return $dependency instanceof VersionBounded && 'php' === $dependency->getName();
+        return search(function (Dependency $dependency) use ($name) {
+            return $dependency instanceof VersionBounded && $name === $dependency->getName();
         }, $dependencies);
     }
 }

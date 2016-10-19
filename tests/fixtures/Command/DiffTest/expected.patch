@@ -1,7 +1,5 @@
 diff --git a/Makefile b/Makefile
-old mode 100644
-new mode 100755
-index e122780..a5871ef
+index e122780..a5871ef 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -117,5 +117,3 @@ deploy@prod:
@@ -11,24 +9,6 @@ index e122780..a5871ef
 - 
 - This line is expected in the patch
 \ No newline at end of file
-diff --git a/Vagrantfile b/Vagrantfile
-old mode 100644
-new mode 100755
-index b93cd8b..b5960a9
---- a/Vagrantfile
-+++ b/Vagrantfile
-@@ -2,9 +2,9 @@
- # vi: set ft=ruby :
- 
- app = {
--  :name        => 'dummy.manala',
-+  :name        => '{{ app }}',
-   :box         => 'manala/app-dev-debian',
--  :box_version => '~> 3.0.0',
-+  :box_version => '{{ box_version }}',
-   :box_memory  => 1024
- }
- 
 diff --git a/ansible/deploy.yml b/ansible/deploy.yml
 new file mode 100644
 index 0000000..9ab9e15
@@ -41,42 +21,3 @@ index 0000000..9ab9e15
 +  gather_facts: false
 +  roles:
 +    - manala.deploy
-diff --git a/ansible/group_vars/app.yml b/ansible/group_vars/app.yml
-index 5e157b3..b4ec93c 100644
---- a/ansible/group_vars/app.yml
-+++ b/ansible/group_vars/app.yml
-@@ -2,20 +2,20 @@
- 
- app_options:
- 
--  php:                   true
--  php_version:           7.0
--  nodejs:                false
--  nodejs_version:        6
--  mysql:                 true
--  mysql_version:         5.6
--  mongodb:               false
--  mongodb_version:       3.2
--  postgresql:            false
--  postgresql_version:    9.5
--  elasticsearch:         false
--  elasticsearch_version: 1.7
--  redis:                 false
--  influxdb:              false
-+  php:                   {{ php_enabled }}
-+  php_version:           {{ php_version }}
-+  nodejs:                {{ nodejs_enabled }}
-+  nodejs_version:        {{ nodejs_version }}
-+  mysql:                 {{ mysql_enabled }}
-+  mysql_version:         {{ mysql_version }}
-+  mongodb:               {{ mongodb_enabled }}
-+  mongodb_version:       {{ mongodb_version }}
-+  postgresql:            {{ postgresql_enabled }}
-+  postgresql_version:    {{ postgresql_version }}
-+  elasticsearch:         {{ elasticsearch_enabled }}
-+  elasticsearch_version: {{ elasticsearch_version }}
-+  redis:                 {{ redis_enabled }}
-+  influxdb:              {{ influxdb_enabled }}
- 
- app_patterns:
- 
