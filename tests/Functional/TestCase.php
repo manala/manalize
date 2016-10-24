@@ -72,7 +72,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
             $dependencies = self::getDefaultDependenciesForEnv($envType);
         }
 
-        (new Setup($cwd, new AppName($appName), $envType, self::getDefaultDependenciesForEnv($envType)))->handle(function () {
+        (new Setup($cwd, new AppName($appName), $envType, $dependencies))->handle(function () {
         });
     }
 

@@ -13,7 +13,6 @@ namespace Manala\Manalize\Tests\Handler;
 
 use Manala\Manalize\Application;
 use Manala\Manalize\Handler\SelfUpdate;
-use Manala\Manalize\Handler\Setup;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 

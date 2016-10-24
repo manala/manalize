@@ -57,12 +57,9 @@ class Diff
         $this->fs = new Filesystem();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function handle(callable $notifier)
     {
-        $resourcesPath = $this->createTmpEnv($this->getEnvResourcesPath(), manala_get_tmp_dir('diff_'));
+        $resourcesPath = $this->createTmpEnv();
 
         $colorOpt = $this->colorSupport ? '--color' : '--no-color';
 
@@ -127,22 +124,18 @@ class Diff
         return $this->errorOutput;
     }
 
-    private function createTmpEnv($templatePath, $tmpPath)
+    private function createTmpEnv()
     {
+        $tmpPath = manala_get_tmp_dir('diff_');
+
         $this->fs->mkdir($tmpPath);
 
-        $dump = Dumper::dump(unserialize(file_get_contents("$this->cwd/ansible/.manalize")), $tmpPath);
-
-        for (; $dump->valid(); $dump->next());
-
-        $this->fs->remove("$tmpPath/ansible/.manalize");
+        for (
+            $dump = Dumper::dump(unserialize(file_get_contents("$this->cwd/ansible/.manalize")), $tmpPath);
+            $dump->valid();
+            $dump->next()
+        );
 
         return $tmpPath;
-    }
-
-    private function getEnvResourcesPath()
-    {
-        // TODO: Replace by a EnvResourcesLocator
-        return MANALIZE_DIR.'/src/Resources/'.$this->envType;
     }
 }

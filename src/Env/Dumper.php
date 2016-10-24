@@ -31,21 +31,32 @@ class Dumper
      */
     public static function dump(Env $env, $workDir)
     {
-        $fs = new Filesystem();
-
-        $fs->dumpFile("$workDir/ansible/.manalize", serialize($env));
-
         foreach ($env->getConfigs() as $config) {
             $baseTarget = "$workDir/{$config->getPath()}";
             $template = $config->getTemplate();
 
             foreach ($config->getFiles() as $file) {
                 $target = str_replace($config->getOrigin(), $baseTarget, $file->getPathName());
-                $dump = ((string) $template === $file->getPathname()) ? Renderer::render($config) : file_get_contents($file);
-                $fs->dumpFile($target, $dump);
+                $dump = $file->getPathname() === (string) $template ? Renderer::render($config) : file_get_contents($file);
+                (new Filesystem())->dumpFile($target, $dump);
 
                 yield $target;
             }
         }
+    }
+
+    /**
+     * Dumps the metadata into a file.
+     *
+     * @param Env    $env     The Env for which to dump the metadata
+     * @param string $workDir The manalized project directory
+     *
+     * @return string The metadata file path
+     */
+    public static function dumpMetadata(Env $env, $workDir)
+    {
+        (new Filesystem())->dumpFile($target = "$workDir/ansible/.manalize", serialize($env));
+
+        return $target;
     }
 }

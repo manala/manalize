@@ -30,9 +30,6 @@ class SelfUpdate
         $this->client = $client ?: new Client();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function handle()
     {
         $tempFilename = manala_get_tmp_dir('manalize_build').'/manalize.temp.phar';

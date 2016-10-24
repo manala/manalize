@@ -11,7 +11,6 @@
 
 namespace Manala\Manalize\Tests\Functional;
 
-use Manala\Manalize\Handler\Setup;
 use Symfony\Component\Process\Process;
 
 /**

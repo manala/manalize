@@ -32,8 +32,8 @@ class DumperTest extends \PHPUnit_Framework_TestCase
     {
         $baseOrigin = self::$cwd;
 
-        @mkdir($baseOrigin.'/dummy');
-        file_put_contents($baseOrigin.'/dummy/dummyconf', 'FooBar');
+        @mkdir("$baseOrigin/dummy");
+        file_put_contents("$baseOrigin/dummy/dummyconf", 'FooBar');
 
         $config = $this->prophesize(Config::class);
         $config
@@ -51,22 +51,20 @@ class DumperTest extends \PHPUnit_Framework_TestCase
 
         $env = EnvFactory::createEnv(EnvEnum::create(EnvEnum::SYMFONY), new AppName('dummy'), $this->prophesize(\Iterator::class)->reveal());
 
-        $cwd = $baseOrigin.'/target';
+        $cwd = "$baseOrigin/target";
         @mkdir($cwd);
 
         foreach (Dumper::dump($env, $cwd) as $̄);
 
-        $this->assertFileExists($cwd.'/ansible/ansible.yml');
-        $this->assertStringEqualsFile($cwd.'/ansible/.manalize', serialize($env));
+        $this->assertFileExists("$cwd/ansible/ansible.yml");
+
+        $this->assertSame("$cwd/ansible/.manalize", Dumper::dumpMetadata($env, $cwd));
+
+        $this->assertStringEqualsFile("$cwd/ansible/.manalize", serialize($env));
     }
 
     public static function tearDownAfterClass()
     {
         (new Filesystem())->remove(self::$cwd);
-    }
-
-    private function generateFile($path)
-    {
-        yield new \SplFileInfo($path);
     }
 }

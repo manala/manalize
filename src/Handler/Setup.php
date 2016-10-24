@@ -34,9 +34,6 @@ class Setup
         $this->dependencies = $dependencies;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function handle(callable $notifier)
     {
         $env = EnvFactory::createEnv($this->envType, $this->appName, $this->dependencies);
@@ -44,5 +41,7 @@ class Setup
         foreach (Dumper::dump($env, $this->cwd) as $target) {
             $notifier(str_replace($this->cwd.'/', '', $target));
         }
+
+        $notifier(str_replace($this->cwd.'/', '', Dumper::dumpMetadata($env, $this->cwd)));
     }
 }
