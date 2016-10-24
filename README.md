@@ -10,7 +10,7 @@ Installation
 
 #### Download:
 ```sh
-$ curl -L https://github.com/manala/manalize/releases/download/v0.2.0/manalize.phar > /usr/local/bin/manalize
+$ curl -L https://github.com/manala/manalize/releases/download/v0.2.1/manalize.phar > /usr/local/bin/manalize
 $ chmod +x /usr/local/bin/manalize
 ```
 
