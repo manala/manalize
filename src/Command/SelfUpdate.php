@@ -27,11 +27,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class SelfUpdate extends Command
 {
     /**
-     * @var Client
-     */
-    private $client;
-
-    /**
      * {@inheritdoc}
      */
     protected function configure()
