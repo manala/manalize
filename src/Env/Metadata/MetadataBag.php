@@ -86,9 +86,9 @@ final class MetadataBag
     /**
      * Throws a "Did you mean ...?" exception.
      *
-     * @param string      $search
-     * @param array       $possibleMatches
-     * @param string|null $fullPath
+     * @param string $search
+     * @param array  $possibleMatches
+     * @param string $fullPath
      *
      * @return \LogicException
      */

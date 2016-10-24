@@ -12,9 +12,7 @@
 namespace Manala\Manalize\Tests\Env;
 
 use Manala\Manalize\Env\Config\Config;
-use Manala\Manalize\Env\Config\Variable\Variable;
 use Manala\Manalize\Env\Env;
-use Prophecy\Prophecy\ObjectProphecy;
 
 class EnvTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,28 +22,5 @@ class EnvTest extends \PHPUnit_Framework_TestCase
         $env = new Env('foo', $config->reveal());
 
         $this->assertSame([$config->reveal()], $env->getConfigs());
-    }
-
-    public function testExport()
-    {
-        /** @var Variable|ObjectProphecy $var */
-        $var = $this->prophesize(Variable::class);
-        $var->getReplaces()->willReturn([
-           '{{ app }}' => 'dummy',
-           '{{ version }}' => '1.2.0',
-        ]);
-
-        /** @var Config|ObjectProphecy $config */
-        $config = $this->prophesize(Config::class);
-        $config->getVars()->willReturn([$var]);
-        $env = new Env('foo', $config->reveal());
-
-        $this->assertEquals([
-            'env' => 'foo',
-            'vars' => [
-                '{{ app }}' => 'dummy',
-                '{{ version }}' => '1.2.0',
-            ],
-        ], $env->export());
     }
 }

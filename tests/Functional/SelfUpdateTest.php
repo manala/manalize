@@ -12,7 +12,6 @@
 namespace Manala\Manalize\Tests\Functional;
 
 use Manala\Manalize\Application;
-use Manala\Manalize\Command\Setup;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 

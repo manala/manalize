@@ -13,7 +13,6 @@ namespace Manala\Manalize\Env;
 
 use Manala\Manalize\Env\Config\Renderer;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Manala environment config dumper.
@@ -25,33 +24,39 @@ class Dumper
     /**
      * Creates and dumps final config files from stubs.
      *
-     * @param Env    $env     The whole Config for which to dump the template
-     * @param string $workDir
+     * @param Env    $env     The Env for which to dump the rendered config templates
+     * @param string $workDir The manalized project directory
      *
-     * @return \Generator
+     * @return \Generator The dumped file paths
      */
     public static function dump(Env $env, $workDir)
     {
-        $fs = new Filesystem();
-
-        $export = $env->export();
-        $fs->dumpFile("$workDir/ansible/.manalize.yml", Yaml::dump([
-            'envs' => [
-                $export['env'] => ['vars' => $export['vars']],
-            ],
-        ], 5));
-
         foreach ($env->getConfigs() as $config) {
             $baseTarget = "$workDir/{$config->getPath()}";
             $template = $config->getTemplate();
 
             foreach ($config->getFiles() as $file) {
                 $target = str_replace($config->getOrigin(), $baseTarget, $file->getPathName());
-                $dump = ((string) $template === $file->getPathname()) ? Renderer::render($config) : file_get_contents($file);
-                $fs->dumpFile($target, $dump);
+                $dump = $file->getPathname() === (string) $template ? Renderer::render($config) : file_get_contents($file);
+                (new Filesystem())->dumpFile($target, $dump);
 
                 yield $target;
             }
         }
+    }
+
+    /**
+     * Dumps the metadata into a file.
+     *
+     * @param Env    $env     The Env for which to dump the metadata
+     * @param string $workDir The manalized project directory
+     *
+     * @return string The metadata file path
+     */
+    public static function dumpMetadata(Env $env, $workDir)
+    {
+        (new Filesystem())->dumpFile($target = "$workDir/ansible/.manalize", serialize($env));
+
+        return $target;
     }
 }

@@ -11,6 +11,7 @@
 
 namespace Manala\Manalize\Handler;
 
+use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvEnum;
 use Manala\Manalize\Exception\HandlingFailureException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -56,12 +57,9 @@ class Diff
         $this->fs = new Filesystem();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function handle(callable $notifier)
     {
-        $resourcesPath = $this->copyToTmpLocation($this->getEnvResourcesPath());
+        $resourcesPath = $this->createTmpEnv();
 
         $colorOpt = $this->colorSupport ? '--color' : '--no-color';
 
@@ -126,20 +124,18 @@ class Diff
         return $this->errorOutput;
     }
 
-    private function copyToTmpLocation($templatePath)
+    private function createTmpEnv()
     {
         $tmpPath = manala_get_tmp_dir('diff_');
 
         $this->fs->mkdir($tmpPath);
-        $this->fs->mirror($templatePath, $tmpPath);
-        $this->fs->remove("$tmpPath/manala.yml");
+
+        for (
+            $dump = Dumper::dump(unserialize(file_get_contents("$this->cwd/ansible/.manalize")), $tmpPath);
+            $dump->valid();
+            $dump->next()
+        );
 
         return $tmpPath;
-    }
-
-    private function getEnvResourcesPath()
-    {
-        // TODO: Replace by a EnvResourcesLocator
-        return MANALIZE_DIR.'/src/Resources/'.$this->envType;
     }
 }

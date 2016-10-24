@@ -28,11 +28,14 @@ class SetupTest extends TestCase
         self::$cwd = $cwd;
     }
 
-    public function testExecute()
+    /**
+     * @dataProvider provideEnvs()
+     */
+    public function testExecute(array $inputs, $expectedBox, $expectedDeps, $expectedMetadataFilename)
     {
         $tester = new CommandTester(new Setup());
         $tester
-            ->setInputs(['foo-bar.manala', "\n", "\n", "\n", "\n", "\n"])
+            ->setInputs($inputs)
             ->execute(['cwd' => static::$cwd]);
 
         if (0 !== $tester->getStatusCode()) {
@@ -48,15 +51,24 @@ class SetupTest extends TestCase
         $this->assertFileExists(self::$cwd.'/ansible/app.yml');
         $this->assertFileExists(self::$cwd.'/ansible/ansible.yml');
 
-        $expectedBox = <<<'RUBY'
-  :name        => 'foo-bar.manala',
+        $this->assertContains($expectedBox, file_get_contents(self::$cwd.'/Vagrantfile'));
+        $this->assertContains($expectedDeps, file_get_contents(self::$cwd.'/ansible/group_vars/app.yml'));
+        $this->assertFileEquals(self::$cwd.'/ansible/.manalize', __DIR__.'/../fixtures/Command/SetupTest/'.$expectedMetadataFilename);
+    }
+
+    public function provideEnvs()
+    {
+        return [
+            // name: project dir name, expected dependencies: default,
+            [
+                ["\n", "\n", "\n", "\n", "\n", "\n"],
+                <<<'RUBY'
+  :name        => 'manalized-app',
   :box         => 'manala/app-dev-debian',
   :box_version => '~> 3.0.0'
-RUBY;
-
-        $this->assertContains($expectedBox, file_get_contents(self::$cwd.'/Vagrantfile'));
-
-        $expectedDeps = <<<'YAML'
+RUBY
+,
+                <<<'YAML'
   php:                   true
   php_version:           7.0
   nodejs:                false
@@ -71,55 +83,19 @@ RUBY;
   elasticsearch_version: 1.7
   redis:                 false
   influxdb:              false
-YAML;
-
-        $this->assertContains($expectedDeps, file_get_contents(self::$cwd.'/ansible/group_vars/app.yml'));
-        $this->assertStringEqualsFile(self::$cwd.'/ansible/.manalize.yml', <<<'YAML'
-envs:
-    symfony:
-        vars:
-            '{{ app }}': foo-bar.manala
-            '{{ box_version }}': '~> 3.0.0'
-            '{{ php_version }}': '7.0'
-            '{{ php_enabled }}': 'true'
-            '{{ mysql_version }}': '5.6'
-            '{{ mysql_enabled }}': 'true'
-            '{{ postgresql_version }}': '9.5'
-            '{{ postgresql_enabled }}': 'false'
-            '{{ mongodb_version }}': '3.2'
-            '{{ mongodb_enabled }}': 'false'
-            '{{ elasticsearch_version }}': '1.7'
-            '{{ elasticsearch_enabled }}': 'false'
-            '{{ nodejs_version }}': '6'
-            '{{ nodejs_enabled }}': 'false'
-            '{{ redis_enabled }}': 'false'
-            '{{ influxdb_enabled }}': 'false'
-
 YAML
-        );
-    }
-
-    public function testExecuteWithPhp56()
-    {
-        $tester = new CommandTester(new Setup());
-        $tester
-            ->setInputs(['foo-bar.manala', '5.6', "\n", "\n", "\n", "\n", "\n"])
-            ->execute(['cwd' => static::$cwd]);
-
-        if (0 !== $tester->getStatusCode()) {
-            echo $tester->getDisplay();
-        }
-
-        $this->assertSame(0, $tester->getStatusCode());
-        $this->assertContains('Environment successfully configured', $tester->getDisplay());
-
-        $this->assertFileExists(self::$cwd.'/Vagrantfile');
-        $this->assertFileExists(self::$cwd.'/Makefile');
-        $this->assertFileExists(self::$cwd.'/ansible/group_vars/app.yml');
-        $this->assertFileExists(self::$cwd.'/ansible/app.yml');
-        $this->assertFileExists(self::$cwd.'/ansible/ansible.yml');
-
-        $expectedDeps = <<<'YAML'
+                ,
+                'metadata_1.txt',
+            ],
+            // name: "foo-bar.manala", expected dependencies: php 5.6
+            [
+                ['foo-bar.manala', '5.6', "\n", "\n", "\n", "\n", "\n"],
+                <<<'RUBY'
+  :name        => 'foo-bar.manala',
+  :box         => 'manala/app-dev-debian',
+  :box_version => '~> 2.0.0'
+RUBY
+                , <<<'YAML'
   php:                   true
   php_version:           5.6
   nodejs:                false
@@ -134,63 +110,19 @@ YAML
   elasticsearch_version: 1.7
   redis:                 false
   influxdb:              false
-YAML;
-
-        $this->assertContains($expectedDeps, file_get_contents(self::$cwd.'/ansible/group_vars/app.yml'));
-
-        $expectedBox = <<<'RUBY'
+YAML
+                ,
+                'metadata_2.txt',
+            ],
+            // name: "foo-bar.manala", expected dependencies: default
+            [
+                ['foo-bar.manala', "\n", "\n", "\n", "\n", "\n"],
+                <<<'RUBY'
   :name        => 'foo-bar.manala',
   :box         => 'manala/app-dev-debian',
-  :box_version => '~> 2.0.0'
-RUBY;
-
-        $this->assertContains($expectedBox, file_get_contents(self::$cwd.'/Vagrantfile'));
-        $this->assertStringEqualsFile(self::$cwd.'/ansible/.manalize.yml', <<<'YAML'
-envs:
-    symfony:
-        vars:
-            '{{ app }}': foo-bar.manala
-            '{{ box_version }}': '~> 2.0.0'
-            '{{ php_version }}': '5.6'
-            '{{ php_enabled }}': 'true'
-            '{{ mysql_version }}': '5.6'
-            '{{ mysql_enabled }}': 'true'
-            '{{ postgresql_version }}': '9.5'
-            '{{ postgresql_enabled }}': 'false'
-            '{{ mongodb_version }}': '3.2'
-            '{{ mongodb_enabled }}': 'false'
-            '{{ elasticsearch_version }}': '1.7'
-            '{{ elasticsearch_enabled }}': 'false'
-            '{{ nodejs_version }}': '6'
-            '{{ nodejs_enabled }}': 'false'
-            '{{ redis_enabled }}': 'false'
-            '{{ influxdb_enabled }}': 'false'
-
-YAML
-        );
-    }
-
-    public function testExecuteWithDefaultAppNameUsesTheCurrentDirectoryName()
-    {
-        $tester = new CommandTester(new Setup());
-        $tester
-            ->setInputs(["\n", "\n", "\n", "\n", "\n", "\n"])
-            ->execute(['cwd' => static::$cwd]);
-
-        if (0 !== $tester->getStatusCode()) {
-            echo $tester->getDisplay();
-        }
-
-        $this->assertSame(0, $tester->getStatusCode());
-        $this->assertContains('Environment successfully configured', $tester->getDisplay());
-
-        $this->assertFileExists(self::$cwd.'/Vagrantfile');
-        $this->assertFileExists(self::$cwd.'/Makefile');
-        $this->assertFileExists(self::$cwd.'/ansible/group_vars/app.yml');
-        $this->assertFileExists(self::$cwd.'/ansible/app.yml');
-        $this->assertFileExists(self::$cwd.'/ansible/ansible.yml');
-
-        $expectedDeps = <<<'YAML'
+  :box_version => '~> 3.0.0'
+RUBY
+                , <<<'YAML'
   php:                   true
   php_version:           7.0
   nodejs:                false
@@ -205,37 +137,10 @@ YAML
   elasticsearch_version: 1.7
   redis:                 false
   influxdb:              false
-YAML;
-        $this->assertContains($expectedDeps, file_get_contents(self::$cwd.'/ansible/group_vars/app.yml'));
-
-        $expectedBox = <<<'RUBY'
-  :name        => 'manalized-app',
-  :box         => 'manala/app-dev-debian',
-  :box_version => '~> 3.0.0'
-RUBY;
-        $this->assertContains($expectedBox, file_get_contents(self::$cwd.'/Vagrantfile'));
-        $this->assertStringEqualsFile(self::$cwd.'/ansible/.manalize.yml', <<<'YAML'
-envs:
-    symfony:
-        vars:
-            '{{ app }}': manalized-app
-            '{{ box_version }}': '~> 3.0.0'
-            '{{ php_version }}': '7.0'
-            '{{ php_enabled }}': 'true'
-            '{{ mysql_version }}': '5.6'
-            '{{ mysql_enabled }}': 'true'
-            '{{ postgresql_version }}': '9.5'
-            '{{ postgresql_enabled }}': 'false'
-            '{{ mongodb_version }}': '3.2'
-            '{{ mongodb_enabled }}': 'false'
-            '{{ elasticsearch_version }}': '1.7'
-            '{{ elasticsearch_enabled }}': 'false'
-            '{{ nodejs_version }}': '6'
-            '{{ nodejs_enabled }}': 'false'
-            '{{ redis_enabled }}': 'false'
-            '{{ influxdb_enabled }}': 'false'
-
 YAML
-        );
+                ,
+                'metadata_3.txt',
+            ],
+        ];
     }
 }

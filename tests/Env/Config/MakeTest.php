@@ -31,6 +31,6 @@ class MakeTest extends BaseTestConfig
     {
         $make = new Make($this->getEnvType());
 
-        $this->assertInstanceof(\SplFileInfo::class, $make->getTemplate());
+        $this->assertInstanceOf(\SplFileInfo::class, $make->getTemplate());
     }
 }

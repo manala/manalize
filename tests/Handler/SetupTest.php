@@ -30,6 +30,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase
         $dumpedFiles = [];
         $expectedFiles = [
             'Vagrantfile',
+            'ansible/.manalize',
             'ansible/ansible.yml',
             'ansible/app.yml',
             'ansible/deploy.yml',

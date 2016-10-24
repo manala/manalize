@@ -11,13 +11,12 @@
 
 namespace Manala\Manalize\Tests\Functional;
 
-use Manala\Manalize\Handler\Setup;
 use Symfony\Component\Process\Process;
 
 /**
  * @group infra
  */
-class BuildTest extends \PHPUnit_Framework_TestCase
+class BuildTest extends TestCase
 {
     private static $cwd;
 

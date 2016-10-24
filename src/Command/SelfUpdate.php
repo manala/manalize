@@ -11,7 +11,6 @@
 
 namespace Manala\Manalize\Command;
 
-use GuzzleHttp\Client;
 use Manala\Manalize\Exception\HandlingFailureException;
 use Manala\Manalize\Handler\SelfUpdate as SelfUpdateHandler;
 use Symfony\Component\Console\Command\Command;

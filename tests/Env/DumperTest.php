@@ -9,26 +9,31 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Tests\Process;
+namespace Manala\Manalize\Tests\Env;
 
 use Manala\Manalize\Env\Config\Config;
+use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Dumper;
-use Manala\Manalize\Env\Env;
+use Manala\Manalize\Env\EnvEnum;
+use Manala\Manalize\Env\EnvFactory;
 use Symfony\Component\Filesystem\Filesystem;
 
 class DumperTest extends \PHPUnit_Framework_TestCase
 {
+    private static $cwd;
+
     public static function setUpBeforeClass()
     {
-        (new Filesystem())->mkdir(sys_get_temp_dir().'/Manala/DumperTest');
+        self::$cwd = manala_get_tmp_dir('dumper_test_');
+        (new Filesystem())->mkdir(self::$cwd);
     }
 
     public function testDump()
     {
-        $baseOrigin = sys_get_temp_dir().'/Manala/DumperTest';
+        $baseOrigin = self::$cwd;
 
-        @mkdir($baseOrigin.'/dummy');
-        file_put_contents($baseOrigin.'/dummy/dummyconf', 'FooBar');
+        @mkdir("$baseOrigin/dummy");
+        file_put_contents("$baseOrigin/dummy/dummyconf", 'FooBar');
 
         $config = $this->prophesize(Config::class);
         $config
@@ -39,49 +44,27 @@ class DumperTest extends \PHPUnit_Framework_TestCase
             ->willReturn($baseOrigin.'/dummy');
         $config
             ->getFiles()
-            ->willReturn($this->generateFile($baseOrigin.'/dummy/dummyconf'));
+            ->willReturn([$baseOrigin.'/dummy/dummyconf']);
         $config
             ->getTemplate()
             ->willReturn(null);
 
-        $env = $this->prophesize(Env::class);
-        $env
-            ->getConfigs()
-            ->willReturn([$config->reveal()]);
-        $env
-            ->export()
-            ->willReturn([
-                'env' => 'dummy',
-                'vars' => [
-                    '{{ app }}' => 'dummy',
-                    '{{ version }}' => '1.2.0',
-                ],
-            ]);
+        $env = EnvFactory::createEnv(EnvEnum::create(EnvEnum::SYMFONY), new AppName('dummy'), $this->prophesize(\Iterator::class)->reveal());
 
-        $cwd = $baseOrigin.'/target';
+        $cwd = "$baseOrigin/target";
         @mkdir($cwd);
 
-        Dumper::dump($env->reveal(), $cwd)->current();
+        foreach (Dumper::dump($env, $cwd) as $̄);
 
-        $this->assertFileExists($cwd.'/dummy/dummyconf');
-        $this->assertStringEqualsFile($cwd.'/ansible/.manalize.yml', <<<'YAML'
-envs:
-    dummy:
-        vars:
-            '{{ app }}': dummy
-            '{{ version }}': 1.2.0
+        $this->assertFileExists("$cwd/ansible/ansible.yml");
 
-YAML
-        );
+        $this->assertSame("$cwd/ansible/.manalize", Dumper::dumpMetadata($env, $cwd));
+
+        $this->assertStringEqualsFile("$cwd/ansible/.manalize", serialize($env));
     }
 
     public static function tearDownAfterClass()
     {
-        (new Filesystem())->remove(sys_get_temp_dir().'/Manala/SetupProcessTest');
-    }
-
-    private function generateFile($path)
-    {
-        yield new \SplFileInfo($path);
+        (new Filesystem())->remove(self::$cwd);
     }
 }

@@ -16,28 +16,9 @@ namespace Manala\Manalize\Env\Config\Variable;
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-final class VagrantBoxVersion implements Variable
+final class VagrantBoxVersion extends SingleValue
 {
-    private $version;
-    private static $template = '{{ box_version }}';
-
-    /**
-     * @param string $version
-     */
-    public function __construct($version)
-    {
-        $this->version = $version;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReplaces()
-    {
-        return [
-            self::$template => $this->version,
-        ];
-    }
+    protected static $placeholder = '{{ box_version }}';
 
     /**
      * {@inheritdoc}
