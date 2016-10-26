@@ -21,15 +21,31 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class Dumper
 {
+    const DUMP_METADATA = 1;
+    const DUMP_FILES = 2;
+    const DUMP_ALL = 3;
+
     /**
      * Creates and dumps final config files from stubs.
      *
      * @param Env    $env     The Env for which to dump the rendered config templates
      * @param string $workDir The manalized project directory
+     * @param int    $flags
      *
      * @return \Generator The dumped file paths
      */
-    public static function dump(Env $env, string $workDir): \Generator
+    public static function dump(Env $env, string $workDir, int $flags = self::DUMP_ALL): \Generator
+    {
+        if (self::DUMP_FILES & $flags) {
+            yield from self::dumpFiles($env, $workDir);
+        }
+
+        if (self::DUMP_METADATA & $flags) {
+            yield self::dumpMetadata($env, $workDir);
+        }
+    }
+
+    private static function dumpFiles(Env $env, string $workDir): \Generator
     {
         foreach ($env->getConfigs() as $config) {
             $baseTarget = "$workDir/{$config->getPath()}";

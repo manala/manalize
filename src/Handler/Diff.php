@@ -109,8 +109,10 @@ class Diff
 
         $this->fs->mkdir($tmpPath);
 
+        $metadata = unserialize(file_get_contents("$this->cwd/ansible/.manalize"));
+
         for (
-            $dump = Dumper::dump(unserialize(file_get_contents("$this->cwd/ansible/.manalize")), $tmpPath);
+            $dump = Dumper::dump($metadata, $tmpPath, Dumper::DUMP_FILES);
             $dump->valid();
             $dump->next()
         );

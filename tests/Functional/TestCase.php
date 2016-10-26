@@ -25,12 +25,19 @@ use Symfony\Component\Process\Process;
  */
 abstract class TestCase extends \PHPUnit_Framework_TestCase
 {
+    private static $symfonyStandardCopyPath = null;
+
     /**
      * {@inheritdoc}
      */
-    public static function tearDownAfterClass()
+    public function tearDown()
     {
         (new Filesystem())->remove(MANALIZE_TMP_ROOT_DIR);
+    }
+
+    public static function tearDownAfterClass()
+    {
+        self::$symfonyStandardCopyPath = null;
     }
 
     protected static function getDefaultDependenciesForEnv(EnvEnum $envType)
@@ -61,9 +68,15 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
 
     protected static function createSymfonyStandardProject($cwd)
     {
-        (new Process('composer create-project symfony/framework-standard-edition:3.1.* . --no-install --no-progress --no-interaction', $cwd))
-            ->setTimeout(null)
-            ->run();
+        if (null === self::$symfonyStandardCopyPath) {
+            self::$symfonyStandardCopyPath = manala_get_tmp_dir('test_case_symfony_standard_app_');
+
+            (new Process('composer create-project symfony/framework-standard-edition:3.1.* . --no-install --no-progress --no-interaction', self::$symfonyStandardCopyPath))
+                ->setTimeout(null)
+                ->run();
+        }
+
+        (new Filesystem())->mirror(self::$symfonyStandardCopyPath, $cwd);
     }
 
     protected static function manalizeProject($cwd, $appName, EnvEnum $envType, \Iterator $dependencies = null)

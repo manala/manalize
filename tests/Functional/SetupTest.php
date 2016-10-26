@@ -13,12 +13,13 @@ namespace Manala\Manalize\Tests\Functional;
 
 use Manala\Manalize\Command\Setup;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Filesystem\Filesystem;
 
 class SetupTest extends TestCase
 {
     private static $cwd;
 
-    public static function setUpBeforeClass()
+    public function setUp()
     {
         $cwd = manala_get_tmp_dir('tests_setup_');
         mkdir($cwd = $cwd.'/manalized-app');
@@ -26,6 +27,11 @@ class SetupTest extends TestCase
         self::createSymfonyStandardProject($cwd);
 
         self::$cwd = $cwd;
+    }
+
+    public function tearDown()
+    {
+        (new Filesystem())->remove(self::$cwd);
     }
 
     /**
@@ -142,5 +148,28 @@ YAML
                 'metadata_3.txt',
             ],
         ];
+    }
+
+    public function testExecuteNoUpdate()
+    {
+        $tester = new CommandTester(new Setup());
+        $tester
+            ->setInputs(["\n", "\n", "\n", "\n", "\n", "\n"])
+            ->execute(['cwd' => static::$cwd, '--no-update' => true]);
+
+        if (0 !== $tester->getStatusCode()) {
+            echo $tester->getDisplay();
+        }
+
+        $this->assertSame(0, $tester->getStatusCode());
+        $this->assertContains('Environment successfully configured', $tester->getDisplay());
+
+        $this->assertFileNotExists(self::$cwd.'/Vagrantfile');
+        $this->assertFileNotExists(self::$cwd.'/Makefile');
+        $this->assertFileNotExists(self::$cwd.'/ansible/group_vars/app.yml');
+        $this->assertFileNotExists(self::$cwd.'/ansible/app.yml');
+        $this->assertFileNotExists(self::$cwd.'/ansible/ansible.yml');
+
+        $this->assertFileEquals(self::$cwd.'/ansible/.manalize', __DIR__.'/../fixtures/Command/SetupTest/execute_no_update.txt');
     }
 }
