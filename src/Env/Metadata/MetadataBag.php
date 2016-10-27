@@ -36,7 +36,7 @@ final class MetadataBag
      *
      * @return mixed
      */
-    public function get($path)
+    public function get(string $path)
     {
         return $this->doGet($this->elements, $path);
     }
@@ -48,7 +48,7 @@ final class MetadataBag
      *
      * @return bool
      */
-    public function has($path)
+    public function has(string $path) : bool
     {
         return (bool) $this->doGet($this->elements, $path, false);
     }
@@ -63,7 +63,7 @@ final class MetadataBag
      * @throws \LogicException If the given path cannot be found in the given elements and
      *                         $throwExceptionOnInvalidPath is set to true
      */
-    private function doGet(array $elements, $path, $throwExceptionOnInvalidPath = true)
+    private function doGet(array $elements, string $path, bool $throwExceptionOnInvalidPath = true)
     {
         $result = $elements;
         $steps = explode('.', $path);
@@ -83,16 +83,7 @@ final class MetadataBag
         return $result;
     }
 
-    /**
-     * Throws a "Did you mean ...?" exception.
-     *
-     * @param string $search
-     * @param array  $possibleMatches
-     * @param string $fullPath
-     *
-     * @return \LogicException
-     */
-    private function didYouMean($search, array $possibleMatches, $fullPath)
+    private function didYouMean(string $search, array $possibleMatches, string $fullPath) : \LogicException
     {
         $minScore = INF;
 

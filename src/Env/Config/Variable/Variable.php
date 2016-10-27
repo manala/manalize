@@ -24,16 +24,16 @@ interface Variable
      *
      * @return array Of format [placeholder => value]
      */
-    public function getReplaces();
+    public function getReplaces() : array;
 
     /**
      * Checks that a given value is properly formatted for the current implementation.
      *
      * @param string $value The value to assert
      *
-     * @return string The validated value
+     * @return mixed The validated value
      *
      * @throws \InvalidArgumentException If the value is incorrect
      */
-    public static function validate($value);
+    public static function validate(string $value);
 }

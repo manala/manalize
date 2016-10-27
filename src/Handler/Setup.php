@@ -23,20 +23,20 @@ class Setup
 {
     private $cwd;
     private $appName;
-    private $envType;
+    private $envName;
     private $dependencies;
 
-    public function __construct($cwd, AppName $appName, EnvEnum $envType, \Iterator $dependencies)
+    public function __construct(string $cwd, AppName $appName, EnvEnum $envName, \Traversable $dependencies)
     {
         $this->cwd = $cwd;
         $this->appName = $appName;
-        $this->envType = $envType;
+        $this->envName = $envName;
         $this->dependencies = $dependencies;
     }
 
     public function handle(callable $notifier)
     {
-        $env = EnvFactory::createEnv($this->envType, $this->appName, $this->dependencies);
+        $env = EnvFactory::createEnv($this->envName, $this->appName, $this->dependencies);
 
         foreach (Dumper::dump($env, $this->cwd) as $target) {
             $notifier(str_replace($this->cwd.'/', '', $target));

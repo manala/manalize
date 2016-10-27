@@ -21,5 +21,5 @@ interface VersionParserInterface
      *
      * @return string
      */
-    public function getVersion($name, $consoleOutput);
+    public function getVersion(string $name, string $consoleOutput) : string;
 }

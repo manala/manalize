@@ -11,8 +11,10 @@
 
 namespace Manala\Manalize\Requirement\Factory;
 
+use Manala\Manalize\Requirement\Processor\AbstractProcessor;
 use Manala\Manalize\Requirement\Processor\BinaryProcessor;
 use Manala\Manalize\Requirement\SemVer\BinaryVersionParser;
+use Manala\Manalize\Requirement\SemVer\VersionParserInterface;
 
 /**
  * Factory that instantiates the concrete processor and version parser to handle binary requirements.
@@ -24,7 +26,7 @@ class BinaryHandlerFactory implements HandlerFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getProcessor()
+    public function getProcessor() : AbstractProcessor
     {
         return new BinaryProcessor();
     }
@@ -32,7 +34,7 @@ class BinaryHandlerFactory implements HandlerFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getVersionParser()
+    public function getVersionParser() : VersionParserInterface
     {
         return new BinaryVersionParser();
     }

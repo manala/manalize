@@ -46,7 +46,7 @@ final class VersionBounded extends Dependency
     /**
      * {@inheritdoc}
      */
-    public function getReplaces()
+    public function getReplaces() : array
     {
         return [
             sprintf('{{ %s_version }}', $this->getName()) => $this->getVersion(),
@@ -61,7 +61,7 @@ final class VersionBounded extends Dependency
      *
      * @throws \InvalidArgumentException If the version does not satisfy the constraint
      */
-    public static function validate($version, $constraint = null)
+    public static function validate(string $version, $constraint = null)
     {
         if (false === Semver::satisfies($version, $constraint)) {
             throw new \InvalidArgumentException(sprintf(

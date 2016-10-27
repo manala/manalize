@@ -25,10 +25,10 @@ interface HandlerFactoryInterface
     /**
      * @return AbstractProcessor
      */
-    public function getProcessor();
+    public function getProcessor() : AbstractProcessor;
 
     /**
      * @return VersionParserInterface
      */
-    public function getVersionParser();
+    public function getVersionParser() : VersionParserInterface;
 }

@@ -21,12 +21,7 @@ use Manala\Manalize\Requirement\Requirement;
  */
 class HandlerFactoryResolver
 {
-    /**
-     * @param Requirement $requirement
-     *
-     * @return HandlerFactoryInterface
-     */
-    public function getHandlerFactory(Requirement $requirement)
+    public function getHandlerFactory(Requirement $requirement) : HandlerFactoryInterface
     {
         $type = $requirement->getType();
 

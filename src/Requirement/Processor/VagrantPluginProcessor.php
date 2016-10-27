@@ -18,7 +18,7 @@ class VagrantPluginProcessor extends AbstractProcessor
     /**
      * {@inheritdoc}
      */
-    public function process($name)
+    public function process(string $name) : string
     {
         $output = parent::process($name);
 
@@ -33,7 +33,7 @@ class VagrantPluginProcessor extends AbstractProcessor
     /**
      * {@inheritdoc}
      */
-    public function getCommand($name)
+    public function getCommand(string $name) : string
     {
         return 'vagrant plugin list';
     }

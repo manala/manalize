@@ -23,45 +23,16 @@ class Requirement implements Common\RequirementLevelHolderInterface
     const TYPE_BINARY = 'binary';
     const TYPE_VAGRANT_PLUGIN = 'vagrant_plugin';
 
-    /**
-     * Name of the required executable. Eg. Ansible, vagrant, landrush etc.
-     *
-     * @var string
-     */
     private $name;
-
-    /**
-     * Example: '^1.8.2', '~1.8', etc.
-     *
-     * @see https://getcomposer.org/doc/articles/versions.md
-     *
-     * @var string
-     */
     private $semanticVersion;
-
-    /** @var string */
     private $type;
-
-    /**
-     * An optional help to display to the user if the executable is missing or if its version is inferior to the
-     * required one. It can be for instance a link to the executable's download page.
-     *
-     * @var string|null
-     */
     private $help;
 
-    /**
-     * @param string      $name
-     * @param string      $type
-     * @param int         $level
-     * @param string      $semanticVersion
-     * @param string|null $help
-     */
     public function __construct(
-        $name,
-        $type,
-        $level,
-        $semanticVersion,
+        string $name,
+        string $type,
+        int $level,
+        string $semanticVersion,
         $help = null
     ) {
         $this->name = $name;
@@ -72,30 +43,43 @@ class Requirement implements Common\RequirementLevelHolderInterface
     }
 
     /**
+     * Gets the name of the required package/tool. Eg. Ansible, vagrant, landrush etc.
+     *
      * @return string
      */
-    public function getName()
+    public function getName() : string
     {
         return $this->name;
     }
 
     /**
-     * @return string
+     * Gets the requirement type.
+     *
+     * @return string One of {@link self::TYPE_BINARY} and {@link self::TYPE_VAGRANT_PLUGIN}
      */
-    public function getType()
+    public function getType() : string
     {
         return $this->type;
     }
 
     /**
+     * Gets the requirement semantic version.
+     *
+     * Example return: '^1.8.2', '~1.8', etc.
+     *
+     * @see https://getcomposer.org/doc/articles/versions.md
+     *
      * @return string
      */
-    public function getSemanticVersion()
+    public function getSemanticVersion() : string
     {
         return $this->semanticVersion;
     }
 
     /**
+     * An optional help to display to the user if the executable is missing or if its version is inferior to the
+     * required one. It can be for instance a link to the executable's download page.
+     *
      * @return string|null
      */
     public function getHelp()

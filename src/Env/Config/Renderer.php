@@ -24,8 +24,10 @@ class Renderer
      * @param Config $config The whole Config for which to dump the template
      *
      * @return string
+     *
+     * @throws \InvalidArgumentException If the config template is not readable
      */
-    public static function render(Config $config)
+    public static function render(Config $config) : string
     {
         $template = $config->getTemplate();
 

@@ -23,7 +23,7 @@ final class VagrantBoxVersion extends SingleValue
     /**
      * {@inheritdoc}
      */
-    public static function validate($version)
+    public static function validate(string $version)
     {
         if (!in_array($version, self::getSupportedVersions(), true)) {
             throw new \InvalidArgumentException(sprintf(

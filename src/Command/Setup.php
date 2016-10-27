@@ -50,7 +50,7 @@ class Setup extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $cwd = realpath($input->getArgument('cwd'));
-        $envType = EnvEnum::create($input->getOption('env'));
+        $envName = EnvEnum::create($input->getOption('env'));
 
         if (!is_dir($cwd)) {
             throw new \RuntimeException(sprintf('The working directory "%s" doesn\'t exist.', $cwd));
@@ -58,13 +58,13 @@ class Setup extends Command
 
         $io = new SymfonyStyle($input, $output);
         $io->setDecorated(true);
-        $io->comment(sprintf('Start composing your <info>%s</info> environment', (string) $envType));
+        $io->comment(sprintf('Start composing your <info>%s</info> environment', (string) $envName));
 
         $defaultAppName = strtolower(basename($cwd));
         $appName = $io->ask('Application name', AppName::validate($defaultAppName, false) ? $defaultAppName : 'app', [AppName::class, 'validate']);
 
-        $envMetadata = MetadataParser::parse($envType);
-        $handler = new SetupHandler($cwd, new AppName($appName), $envType, $this->setupDependencies($io, $envMetadata));
+        $envMetadata = MetadataParser::parse($envName);
+        $handler = new SetupHandler($cwd, new AppName($appName), $envName, $this->setupDependencies($io, $envMetadata));
 
         $handler->handle(function ($target) use ($io) {
             $io->writeln(sprintf('- %s', $target));
@@ -75,7 +75,7 @@ class Setup extends Command
         return 0;
     }
 
-    private function setupDependencies(SymfonyStyle $io, MetadataBag $metadata)
+    private function setupDependencies(SymfonyStyle $io, MetadataBag $metadata) : \Generator
     {
         foreach ($metadata->get('packages') as $name => $settings) {
             $defaultEnabled = $settings['enabled'] ?: false;

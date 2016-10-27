@@ -29,7 +29,7 @@ class Dumper
      *
      * @return \Generator The dumped file paths
      */
-    public static function dump(Env $env, $workDir)
+    public static function dump(Env $env, string $workDir) : \Generator
     {
         foreach ($env->getConfigs() as $config) {
             $baseTarget = "$workDir/{$config->getPath()}";
@@ -53,7 +53,7 @@ class Dumper
      *
      * @return string The metadata file path
      */
-    public static function dumpMetadata(Env $env, $workDir)
+    public static function dumpMetadata(Env $env, string $workDir) : string
     {
         (new Filesystem())->dumpFile($target = "$workDir/ansible/.manalize", serialize($env));
 

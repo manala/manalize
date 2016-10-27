@@ -79,13 +79,13 @@ EOTXT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $cwd = realpath($input->getArgument('cwd'));
-        $envType = EnvEnum::create($input->getOption('env'));
+        $envName = EnvEnum::create($input->getOption('env'));
 
         if (!is_dir($cwd)) {
             throw new \RuntimeException(sprintf('The working directory "%s" doesn\'t exist.', $cwd));
         }
 
-        $handler = new DiffHandler($envType, $cwd, $output->isDecorated());
+        $handler = new DiffHandler($envName, $cwd, $output->isDecorated());
 
         try {
             $handler->handle(function ($type, $buffer) use ($output) {

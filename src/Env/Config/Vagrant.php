@@ -21,16 +21,8 @@ class Vagrant extends Config
     /**
      * {@inheritdoc}
      */
-    public function getPath()
+    public function getPath() : string
     {
         return 'Vagrantfile';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTemplate()
-    {
-        return $this->getOrigin();
     }
 }

@@ -23,7 +23,7 @@ final class AppName extends SingleValue
     /**
      * {@inheritdoc}
      */
-    public static function validate($value, $throwException = true)
+    public static function validate(string $value, $throwException = true)
     {
         $isValid = preg_match('/^([-.A-Z0-9])*$/i', $value);
 
