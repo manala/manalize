@@ -71,7 +71,7 @@ class RequirementChecker
      *
      * @return RequirementViolation
      */
-    private function createViolation(Requirement $requirement, $currentVersion = null) : RequirementViolation
+    private function createViolation(Requirement $requirement, $currentVersion = null): RequirementViolation
     {
         $label = $this->violationLabelBuilder->buildViolationLabel($requirement, $currentVersion);
 

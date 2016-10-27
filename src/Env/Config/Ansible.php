@@ -23,7 +23,7 @@ class Ansible extends Config
      *
      * {@inheritdoc}
      */
-    public function getFiles() : \Generator
+    public function getFiles(): \Generator
     {
         $originDirectory = $this->getOrigin();
 
@@ -47,7 +47,7 @@ class Ansible extends Config
     /**
      * {@inheritdoc}
      */
-    public function getTemplate() : \SplFileInfo
+    public function getTemplate(): \SplFileInfo
     {
         return new \SplFileInfo($this->getOrigin().'/group_vars/app.yml');
     }
@@ -55,7 +55,7 @@ class Ansible extends Config
     /**
      * {@inheritdoc}
      */
-    public function getPath() : string
+    public function getPath(): string
     {
         return 'ansible';
     }

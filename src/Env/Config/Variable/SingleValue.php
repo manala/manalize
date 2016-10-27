@@ -32,7 +32,7 @@ abstract class SingleValue implements Variable
     /**
      * {@inheritdoc}
      */
-    public function getReplaces() : array
+    public function getReplaces(): array
     {
         return [
             static::$placeholder => $this->value,

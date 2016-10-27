@@ -28,7 +28,7 @@ abstract class AbstractProcessor
      *
      * @return string The processing command's output if executable is available
      */
-    public function process(string $name) : string
+    public function process(string $name): string
     {
         $command = $this->getCommand($name);
         $process = new Process($command);
@@ -48,7 +48,7 @@ abstract class AbstractProcessor
      *
      * @return string
      */
-    abstract public function getCommand(string $name) : string;
+    abstract public function getCommand(string $name): string;
 
     /**
      * Override this method in concrete processor implementations if you want to grant a last chance to obtain

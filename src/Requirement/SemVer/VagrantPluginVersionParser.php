@@ -21,7 +21,7 @@ class VagrantPluginVersionParser implements VersionParserInterface
     /**
      * {@inheritdoc}
      */
-    public function getVersion(string $name, string $consoleOutput) : string
+    public function getVersion(string $name, string $consoleOutput): string
     {
         $pattern = sprintf(self::OUTPUT_PATTERN, $name);
         preg_match($pattern, $consoleOutput, $matches);

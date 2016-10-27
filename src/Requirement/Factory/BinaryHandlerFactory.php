@@ -26,7 +26,7 @@ class BinaryHandlerFactory implements HandlerFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getProcessor() : AbstractProcessor
+    public function getProcessor(): AbstractProcessor
     {
         return new BinaryProcessor();
     }
@@ -34,7 +34,7 @@ class BinaryHandlerFactory implements HandlerFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getVersionParser() : VersionParserInterface
+    public function getVersionParser(): VersionParserInterface
     {
         return new BinaryVersionParser();
     }

@@ -46,7 +46,7 @@ class Diff
         $this->fs = new Filesystem();
     }
 
-    public function handle(callable $notifier) : int
+    public function handle(callable $notifier): int
     {
         $resourcesPath = $this->createTmpEnv();
 
@@ -82,28 +82,28 @@ class Diff
         return $this->lastExitCode;
     }
 
-    public function getExitCode() : int
+    public function getExitCode(): int
     {
         return $this->lastExitCode;
     }
 
-    public function isSuccessful() : bool
+    public function isSuccessful(): bool
     {
         // git-diff is also successful if the exit code is `1`
         return in_array($this->lastExitCode, [static::EXIT_SUCCESS_NO_DIFF, static::EXIT_SUCCESS_DIFF], true);
     }
 
-    public function hasDiff() : bool
+    public function hasDiff(): bool
     {
         return $this->lastExitCode === static::EXIT_SUCCESS_DIFF;
     }
 
-    public function getErrorOutput() : string
+    public function getErrorOutput(): string
     {
         return $this->errorOutput;
     }
 
-    private function createTmpEnv() : string
+    private function createTmpEnv(): string
     {
         $tmpPath = manala_get_tmp_dir('diff_');
 

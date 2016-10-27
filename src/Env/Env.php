@@ -32,7 +32,7 @@ class Env
     /**
      * @return Config[]
      */
-    public function getConfigs() : array
+    public function getConfigs(): array
     {
         return $this->configs;
     }

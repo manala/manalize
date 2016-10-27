@@ -23,7 +23,7 @@ class RequirementViolationLabelBuilder
      *
      * @return string
      */
-    public function buildViolationLabel(Requirement $requirement, $currentVersion = null) : string
+    public function buildViolationLabel(Requirement $requirement, $currentVersion = null): string
     {
         $isRequired = $requirement->isRequired();
 

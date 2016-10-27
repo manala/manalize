@@ -21,7 +21,7 @@ class BinaryVersionParser implements VersionParserInterface
     /**
      * {@inheritdoc}
      */
-    public function getVersion(string $name, string $consoleOutput) : string
+    public function getVersion(string $name, string $consoleOutput): string
     {
         preg_match(self::OUTPUT_PATTERN, $consoleOutput, $matches);
         $version = isset($matches[1]) ? $matches[1] : 0;

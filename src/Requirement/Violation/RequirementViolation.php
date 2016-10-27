@@ -38,12 +38,12 @@ class RequirementViolation implements RequirementLevelHolderInterface
         $this->help = $help;
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function getLabel() : string
+    public function getLabel(): string
     {
         return $this->label;
     }

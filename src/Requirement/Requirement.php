@@ -47,7 +47,7 @@ class Requirement implements Common\RequirementLevelHolderInterface
      *
      * @return string
      */
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -57,7 +57,7 @@ class Requirement implements Common\RequirementLevelHolderInterface
      *
      * @return string One of {@link self::TYPE_BINARY} and {@link self::TYPE_VAGRANT_PLUGIN}
      */
-    public function getType() : string
+    public function getType(): string
     {
         return $this->type;
     }
@@ -71,7 +71,7 @@ class Requirement implements Common\RequirementLevelHolderInterface
      *
      * @return string
      */
-    public function getSemanticVersion() : string
+    public function getSemanticVersion(): string
     {
         return $this->semanticVersion;
     }

@@ -30,7 +30,7 @@ class SelfUpdate
         $this->client = $client ?: new Client();
     }
 
-    public function handle() : bool
+    public function handle(): bool
     {
         $tempFilename = manala_get_tmp_dir('manalize_build').'/manalize.temp.phar';
 
@@ -54,7 +54,7 @@ class SelfUpdate
         return rename($tempFilename, $this->currentBuild);
     }
 
-    public function getLatestTag() : string
+    public function getLatestTag(): string
     {
         if (null !== $this->latestTag) {
             return $this->latestTag;

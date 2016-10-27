@@ -18,7 +18,7 @@ trait RequirementLevelHolderTrait
     /**
      * {@inheritdoc}
      */
-    public function getLevel() : int
+    public function getLevel(): int
     {
         return $this->level;
     }
@@ -26,7 +26,7 @@ trait RequirementLevelHolderTrait
     /**
      * {@inheritdoc}
      */
-    public function getLevelLabel() : string
+    public function getLevelLabel(): string
     {
         return RequirementLevel::getLabels()[$this->level];
     }
@@ -34,7 +34,7 @@ trait RequirementLevelHolderTrait
     /**
      * {@inheritdoc}
      */
-    public function isRequired() : bool
+    public function isRequired(): bool
     {
         return $this->level === RequirementLevel::REQUIRED;
     }

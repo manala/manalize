@@ -29,7 +29,7 @@ class VagrantBoxVersionResolver
      *
      * @return VagrantBoxVersion
      */
-    public static function resolve(\Traversable $dependencies) : VagrantBoxVersion
+    public static function resolve(\Traversable $dependencies): VagrantBoxVersion
     {
         $php = self::findDependency('php', $dependencies);
 
@@ -40,7 +40,7 @@ class VagrantBoxVersionResolver
         return new VagrantBoxVersion(self::resolveFromPhpVersion($php->getVersion()));
     }
 
-    private static function resolveFromPhpVersion($phpVersion) : string
+    private static function resolveFromPhpVersion($phpVersion): string
     {
         return (float) $phpVersion < 7 ? '~> 2.0.0' : self::DEFAULT_BOX_VERSION;
     }

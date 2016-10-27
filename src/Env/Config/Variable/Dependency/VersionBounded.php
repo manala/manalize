@@ -46,7 +46,7 @@ final class VersionBounded extends Dependency
     /**
      * {@inheritdoc}
      */
-    public function getReplaces() : array
+    public function getReplaces(): array
     {
         return [
             sprintf('{{ %s_version }}', $this->getName()) => $this->getVersion(),

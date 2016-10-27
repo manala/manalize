@@ -10,23 +10,23 @@ file that was distributed with this source code.
 EOF;
 
 
-$finder = Symfony\CS\Finder::create()
+$finder = PhpCsFixer\Finder::create()
     ->in(array(__DIR__.'/src', __DIR__.'/tests', __DIR__.'/bin'))
 ;
 
-Symfony\CS\Fixer\Contrib\HeaderCommentFixer::setHeader($header);
-
-return Symfony\CS\Config\Config::create()
-    ->level(Symfony\CS\FixerInterface::SYMFONY_LEVEL)
-    ->fixers(array(
-        '-unalign_double_arrow',
-        '-unalign_equals',
-        '-psr0',
-        'newline_after_open_tag',
-        'ordered_use',
-        'short_array_syntax',
-        'header_comment',
-    ))
+return PhpCsFixer\Config::create()
     ->setUsingCache(false)
     ->finder($finder)
+    ->setRules([
+        '@Symfony' => true,
+        'psr0' => false,
+        'unalign_equals' => false,
+        'unalign_double_arrow' => false,
+        'ordered_imports' => true,
+        'short_array_syntax' => true,
+        'header_comment' => [
+            'header' => $header,
+            'commentType' => PhpCsFixer\Fixer\Comment\HeaderCommentFixer::HEADER_COMMENT,
+        ],
+    ])
 ;

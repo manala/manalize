@@ -42,7 +42,7 @@ abstract class Config
      *
      * @return \Generator A collection of \SplFileObject instances
      */
-    public function getFiles() : \Generator
+    public function getFiles(): \Generator
     {
         $origin = $this->getOrigin();
 
@@ -54,7 +54,7 @@ abstract class Config
      *
      * @return \SplFileInfo
      */
-    public function getOrigin() : \SplFileInfo
+    public function getOrigin(): \SplFileInfo
     {
         return new \SplFileInfo(MANALIZE_DIR.'/src/Resources/'.$this->envName.'/'.$this->getPath());
     }
@@ -64,7 +64,7 @@ abstract class Config
      *
      * @return \SplFileInfo
      */
-    public function getTemplate() : \SplFileInfo
+    public function getTemplate(): \SplFileInfo
     {
         return $this->getOrigin();
     }
@@ -76,14 +76,14 @@ abstract class Config
      *
      * @return string
      */
-    abstract public function getPath() : string;
+    abstract public function getPath(): string;
 
     /**
      * Returns the variables to be used for rendering the template.
      *
      * @return Variable[]
      */
-    public function getVars() : array
+    public function getVars(): array
     {
         return $this->vars;
     }

@@ -24,7 +24,7 @@ final class EnvEnum
 
     private $name;
 
-    public static function create(string $name) : self
+    public static function create(string $name): self
     {
         return new self($name);
     }
@@ -34,17 +34,17 @@ final class EnvEnum
         return $this->name;
     }
 
-    public static function exists(string $name) : bool
+    public static function exists(string $name): bool
     {
         return in_array($name, self::getPossibleEnvs(), true);
     }
 
-    public function is(string $name) : bool
+    public function is(string $name): bool
     {
         return $name === $this->name;
     }
 
-    public static function getPossibleEnvs() : array
+    public static function getPossibleEnvs(): array
     {
         return [
             self::SYMFONY,

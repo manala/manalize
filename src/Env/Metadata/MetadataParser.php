@@ -21,7 +21,7 @@ final class MetadataParser
 {
     const METADATA_PATH = MANALIZE_DIR.'/src/Resources/%s/manala.yml';
 
-    public static function parse(EnvEnum $envName) : MetadataBag
+    public static function parse(EnvEnum $envName): MetadataBag
     {
         $raw = (new Parser())->parse(file_get_contents(sprintf(self::METADATA_PATH, $envName)));
 

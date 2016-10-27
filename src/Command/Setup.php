@@ -75,7 +75,7 @@ class Setup extends Command
         return 0;
     }
 
-    private function setupDependencies(SymfonyStyle $io, MetadataBag $metadata) : \Generator
+    private function setupDependencies(SymfonyStyle $io, MetadataBag $metadata): \Generator
     {
         foreach ($metadata->get('packages') as $name => $settings) {
             $defaultEnabled = $settings['enabled'] ?: false;

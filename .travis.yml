@@ -29,4 +29,4 @@ install:
 
 script:
     - phpunit --exclude-group infra
-    - if [[ "$CHECK_PHP_SYNTAX" == "yes" ]]; then vendor/bin/php-cs-fixer fix --config-file=.php_cs --dry-run --no-interaction --diff; fi;
+    - if [[ "$CHECK_PHP_SYNTAX" == "yes" ]]; then vendor/bin/php-cs-fixer fix --config=.php_cs --dry-run --no-interaction --diff; fi;

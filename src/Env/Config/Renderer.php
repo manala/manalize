@@ -27,7 +27,7 @@ class Renderer
      *
      * @throws \InvalidArgumentException If the config template is not readable
      */
-    public static function render(Config $config) : string
+    public static function render(Config $config): string
     {
         $template = $config->getTemplate();
 

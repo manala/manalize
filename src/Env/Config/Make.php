@@ -21,7 +21,7 @@ class Make extends Config
     /**
      * {@inheritdoc}
      */
-    public function getPath() : string
+    public function getPath(): string
     {
         return 'Makefile';
     }

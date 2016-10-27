@@ -18,7 +18,7 @@ class RequirementRepository
     /**
      * @return Requirement[]
      */
-    public static function getRequirements() : array
+    public static function getRequirements(): array
     {
         return [
             new Requirement(

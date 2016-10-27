@@ -33,12 +33,12 @@ class Dependency implements Variable
         $this->enabled = $enabled;
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function isEnabled() : bool
+    public function isEnabled(): bool
     {
         return $this->enabled;
     }
@@ -46,7 +46,7 @@ class Dependency implements Variable
     /**
      * {@inheritdoc}
      */
-    public function getReplaces() : array
+    public function getReplaces(): array
     {
         return [
             sprintf('{{ %s_enabled }}', $this->getName()) => $this->isEnabled() ? 'true' : 'false',

@@ -48,7 +48,7 @@ final class MetadataBag
      *
      * @return bool
      */
-    public function has(string $path) : bool
+    public function has(string $path): bool
     {
         return (bool) $this->doGet($this->elements, $path, false);
     }
@@ -83,7 +83,7 @@ final class MetadataBag
         return $result;
     }
 
-    private function didYouMean(string $search, array $possibleMatches, string $fullPath) : \LogicException
+    private function didYouMean(string $search, array $possibleMatches, string $fullPath): \LogicException
     {
         $minScore = INF;
 

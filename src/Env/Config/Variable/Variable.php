@@ -24,7 +24,7 @@ interface Variable
      *
      * @return array Of format [placeholder => value]
      */
-    public function getReplaces() : array;
+    public function getReplaces(): array;
 
     /**
      * Checks that a given value is properly formatted for the current implementation.
