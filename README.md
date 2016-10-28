@@ -8,9 +8,15 @@ Manalize
 Installation
 -------------
 
-#### Download:
+#### Using the installer:
 ```sh
-$ curl -L https://github.com/manala/manalize/releases/download/v0.2.1/manalize.phar > /usr/local/bin/manalize
+curl -LSs https://raw.githubusercontent.com/manala/manalize/master/installer.php | php
+```
+
+#### Manually:
+```sh
+$ version=$(curl 'https://api.github.com/repos/manala/manalize/releases/latest'|grep tag_name|cut -d: -f2|sed -e 's/[ ",]/''/g')
+$ curl -SLs https://github.com/manala/manalize/releases/download/$version/manalize.phar > /usr/local/bin/manalize
 $ chmod +x /usr/local/bin/manalize
 ```
 
