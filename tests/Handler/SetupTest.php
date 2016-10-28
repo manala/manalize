@@ -12,6 +12,7 @@
 namespace Manala\Manalize\Tests\Handler;
 
 use Manala\Manalize\Env\Config\Variable\AppName;
+use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvEnum;
 use Manala\Manalize\Handler\Setup;
 use Symfony\Component\Filesystem\Filesystem;
@@ -25,24 +26,47 @@ class SetupTest extends \PHPUnit_Framework_TestCase
         self::$cwd = manala_get_tmp_dir('tests_setup_handler_');
     }
 
-    public function testHandle()
+    public function provideHandleData()
+    {
+        return [
+            [
+                [],
+                [
+                    'Vagrantfile',
+                    'ansible/.manalize',
+                    'ansible/ansible.yml',
+                    'ansible/app.yml',
+                    'ansible/deploy.yml',
+                    'ansible/group_vars/app.yml',
+                    'ansible/group_vars/app_local.yml.sample',
+                    'ansible/group_vars/deploy.yml',
+                    'ansible/group_vars/deploy_demo.yml',
+                    'ansible/group_vars/deploy_prod.yml',
+                    'Makefile',
+                ],
+            ],
+            [
+                ['dumper_flags' => Dumper::DUMP_METADATA],
+                ['ansible/.manalize'],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideHandleData
+     */
+    public function testHandle($options, $expectedFiles)
     {
         $dumpedFiles = [];
-        $expectedFiles = [
-            'Vagrantfile',
-            'ansible/.manalize',
-            'ansible/ansible.yml',
-            'ansible/app.yml',
-            'ansible/deploy.yml',
-            'ansible/group_vars/app.yml',
-            'ansible/group_vars/app_local.yml.sample',
-            'ansible/group_vars/deploy.yml',
-            'ansible/group_vars/deploy_demo.yml',
-            'ansible/group_vars/deploy_prod.yml',
-            'Makefile',
-        ];
 
-        $handler = new Setup(self::$cwd, new AppName('setup_test'), EnvEnum::create(EnvEnum::SYMFONY), $this->prophesize(\Iterator::class)->reveal());
+        $handler = new Setup(
+            self::$cwd,
+            new AppName('setup_test'),
+            EnvEnum::create(EnvEnum::SYMFONY),
+            $this->prophesize(\Iterator::class)->reveal(),
+            $options
+        );
+
         $handler->handle(function ($target) use (&$dumpedFiles) {
             $dumpedFiles[] = $target;
         });

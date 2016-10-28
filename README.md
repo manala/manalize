@@ -31,6 +31,16 @@ Usage
 $ manalize setup ~/my-awesome-project
 ```
 
+##### Metadata only
+
+Sometimes, it can be handy to reconfigure the environment(s), without affecting the project files (in order to use the diff command with a new environment config for instance).
+
+The following command will only update the `ansible/.manalize` metadata file:
+
+```
+$ manalize setup --no-update ~/my-awesome-project
+```
+
 #### Diff
 
 Get the diff:

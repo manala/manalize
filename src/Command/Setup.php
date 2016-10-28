@@ -14,6 +14,7 @@ namespace Manala\Manalize\Command;
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
 use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
+use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvEnum;
 use Manala\Manalize\Env\Metadata\MetadataBag;
 use Manala\Manalize\Env\Metadata\MetadataParser;
@@ -41,7 +42,9 @@ class Setup extends Command
             ->setName('setup')
             ->setDescription('Configures your environment on top of Manala ansible roles')
             ->addArgument('cwd', InputArgument::OPTIONAL, 'The path of the application for which to setup the environment', getcwd())
-            ->addOption('env', null, InputOption::VALUE_OPTIONAL, 'One of the supported environment types', 'symfony');
+            ->addOption('env', null, InputOption::VALUE_OPTIONAL, 'One of the supported environment types', 'symfony')
+            ->addOption('no-update', null, InputOption::VALUE_NONE, 'If set, will only update metadata')
+        ;
     }
 
     /**
@@ -64,7 +67,16 @@ class Setup extends Command
         $appName = $io->ask('Application name', AppName::validate($defaultAppName, false) ? $defaultAppName : 'app', [AppName::class, 'validate']);
 
         $envMetadata = MetadataParser::parse($envName);
-        $handler = new SetupHandler($cwd, new AppName($appName), $envName, $this->setupDependencies($io, $envMetadata));
+
+        $dumperFlags = $input->getOption('no-update') ? Dumper::DUMP_METADATA : Dumper::DUMP_ALL;
+        $options = ['dumper_flags' => $dumperFlags];
+        $handler = new SetupHandler(
+            $cwd,
+            new AppName($appName),
+            $envName,
+            $this->setupDependencies($io, $envMetadata),
+            $options
+        );
 
         $handler->handle(function ($target) use ($io) {
             $io->writeln(sprintf('- %s', $target));
