@@ -10,7 +10,7 @@ Installation
 
 #### Using the installer:
 ```sh
-curl -LSs https://raw.githubusercontent.com/manala/manalize/master/installer.php | php
+$ curl -LSs https://raw.githubusercontent.com/manala/manalize/master/installer.php | php
 ```
 
 #### Manually:
