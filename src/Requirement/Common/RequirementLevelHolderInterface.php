@@ -21,19 +21,19 @@ interface RequirementLevelHolderInterface
      *
      * @return int
      */
-    public function getLevel();
+    public function getLevel(): int;
 
     /**
      * Human readable label for requirement level. Eg "Required", "Recommended".
      *
      * @return string
      */
-    public function getLevelLabel();
+    public function getLevelLabel(): string;
 
     /**
      * Is the requirement mandatory ('Required') or just recommended ?
      *
      * @return bool
      */
-    public function isRequired();
+    public function isRequired(): bool;
 }

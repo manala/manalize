@@ -13,33 +13,28 @@ namespace Manala\Manalize\Requirement\Common;
 
 trait RequirementLevelHolderTrait
 {
-    /**
-     * Is the requirement mandatory ("required") or recommended ?
-     *
-     * @var int
-     */
     private $level;
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
-    public function getLevel()
+    public function getLevel(): int
     {
         return $this->level;
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    public function getLevelLabel()
+    public function getLevelLabel(): string
     {
         return RequirementLevel::getLabels()[$this->level];
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
-    public function isRequired()
+    public function isRequired(): bool
     {
         return $this->level === RequirementLevel::REQUIRED;
     }

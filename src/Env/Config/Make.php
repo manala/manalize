@@ -21,16 +21,8 @@ class Make extends Config
     /**
      * {@inheritdoc}
      */
-    public function getPath()
+    public function getPath(): string
     {
         return 'Makefile';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTemplate()
-    {
-        return $this->getOrigin();
     }
 }

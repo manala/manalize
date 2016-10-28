@@ -26,16 +26,11 @@ use Manala\Manalize\Requirement\Violation\RequirementViolationList;
  */
 class RequirementChecker
 {
-    /** @var HandlerFactoryResolver */
     private $handlerFactoryResolver;
-
-    /** @var RequirementViolationLabelBuilder */
     private $violationLabelBuilder;
 
-    public function __construct(
-        HandlerFactoryResolver $handlerFactoryResolver,
-        RequirementViolationLabelBuilder $violationLabelBuilder
-    ) {
+    public function __construct(HandlerFactoryResolver $handlerFactoryResolver, RequirementViolationLabelBuilder $violationLabelBuilder)
+    {
         $this->handlerFactoryResolver = $handlerFactoryResolver;
         $this->violationLabelBuilder = $violationLabelBuilder;
     }
@@ -51,9 +46,8 @@ class RequirementChecker
     {
         $handlerFactory = $this->handlerFactoryResolver->getHandlerFactory($requirement);
 
-        $processor = $handlerFactory->getProcessor();
         try {
-            $output = $processor->process($requirement->getName());
+            $output = $handlerFactory->getProcessor()->process($requirement->getName());
         } catch (MissingRequirementException $exception) {
             $violationList->addViolation($this->createViolation($requirement));
 
@@ -62,10 +56,9 @@ class RequirementChecker
 
         $versionParser = $handlerFactory->getVersionParser();
         $version = $versionParser->getVersion($requirement->getName(), $output);
+
         if (!SemVer::satisfies($version, $requirement->getSemanticVersion())) {
             $violationList->addViolation($this->createViolation($requirement, $version));
-
-            return;
         }
     }
 
@@ -78,7 +71,7 @@ class RequirementChecker
      *
      * @return RequirementViolation
      */
-    private function createViolation(Requirement $requirement, $currentVersion = null)
+    private function createViolation(Requirement $requirement, $currentVersion = null): RequirementViolation
     {
         $label = $this->violationLabelBuilder->buildViolationLabel($requirement, $currentVersion);
 

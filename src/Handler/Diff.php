@@ -25,39 +25,28 @@ class Diff
     const EXIT_SUCCESS_DIFF = 1;
     const EXIT_SUCCESS_NO_DIFF = 0;
 
-    /** @var EnvEnum */
-    private $envType;
-
-    /** @var string */
+    private $envName;
     private $cwd;
-
-    /** @var bool */
-    private $colorSupport;
-
-    /** @var Filesystem */
     private $fs;
-
-    /** @var int */
-    private $lastExitCode;
-
-    /** @var string */
-    private $errorOutput;
+    private $colorSupport;
+    private $lastExitCode = 0;
+    private $errorOutput = '';
 
     /**
-     * @param EnvEnum $envType
+     * @param EnvEnum $envName
      * @param string  $cwd          The working dir
      * @param bool    $colorSupport
      */
-    public function __construct(EnvEnum $envType, $cwd, $colorSupport = true)
+    public function __construct(EnvEnum $envName, string $cwd, bool $colorSupport = true)
     {
-        $this->envType = $envType;
+        $this->envName = $envName;
         $this->cwd = $cwd;
         $this->colorSupport = $colorSupport;
 
         $this->fs = new Filesystem();
     }
 
-    public function handle(callable $notifier)
+    public function handle(callable $notifier): int
     {
         $resourcesPath = $this->createTmpEnv();
 
@@ -93,38 +82,28 @@ class Diff
         return $this->lastExitCode;
     }
 
-    /**
-     * @return int
-     */
-    public function getExitCode()
+    public function getExitCode(): int
     {
         return $this->lastExitCode;
     }
 
-    /**
-     * git-diff is also successful if the exit code is `1`.
-     *
-     * @return bool
-     */
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
+        // git-diff is also successful if the exit code is `1`
         return in_array($this->lastExitCode, [static::EXIT_SUCCESS_NO_DIFF, static::EXIT_SUCCESS_DIFF], true);
     }
 
-    public function hasDiff()
+    public function hasDiff(): bool
     {
         return $this->lastExitCode === static::EXIT_SUCCESS_DIFF;
     }
 
-    /**
-     * @return string
-     */
-    public function getErrorOutput()
+    public function getErrorOutput(): string
     {
         return $this->errorOutput;
     }
 
-    private function createTmpEnv()
+    private function createTmpEnv(): string
     {
         $tmpPath = manala_get_tmp_dir('diff_');
 

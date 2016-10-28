@@ -20,13 +20,10 @@ use Manala\Manalize\Env\Config\Config;
  */
 class Env
 {
-    /** @var string */
     private $name;
-
-    /** @var Config[] */
     private $configs = [];
 
-    public function __construct($name, Config ...$configs)
+    public function __construct(string $name, Config ...$configs)
     {
         $this->name = $name;
         $this->configs = $configs;
@@ -35,7 +32,7 @@ class Env
     /**
      * @return Config[]
      */
-    public function getConfigs()
+    public function getConfigs(): array
     {
         return $this->configs;
     }

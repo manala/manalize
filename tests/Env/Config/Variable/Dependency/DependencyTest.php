@@ -24,6 +24,6 @@ class DependencyTest extends \PHPUnit_Framework_TestCase
 
     public function testValidateDoesNothing()
     {
-        $this->assertNull(Dependency::validate('dummyval'));
+        $this->assertSame('dummyval', Dependency::validate('dummyval'));
     }
 }

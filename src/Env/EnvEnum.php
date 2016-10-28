@@ -18,18 +18,13 @@ use Manala\Manalize\Exception\InvalidEnvException;
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-class EnvEnum
+final class EnvEnum
 {
     const SYMFONY = 'symfony';
 
     private $name;
 
-    /**
-     * @param string $name One of the existing envs
-     *
-     * @return EnvEnum
-     */
-    public static function create($name)
+    public static function create(string $name): self
     {
         return new self($name);
     }
@@ -39,33 +34,24 @@ class EnvEnum
         return $this->name;
     }
 
-    /**
-     * @return bool Whether the env exists or not
-     */
-    public static function exists($name)
+    public static function exists(string $name): bool
     {
         return in_array($name, self::getPossibleEnvs(), true);
     }
 
-    /**
-     * @return bool Whether this env is of the given type
-     */
-    public function is($name)
+    public function is(string $name): bool
     {
         return $name === $this->name;
     }
 
-    /**
-     * @return array
-     */
-    public static function getPossibleEnvs()
+    public static function getPossibleEnvs(): array
     {
         return [
             self::SYMFONY,
         ];
     }
 
-    final private function __construct($name)
+    final private function __construct(string $name)
     {
         if (false === self::exists($name)) {
             throw new InvalidEnvException($name);

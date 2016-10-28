@@ -29,35 +29,26 @@ class VagrantBoxVersionResolver
      *
      * @return VagrantBoxVersion
      */
-    public static function resolve(\Traversable $dependencies)
+    public static function resolve(\Traversable $dependencies): VagrantBoxVersion
     {
-        $php = self::getDependency('php', $dependencies);
+        $php = self::findDependency('php', $dependencies);
 
-        if (null === $php) {
+        if (!$php instanceof VersionBounded) {
             return new VagrantBoxVersion(self::DEFAULT_BOX_VERSION);
         }
 
         return new VagrantBoxVersion(self::resolveFromPhpVersion($php->getVersion()));
     }
 
-    /**
-     * @return float
-     */
-    private static function resolveFromPhpVersion($phpVersion)
+    private static function resolveFromPhpVersion($phpVersion): string
     {
         return (float) $phpVersion < 7 ? '~> 2.0.0' : self::DEFAULT_BOX_VERSION;
     }
 
-    /**
-     * @param string       $name
-     * @param \Traversable $dependencies
-     *
-     * @return VersionBounded|null
-     */
-    private static function getDependency($name, \Traversable $dependencies)
+    private static function findDependency(string $name, \Traversable $dependencies)
     {
         return search(function (Dependency $dependency) use ($name) {
-            return $dependency instanceof VersionBounded && $name === $dependency->getName();
+            return $name === $dependency->getName();
         }, $dependencies);
     }
 }

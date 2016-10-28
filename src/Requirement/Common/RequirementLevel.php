@@ -16,7 +16,7 @@ final class RequirementLevel
     const REQUIRED = 1;
     const RECOMMENDED = 2;
 
-    public static function getLabels()
+    public static function getLabels(): array
     {
         return [
             self::RECOMMENDED => 'Recommended',

@@ -24,25 +24,25 @@ abstract class Config
     /**
      * @var EnvEnum
      */
-    protected $envType;
+    protected $envName;
 
     /**
      * @var Variable[]
      */
     protected $vars;
 
-    public function __construct(EnvEnum $envType, Variable ...$vars)
+    public function __construct(EnvEnum $envName, Variable ...$vars)
     {
-        $this->envType = $envType;
+        $this->envName = $envName;
         $this->vars = $vars;
     }
 
     /**
-     * Generates the config template as an object.
+     * Gets the files of this configuration.
      *
-     * @return \Generator
+     * @return \Generator A collection of \SplFileObject instances
      */
-    public function getFiles()
+    public function getFiles(): \Generator
     {
         $origin = $this->getOrigin();
 
@@ -50,21 +50,24 @@ abstract class Config
     }
 
     /**
-     * Gets the origin configuration file.
+     * Gets the configuration template(s).
      *
-     * @return \SplFileInfo|string A file or directory path, or a \SplFileInfo object
+     * @return \SplFileInfo
      */
-    public function getOrigin()
+    public function getOrigin(): \SplFileInfo
     {
-        return new \SplFileInfo(MANALIZE_DIR.'/src/Resources/'.$this->envType.'/'.$this->getPath());
+        return new \SplFileInfo(MANALIZE_DIR.'/src/Resources/'.$this->envName.'/'.$this->getPath());
     }
 
     /**
-     * Returns the template to render (or its path).
+     * Returns the template to render.
      *
-     * @return \SplFileInfo|null
+     * @return \SplFileInfo
      */
-    abstract public function getTemplate();
+    public function getTemplate(): \SplFileInfo
+    {
+        return $this->getOrigin();
+    }
 
     /**
      * Returns the path name of the configuration file or directory.
@@ -73,14 +76,14 @@ abstract class Config
      *
      * @return string
      */
-    abstract public function getPath();
+    abstract public function getPath(): string;
 
     /**
      * Returns the variables to be used for rendering the template.
      *
      * @return Variable[]
      */
-    public function getVars()
+    public function getVars(): array
     {
         return $this->vars;
     }

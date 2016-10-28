@@ -26,22 +26,11 @@ class RequirementViolation implements RequirementLevelHolderInterface
 {
     use RequirementLevelHolderTrait;
 
-    /** @var string */
     private $name;
-
-    /** @var string */
     private $label;
-
-    /** @var string */
     private $help;
 
-    /**
-     * @param string      $name
-     * @param string      $label
-     * @param int         $level
-     * @param string|null $help
-     */
-    public function __construct($name, $label, $level = RequirementLevel::REQUIRED, $help = null)
+    public function __construct(string $name, string $label, string $level = RequirementLevel::REQUIRED, $help = null)
     {
         $this->name = $name;
         $this->label = $label;
@@ -49,24 +38,18 @@ class RequirementViolation implements RequirementLevelHolderInterface
         $this->help = $help;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getHelp()
     {

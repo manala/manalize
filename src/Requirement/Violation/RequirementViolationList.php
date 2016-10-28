@@ -42,7 +42,7 @@ class RequirementViolationList extends \ArrayObject
     /**
      * @return RequirementViolation[]
      */
-    public function getViolations()
+    public function getViolations(): array
     {
         return $this->getArrayCopy();
     }
@@ -54,7 +54,7 @@ class RequirementViolationList extends \ArrayObject
      *
      * @return bool
      */
-    private function containsViolations($level)
+    private function containsViolations($level): bool
     {
         foreach ($this->getViolations() as $violation) {
             if ($violation->getLevel() === $level) {
@@ -65,18 +65,12 @@ class RequirementViolationList extends \ArrayObject
         return false;
     }
 
-    /**
-     * @return bool
-     */
-    public function containsRequiredViolations()
+    public function containsRequiredViolations(): bool
     {
         return $this->containsViolations(RequirementLevel::REQUIRED);
     }
 
-    /**
-     * @return bool
-     */
-    public function containsRecommendedViolations()
+    public function containsRecommendedViolations(): bool
     {
         return $this->containsViolations(RequirementLevel::RECOMMENDED);
     }

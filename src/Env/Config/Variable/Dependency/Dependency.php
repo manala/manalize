@@ -27,24 +27,18 @@ class Dependency implements Variable
      * @param string $name
      * @param bool   $enabled
      */
-    public function __construct($name, $enabled)
+    public function __construct(string $name, bool $enabled)
     {
         $this->name = $name;
         $this->enabled = $enabled;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return bool
-     */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
         return $this->enabled;
     }
@@ -52,7 +46,7 @@ class Dependency implements Variable
     /**
      * {@inheritdoc}
      */
-    public function getReplaces()
+    public function getReplaces(): array
     {
         return [
             sprintf('{{ %s_enabled }}', $this->getName()) => $this->isEnabled() ? 'true' : 'false',
@@ -62,7 +56,8 @@ class Dependency implements Variable
     /**
      * {@inheritdoc}
      */
-    public static function validate($value)
+    public static function validate(string $value)
     {
+        return $value;
     }
 }
