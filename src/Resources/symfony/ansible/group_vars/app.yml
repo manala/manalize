@@ -19,13 +19,6 @@ app_options:
 
 app_patterns:
 
-  ########
-  # Motd #
-  ########
-
-  motd_template: template/cow.j2
-  motd_message:  I can see clearly now - Jimmy Cliff
-
   ############
   # Timezone #
   ############
@@ -44,7 +37,6 @@ app_patterns:
     - APP_DATABASE_NAME:           app
     - APP_DATABASE_USER:           "{{ app.user }}"
     - APP_DATABASE_PASSWORD:       null
-    - APP_DOMAIN:                  "{{ app.host }}"
 
   #########
   # Files #
@@ -57,14 +49,22 @@ app_patterns:
     - path:  "{{ app.dir }}{{ app.dir_release }}/var/cache"
       src:   "{{ app.cache_dir }}"
       state: link_directory
+    - path:  "{{ app.dir }}{{ app.dir_release }}/var/sessions"
+      src:   "{{ app.sessions_dir }}"
+      state: link_directory
 
   #######
   # Npm #
   #######
 
-  npm_packages:
-    - package: gulp
-      version: 3
+  #npm_packages:
+  #  - package: gulp
+  #    version: 3
+  #  - gulpjs/gulp-cli#4.0
+  #  - package: webpack
+  #    version: 1
+  #  - package: webpack
+  #    version: 2.1.0-beta.13
 
   #######
   # Php #
@@ -88,9 +88,6 @@ app_patterns:
       template: configs/app.{{ env }}.j2
       config:
         - date.timezone: UTC
-        # App
-        - upload_max_filesize: 100M
-        - post_max_size:       100M
 
   #########
   # Nginx #
