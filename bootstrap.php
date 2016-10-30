@@ -1,6 +1,12 @@
 <?php
 
-require_once __DIR__.'/vendor/autoload.php';
+foreach (array(__DIR__.'/../../autoload.php', __DIR__.'/../vendor/autoload.php', __DIR__.'/vendor/autoload.php') as $autoload) {
+    if (file_exists($autoload)) {
+        require_once $autoload;
+
+        break;
+    }
+}
 
 define('MANALIZE_DIR', __DIR__);
 define('MANALIZE_TMP_ROOT_DIR', sys_get_temp_dir().'/Manala');
