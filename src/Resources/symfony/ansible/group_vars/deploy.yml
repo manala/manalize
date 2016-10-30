@@ -27,7 +27,6 @@ manala_deploy_strategy_git_version: master
 
 manala_deploy_copied:
   - vendor
-  - node_modules
 
 ##########
 # Shared #
@@ -38,6 +37,7 @@ manala_deploy_shared_files:
 
 manala_deploy_shared_dirs:
   - var/logs
+  - var/sessions
 
 ############
 # Writable #
