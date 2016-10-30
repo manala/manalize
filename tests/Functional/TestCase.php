@@ -82,7 +82,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     protected static function manalizeProject($cwd, $appName, EnvEnum $envType, \Iterator $dependencies = null)
     {
         if (null === $dependencies) {
-            $dependencies = self::getDefaultDependenciesForEnv($envType);
+            $dependencies = Setup::createDefaultDependencySet(MetadataParser::parse($envType));
         }
 
         (new Setup($cwd, new AppName($appName), $envType, $dependencies))->handle(function () {

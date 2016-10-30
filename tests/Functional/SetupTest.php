@@ -67,7 +67,7 @@ class SetupTest extends TestCase
         return [
             // name: project dir name, expected dependencies: default,
             [
-                ["\n", "\n", "\n", "\n", "\n", "\n"],
+                ["\n", "\n"],
                 <<<'RUBY'
   :name        => 'manalized-app',
   :box         => 'manala/app-dev-debian',
@@ -95,7 +95,7 @@ YAML
             ],
             // name: "foo-bar.manala", expected dependencies: php 5.6
             [
-                ['foo-bar.manala', '5.6', "\n", "\n", "\n", "\n", "\n"],
+                ['foo-bar.manala', 'yes', '5.6', "\n", "\n", "\n", "\n", "\n"],
                 <<<'RUBY'
   :name        => 'foo-bar.manala',
   :box         => 'manala/app-dev-debian',
@@ -122,7 +122,7 @@ YAML
             ],
             // name: "foo-bar.manala", expected dependencies: default
             [
-                ['foo-bar.manala', "\n", "\n", "\n", "\n", "\n"],
+                ['foo-bar.manala', "\n"],
                 <<<'RUBY'
   :name        => 'foo-bar.manala',
   :box         => 'manala/app-dev-debian',
