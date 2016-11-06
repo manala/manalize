@@ -29,6 +29,11 @@ class Env
         $this->configs = $configs;
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     /**
      * @return Config[]
      */

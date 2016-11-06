@@ -13,6 +13,7 @@ namespace Manala\Manalize\Env;
 
 use Manala\Manalize\Env\Config\Renderer;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Manala environment config dumper.
@@ -71,7 +72,10 @@ class Dumper
      */
     public static function dumpMetadata(Env $env, string $workDir): string
     {
-        (new Filesystem())->dumpFile($target = "$workDir/ansible/.manalize", serialize($env));
+        (new Filesystem())->dumpFile(
+            $target = "$workDir/ansible/.manalize.yml",
+            Yaml::dump((new EnvExporter())->export($env), 4)
+        );
 
         return $target;
     }

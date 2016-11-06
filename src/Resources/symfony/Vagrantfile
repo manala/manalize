@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 app = {
-  :name        => '{{ app }}',
+  :name        => '{{ app_name }}',
   :box         => 'manala/app-dev-debian',
   :box_version => '{{ box_version }}',
   :box_memory  => 1024

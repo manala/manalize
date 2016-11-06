@@ -14,8 +14,8 @@ namespace Manala\Manalize\Tests\Functional;
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
 use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
+use Manala\Manalize\Env\Defaults\DefaultsParser;
 use Manala\Manalize\Env\EnvEnum;
-use Manala\Manalize\Env\Metadata\MetadataParser;
 use Manala\Manalize\Handler\Setup;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
@@ -25,6 +25,8 @@ use Symfony\Component\Process\Process;
  */
 abstract class TestCase extends \PHPUnit_Framework_TestCase
 {
+    const FIXTURES_DIR = __DIR__.'/../fixtures';
+
     private static $symfonyStandardCopyPath = null;
 
     /**
@@ -42,7 +44,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
 
     protected static function getDefaultDependenciesForEnv(EnvEnum $envType)
     {
-        foreach (MetadataParser::parse($envType)->get('packages') as $name => $configs) {
+        foreach (DefaultsParser::parse($envType)->get('packages') as $name => $configs) {
             if (isset($configs['constraint'])) {
                 yield new VersionBounded($name, $configs['enabled'], $configs['default']);
 
@@ -79,10 +81,10 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         (new Filesystem())->mirror(self::$symfonyStandardCopyPath, $cwd);
     }
 
-    protected static function manalizeProject($cwd, $appName, EnvEnum $envType, \Iterator $dependencies = null)
+    protected static function manalizeProject($cwd, $appName, EnvEnum $envType, \Traversable $dependencies = null)
     {
         if (null === $dependencies) {
-            $dependencies = Setup::createDefaultDependencySet(MetadataParser::parse($envType));
+            $dependencies = Setup::createDefaultDependencySet(DefaultsParser::parse($envType));
         }
 
         (new Setup($cwd, new AppName($appName), $envType, $dependencies))->handle(function () {

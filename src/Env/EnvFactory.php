@@ -13,9 +13,11 @@ namespace Manala\Manalize\Env;
 
 use Manala\Manalize\Env\Config\Ansible;
 use Manala\Manalize\Env\Config\Make;
+use Manala\Manalize\Env\Config\Registry;
 use Manala\Manalize\Env\Config\Vagrant;
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Config\Variable\VagrantBoxVersionResolver;
+use Manala\Manalize\Env\Config\Variable\VariableHydrator;
 
 /**
  * Provides Env instances.
@@ -24,13 +26,39 @@ use Manala\Manalize\Env\Config\Variable\VagrantBoxVersionResolver;
  */
 class EnvFactory
 {
-    public static function createEnv(EnvEnum $type, AppName $appName, \Traversable $dependencies): Env
+    public static function createEnv(EnvEnum $name, AppName $appName, \Traversable $dependencies): Env
     {
         return new Env(
-            (string) $type,
-            new Vagrant($type, $appName, VagrantBoxVersionResolver::resolve($dependencies)),
-            new Ansible($type, ...$dependencies),
-            new Make($type)
+            (string) $name,
+            new Vagrant($name, $appName, VagrantBoxVersionResolver::resolve($dependencies)),
+            new Ansible($name, ...$dependencies),
+            new Make($name)
         );
+    }
+
+    public static function createEnvFromMetadata(string $rawName, array $metadata): Env
+    {
+        $hydrator = new VariableHydrator();
+        $configRegistry = new Registry();
+        $name = EnvEnum::create($rawName);
+        $configs = [];
+
+        foreach ($metadata as $configAlias => $perAliasVars) {
+            $hydratedVars = [];
+            $configClass = $configRegistry->getClassForAlias($configAlias);
+
+            foreach ($perAliasVars as $alias => $vars) {
+                $class = $configRegistry->getClassForAlias($alias);
+                foreach ($vars as $data) {
+                    $var = (new \ReflectionClass($class))->newInstanceWithoutConstructor();
+                    $hydrator->hydrate($var, $data);
+                    $hydratedVars[] = $var;
+                }
+            }
+
+            $configs[] = $configClass::create($name, $hydratedVars);
+        }
+
+        return new Env($rawName, ...$configs);
     }
 }

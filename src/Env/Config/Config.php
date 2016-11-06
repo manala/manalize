@@ -31,6 +31,11 @@ abstract class Config
      */
     protected $vars;
 
+    public static function create(EnvEnum $envName, array $vars)
+    {
+        return new static($envName, ...$vars);
+    }
+
     public function __construct(EnvEnum $envName, Variable ...$vars)
     {
         $this->envName = $envName;
@@ -40,7 +45,7 @@ abstract class Config
     /**
      * Gets the files of this configuration.
      *
-     * @return \Generator A collection of \SplFileObject instances
+     * @return \Generator A collection of \SplFileInfo instances
      */
     public function getFiles(): \Generator
     {

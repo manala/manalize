@@ -18,7 +18,13 @@ namespace Manala\Manalize\Env\Config\Variable;
  */
 final class VagrantBoxVersion extends SingleValue
 {
-    protected static $placeholder = '{{ box_version }}';
+    /**
+     * {@inheritdoc}
+     */
+    public function getName(): string
+    {
+        return 'box_version';
+    }
 
     /**
      * {@inheritdoc}

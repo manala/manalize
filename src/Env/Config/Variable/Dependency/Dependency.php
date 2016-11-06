@@ -20,8 +20,8 @@ use Manala\Manalize\Env\Config\Variable\Variable;
  */
 class Dependency implements Variable
 {
-    private $name;
-    private $enabled;
+    protected $name;
+    protected $enabled;
 
     /**
      * @param string $name
