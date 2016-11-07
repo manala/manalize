@@ -12,9 +12,12 @@
 namespace Manala\Manalize\Handler;
 
 use Manala\Manalize\Env\Config\Variable\AppName;
+use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
+use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
 use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvEnum;
 use Manala\Manalize\Env\EnvFactory;
+use Manala\Manalize\Env\Metadata\MetadataBag;
 
 /**
  * @author Robin Chalas <robin.chalas@gmail.com>
@@ -47,6 +50,21 @@ class Setup
 
         foreach (Dumper::dump($env, $this->cwd, $this->getDumperFlags()) as $target) {
             $notifier(str_replace($this->cwd.'/', '', $target));
+        }
+    }
+
+    public static function createDefaultDependencySet(MetadataBag $metadata)
+    {
+        foreach ($metadata->get('packages') as $name => $package) {
+            $defaultVersion = $package['default'] ?? null;
+
+            if (null === $defaultVersion) {
+                yield new Dependency($name, $package['enabled']);
+
+                continue;
+            }
+
+            yield new VersionBounded($name, $package['enabled'], $defaultVersion);
         }
     }
 
