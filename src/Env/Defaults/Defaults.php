@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Env\Metadata;
+namespace Manala\Manalize\Env\Defaults;
 
 /**
- * A metadata bag containing all defaults for a given env type.
+ * A bag containing all defaults for a given env.
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-final class MetadataBag
+final class Defaults
 {
     private $elements;
 
     /**
-     * @param array $elements The raw metadata
+     * @param array $elements The raw defaults
      */
     public function __construct(array $elements)
     {
@@ -29,7 +29,7 @@ final class MetadataBag
     }
 
     /**
-     * Gets the value of a given metadata option.
+     * Gets the value of a given default option.
      *
      * @param string $path The dot path of the option for which to
      *                     return the value
@@ -42,7 +42,7 @@ final class MetadataBag
     }
 
     /**
-     * Checks if a given metadata option exists.
+     * Checks if a given default option exists.
      *
      * @param string $path The dot path of the option for which to check the existence
      *
@@ -96,7 +96,7 @@ final class MetadataBag
             }
         }
 
-        $message = sprintf('Unable to find metadata for path "%s".', $fullPath);
+        $message = sprintf('Unable to find default for path "%s".', $fullPath);
 
         if (isset($guess) && $minScore < 3) {
             $message .= sprintf(" Did you mean \"%s\"?\n\n", str_replace($search, $guess, $fullPath));

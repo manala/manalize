@@ -13,9 +13,11 @@ namespace Manala\Manalize\Handler;
 
 use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvEnum;
+use Manala\Manalize\Env\EnvFactory;
 use Manala\Manalize\Exception\HandlingFailureException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * @author Maxime STEINHAUSSER <maxime.steinhausser@gmail.com>
@@ -109,10 +111,11 @@ class Diff
 
         $this->fs->mkdir($tmpPath);
 
-        $metadata = unserialize(file_get_contents("$this->cwd/ansible/.manalize"));
+        $metadata = Yaml::parse(file_get_contents("$this->cwd/ansible/.manalize.yml"));
+        $envName = key($metadata);
 
         for (
-            $dump = Dumper::dump($metadata, $tmpPath, Dumper::DUMP_FILES);
+            $dump = Dumper::dump(EnvFactory::createEnvFromMetadata($envName, $metadata[$envName]), $tmpPath, Dumper::DUMP_FILES);
             $dump->valid();
             $dump->next()
         );

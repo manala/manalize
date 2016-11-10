@@ -14,10 +14,10 @@ namespace Manala\Manalize\Handler;
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
 use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
+use Manala\Manalize\Env\Defaults\Defaults;
 use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvEnum;
 use Manala\Manalize\Env\EnvFactory;
-use Manala\Manalize\Env\Metadata\MetadataBag;
 
 /**
  * @author Robin Chalas <robin.chalas@gmail.com>
@@ -53,9 +53,9 @@ class Setup
         }
     }
 
-    public static function createDefaultDependencySet(MetadataBag $metadata)
+    public static function createDefaultDependencySet(Defaults $defaults)
     {
-        foreach ($metadata->get('packages') as $name => $package) {
+        foreach ($defaults->get('packages') as $name => $package) {
             $defaultVersion = $package['default'] ?? null;
 
             if (null === $defaultVersion) {

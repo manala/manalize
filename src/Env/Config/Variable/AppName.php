@@ -18,7 +18,13 @@ namespace Manala\Manalize\Env\Config\Variable;
  */
 final class AppName extends SingleValue
 {
-    protected static $placeholder = '{{ app }}';
+    /**
+     * {@inheritdoc}
+     */
+    public function getName(): string
+    {
+        return 'app_name';
+    }
 
     /**
      * {@inheritdoc}

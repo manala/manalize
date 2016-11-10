@@ -15,8 +15,10 @@ use Manala\Manalize\Env\Config\Config;
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvEnum;
+use Manala\Manalize\Env\EnvExporter;
 use Manala\Manalize\Env\EnvFactory;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Yaml\Yaml;
 
 class DumperTest extends \PHPUnit_Framework_TestCase
 {
@@ -35,7 +37,7 @@ class DumperTest extends \PHPUnit_Framework_TestCase
         foreach (Dumper::dump($env, $cwd) as $̄);
 
         $this->assertFileExists("$cwd/ansible/ansible.yml");
-        $this->assertStringEqualsFile("$cwd/ansible/.manalize", serialize($env));
+        $this->assertStringEqualsFile("$cwd/ansible/.manalize.yml", Yaml::dump((new EnvExporter())->export($env), 4));
     }
 
     public function testDumpMetadataOnly()
@@ -45,7 +47,7 @@ class DumperTest extends \PHPUnit_Framework_TestCase
         foreach (Dumper::dump($env, $cwd, Dumper::DUMP_METADATA) as $̄);
 
         $this->assertFileNotExists("$cwd/ansible/ansible.yml");
-        $this->assertFileExists("$cwd/ansible/.manalize");
+        $this->assertFileExists("$cwd/ansible/.manalize.yml");
     }
 
     public function testDumpFilesOnly()
@@ -55,7 +57,7 @@ class DumperTest extends \PHPUnit_Framework_TestCase
         foreach (Dumper::dump($env, $cwd, Dumper::DUMP_FILES) as $̄);
 
         $this->assertFileExists("$cwd/ansible/ansible.yml");
-        $this->assertFileNotExists("$cwd/ansible/.manalize");
+        $this->assertFileNotExists("$cwd/ansible/.manalize.yml");
     }
 
     public function tearDown()

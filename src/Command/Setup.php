@@ -14,10 +14,10 @@ namespace Manala\Manalize\Command;
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
 use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
+use Manala\Manalize\Env\Defaults\Defaults;
+use Manala\Manalize\Env\Defaults\DefaultsParser;
 use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvEnum;
-use Manala\Manalize\Env\Metadata\MetadataBag;
-use Manala\Manalize\Env\Metadata\MetadataParser;
 use Manala\Manalize\Handler\Setup as SetupHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -66,7 +66,7 @@ class Setup extends Command
         $defaultAppName = strtolower(basename($cwd));
         $appName = $io->ask('Application name', AppName::validate($defaultAppName, false) ? $defaultAppName : 'app', [AppName::class, 'validate']);
 
-        $envMetadata = MetadataParser::parse($envName);
+        $envMetadata = DefaultsParser::parse($envName);
         $options = ['dumper_flags' => $input->getOption('no-update') ? Dumper::DUMP_METADATA : Dumper::DUMP_ALL];
         $dependencies = $this->shouldConfigureDependencies($io, $envMetadata, $envName)
             ? $this->configureDependencies($io, $envMetadata, $envName)
@@ -82,9 +82,9 @@ class Setup extends Command
         return 0;
     }
 
-    private function configureDependencies(SymfonyStyle $io, MetadataBag $metadata): \Generator
+    private function configureDependencies(SymfonyStyle $io, Defaults $defaults): \Generator
     {
-        foreach ($metadata->get('packages') as $name => $settings) {
+        foreach ($defaults->get('packages') as $name => $settings) {
             $defaultEnabled = $settings['enabled'] ?: false;
             $defaultVersion = $settings['default'] ?? null;
             $enabled = $settings['required'] ?: $io->confirm(sprintf('Install %s?', $name), $defaultEnabled);
@@ -114,13 +114,13 @@ class Setup extends Command
         }
     }
 
-    private function shouldConfigureDependencies(SymfonyStyle $io, MetadataBag $metadata, EnvEnum $envName): bool
+    private function shouldConfigureDependencies(SymfonyStyle $io, Defaults $defaults, EnvEnum $envName): bool
     {
-        $packages = $metadata->get('packages');
+        $packages = $defaults->get('packages');
 
         $io->writeln(sprintf('The default set of dependencies for <info>%s</info> is:', (string) $envName));
-        $io->table(['name', 'enabled', 'version'], array_map(function ($name, $defaults) {
-            return [$name, $defaults['enabled'] ? 'yes' : 'no', $defaults['default'] ?? '~'];
+        $io->table(['name', 'enabled', 'version'], array_map(function ($name, $package) {
+            return [$name, $package['enabled'] ? 'yes' : 'no', $defaults['default'] ?? '~'];
         }, array_keys($packages), $packages));
 
         return $io->confirm('Do you want to customize your dependencies?', false);

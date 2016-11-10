@@ -18,8 +18,7 @@ namespace Manala\Manalize\Env\Config\Variable;
  */
 abstract class SingleValue implements Variable
 {
-    private $value;
-    protected static $placeholder;
+    protected $value;
 
     /**
      * @param string $value
@@ -35,7 +34,7 @@ abstract class SingleValue implements Variable
     public function getReplaces(): array
     {
         return [
-            static::$placeholder => $this->value,
+            sprintf('{{ %s }}', $this->getName()) => $this->value,
         ];
     }
 }

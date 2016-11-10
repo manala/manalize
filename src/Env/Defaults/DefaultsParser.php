@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Env\Metadata;
+namespace Manala\Manalize\Env\Defaults;
 
 use Manala\Manalize\Env\EnvEnum;
 use Symfony\Component\Yaml\Parser;
@@ -17,14 +17,14 @@ use Symfony\Component\Yaml\Parser;
 /**
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-final class MetadataParser
+final class DefaultsParser
 {
-    const METADATA_PATH = MANALIZE_DIR.'/src/Resources/%s/manala.yml';
+    const DEFAULTS_PATH = MANALIZE_DIR.'/src/Resources/%s/defaults.yml';
 
-    public static function parse(EnvEnum $envName): MetadataBag
+    public static function parse(EnvEnum $envName): Defaults
     {
-        $raw = (new Parser())->parse(file_get_contents(sprintf(self::METADATA_PATH, $envName)));
+        $raw = (new Parser())->parse(file_get_contents(sprintf(self::DEFAULTS_PATH, $envName)));
 
-        return new MetadataBag($raw);
+        return new Defaults($raw);
     }
 }

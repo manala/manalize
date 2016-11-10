@@ -33,7 +33,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase
                 [],
                 [
                     'Vagrantfile',
-                    'ansible/.manalize',
+                    'ansible/.manalize.yml',
                     'ansible/ansible.yml',
                     'ansible/app.yml',
                     'ansible/deploy.yml',
@@ -47,7 +47,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 ['dumper_flags' => Dumper::DUMP_METADATA],
-                ['ansible/.manalize'],
+                ['ansible/.manalize.yml'],
             ],
         ];
     }

@@ -20,6 +20,13 @@ namespace Manala\Manalize\Env\Config\Variable;
 interface Variable
 {
     /**
+     * Returns the name of the implementation.
+     *
+     * @return string
+     */
+    public function getName(): string;
+
+    /**
      * Returns the replaces to be used for rendering a config file.
      *
      * @return array Of format [placeholder => value]

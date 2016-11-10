@@ -1,0 +1,14 @@
+  php:                   true
+  php_version:           5.6
+  nodejs:                false
+  nodejs_version:        6
+  mysql:                 true
+  mysql_version:         5.6
+  mongodb:               false
+  mongodb_version:       3.2
+  postgresql:            false
+  postgresql_version:    9.5
+  elasticsearch:         false
+  elasticsearch_version: 1.7
+  redis:                 false
+  influxdb:              false
