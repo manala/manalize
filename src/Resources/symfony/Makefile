@@ -27,9 +27,9 @@ help:
 
 ## Setup environment & Install & Build application
 setup:
-	if [ -d  "./var/cache" ]; then rm -rf ./var/cache && mkdir ./var/cache; fi;
-	if [ -d "./var/logs" ]; then rm -rf ./var/logs && mkdir ./var/logs; fi;
-	if [ -d "./var/sessions" ]; then rm -rf ./var/sessions && mkdir ./var/sessions; fi;
+	if [ -d  "./var/cache" ]; then rm -rf ./var/cache; fi;
+	if [ -d "./var/logs" ]; then rm -rf ./var/logs; fi;
+	if [ -d "./var/sessions" ]; then rm -rf ./var/sessions; fi;
 	vagrant up --no-provision
 	vagrant provision
 	vagrant ssh -- "cd /srv/app && make install && make build"
