@@ -11,6 +11,7 @@
 
 namespace Manala\Manalize\Tests\Functional;
 
+use Manala\Manalize\Env\EnvEnum;
 use Symfony\Component\Process\Process;
 
 /**
@@ -23,7 +24,14 @@ class BuildTest extends TestCase
     public static function setUpBeforeClass()
     {
         self::$cwd = manala_get_tmp_dir('tests_build_');
-        self::createManalizedProject(self::$cwd, 'build-test');
+        $envType = EnvEnum::create(EnvEnum::SYMFONY);
+
+        self::createManalizedProject(
+            self::$cwd,
+            'build-test',
+            $envType,
+            self::enableDependency(self::getDefaultDependenciesForEnv($envType), 'mysql')
+        );
     }
 
     public function testExecute()

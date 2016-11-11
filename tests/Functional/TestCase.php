@@ -14,6 +14,7 @@ namespace Manala\Manalize\Tests\Functional;
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
 use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
+use Manala\Manalize\Env\Config\Variable\VariableHydrator;
 use Manala\Manalize\Env\Defaults\DefaultsParser;
 use Manala\Manalize\Env\EnvEnum;
 use Manala\Manalize\Handler\Setup;
@@ -62,6 +63,31 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
                 yield new VersionBounded($name, $dependency->isEnabled(), $version);
 
                 continue;
+            }
+
+            yield $dependency;
+        }
+    }
+
+    protected static function enableDependencyWithVersion(\Traversable $dependencies, $name, $version = null)
+    {
+        foreach ($dependencies as $dependency) {
+            if ($dependency->getName() === $name) {
+                (new VariableHydrator())->hydrate(
+                    $dependency,
+                    ['enabled' => true, 'version' => $version ?? $dependency->getVersion()]
+                );
+            }
+
+            yield $dependency;
+        }
+    }
+
+    protected static function enableDependency(\Traversable $dependencies, $name)
+    {
+        foreach ($dependencies as $dependency) {
+            if ($dependency->getName() === $name) {
+                (new VariableHydrator())->hydrate($dependency, ['enabled' => true]);
             }
 
             yield $dependency;
