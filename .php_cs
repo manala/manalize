@@ -11,7 +11,7 @@ EOF;
 
 
 $finder = PhpCsFixer\Finder::create()
-    ->in(array(__DIR__.'/src', __DIR__.'/tests', __DIR__.'/bin'))
+    ->in([__DIR__.'/src', __DIR__.'/tests', __DIR__.'/bin'])
 ;
 
 return PhpCsFixer\Config::create()
@@ -23,7 +23,7 @@ return PhpCsFixer\Config::create()
         'unalign_equals' => false,
         'unalign_double_arrow' => false,
         'ordered_imports' => true,
-        'short_array_syntax' => true,
+        'array_syntax' => ['syntax' => 'short'],
         'header_comment' => [
             'header' => $header,
             'commentType' => PhpCsFixer\Fixer\Comment\HeaderCommentFixer::HEADER_COMMENT,

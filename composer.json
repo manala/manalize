@@ -11,6 +11,8 @@
             "homepage": "https://github.com/manala"
         }
     ],
+    "prefer-stable": true,
+    "minimum-stability": "dev",
     "require": {
         "php": ">=7.0",
         "symfony/console": "^3.1",
@@ -26,7 +28,7 @@
         "symfony/console": "~3.2@dev",
         "phpunit/phpunit": "~5.4",
         "symfony/phpunit-bridge": "~2.8|~3.0",
-        "friendsofphp/php-cs-fixer": "2.x@beta"
+        "friendsofphp/php-cs-fixer": "2.0.x@dev"
     },
     "autoload": {
         "psr-4": { "Manala\\Manalize\\": "src/" }
