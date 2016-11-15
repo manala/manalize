@@ -55,10 +55,12 @@ class RequirementCheckerTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($violationList);
 
         $requirement = new Requirement(
+            'Vagrant',
             'vagrant',
             Requirement::TYPE_BINARY,
             RequirementLevel::REQUIRED,
-            '^1.8.4'
+            '^1.8.4',
+            []
         );
 
         $this->processor->process('vagrant')->willThrow(new MissingRequirementException());
@@ -74,10 +76,12 @@ class RequirementCheckerTest extends \PHPUnit_Framework_TestCase
         $violationList = new RequirementViolationList();
 
         $requirement = new Requirement(
+            'Vagrant',
             'vagrant',
             Requirement::TYPE_BINARY,
             RequirementLevel::RECOMMENDED,
-            '^1.8.4'
+            '^1.8.4',
+            []
         );
 
         $this->processor->process('vagrant')->willThrow(new MissingRequirementException());
@@ -93,10 +97,12 @@ class RequirementCheckerTest extends \PHPUnit_Framework_TestCase
         $violationList = new RequirementViolationList();
 
         $requirement = new Requirement(
+            'Vagrant',
             'vagrant',
             Requirement::TYPE_BINARY,
             RequirementLevel::REQUIRED,
-            '^1.8.2'
+            '^1.8.2',
+            []
         );
 
         $this->processor->process('vagrant')->willReturn('vagrant 1.7.2');
@@ -110,10 +116,12 @@ class RequirementCheckerTest extends \PHPUnit_Framework_TestCase
         $violationList = new RequirementViolationList();
 
         $requirement = new Requirement(
+            'Vagrant',
             'vagrant',
             Requirement::TYPE_BINARY,
             RequirementLevel::REQUIRED,
-            '^1.8.2'
+            '^1.8.2',
+            []
         );
 
         $this->processor->process('vagrant')->willReturn('vagrant 1.8.4');
@@ -129,14 +137,60 @@ class RequirementCheckerTest extends \PHPUnit_Framework_TestCase
         $violationList = new RequirementViolationList();
 
         $requirement = new Requirement(
+            'Vagrant',
             'vagrant',
             Requirement::TYPE_BINARY,
             RequirementLevel::REQUIRED,
-            '>= 1.8.0 < 1.8.5 || ^1.8.6'
+            '>= 1.8.0 < 1.8.5 || ^1.8.6',
+            []
         );
 
         // Version 1.8.5 should generate a violation
         $this->processor->process('vagrant')->willReturn('vagrant 1.8.5');
+        $this->handlerFactory->getVersionParser()->willReturn(new BinaryVersionParser());
+        $this->requirementChecker->check($requirement, $violationList);
+        $this->assertCount(1, $violationList);
+
+        // Version 1.8.4 should pass
+        $violationList = new RequirementViolationList();
+        $this->processor->process('vagrant')->willReturn('vagrant 1.8.4');
+        $this->requirementChecker->check($requirement, $violationList);
+        $this->assertEmpty($violationList);
+
+        // Version 1.8.6 should pass
+        $violationList = new RequirementViolationList();
+        $this->processor->process('vagrant')->willReturn('vagrant 1.8.6');
+        $this->requirementChecker->check($requirement, $violationList);
+        $this->assertEmpty($violationList);
+
+        // Version 1.9.* should pass
+        $violationList = new RequirementViolationList();
+        $this->processor->process('vagrant')->willReturn('vagrant 1.9.2');
+        $this->requirementChecker->check($requirement, $violationList);
+        $this->assertEmpty($violationList);
+    }
+
+    public function testCheckerHandlesConflicts()
+    {
+        $requirement = new Requirement(
+            'Vagrant',
+            'vagrant',
+            Requirement::TYPE_BINARY,
+            RequirementLevel::REQUIRED,
+            '^1.8.4',
+            ['1.8.5.*']
+        );
+
+        // Version 1.8.5 should generate a violation
+        $violationList = new RequirementViolationList();
+        $this->processor->process('vagrant')->willReturn('vagrant 1.8.5');
+        $this->handlerFactory->getVersionParser()->willReturn(new BinaryVersionParser());
+        $this->requirementChecker->check($requirement, $violationList);
+        $this->assertCount(1, $violationList);
+
+        // Version 1.8.5.x-dev should generate a violation
+        $violationList = new RequirementViolationList();
+        $this->processor->process('vagrant')->willReturn('vagrant 1.8.5.x-dev');
         $this->handlerFactory->getVersionParser()->willReturn(new BinaryVersionParser());
         $this->requirementChecker->check($requirement, $violationList);
         $this->assertCount(1, $violationList);

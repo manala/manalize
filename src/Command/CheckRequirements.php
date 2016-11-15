@@ -55,7 +55,7 @@ class CheckRequirements extends Command
         $io->newLine();
 
         foreach (RequirementRepository::getRequirements() as $requirement) {
-            $io->writeln('Checking '.$requirement->getName());
+            $io->writeln('Checking '.$requirement->getLabel());
             $requirementChecker->check($requirement, $violationList);
         }
 
@@ -66,7 +66,7 @@ class CheckRequirements extends Command
         }
 
         if (!$violationList->containsRequiredViolations()) {
-            $io->success('Congratulations ! Everything seems OK.');
+            $io->success('Congratulations! Everything seems OK.');
             if ($violationList->containsRecommendedViolations()) {
                 $io->note('Yet, some recommendations have been emitted (see above).');
             }
@@ -78,7 +78,7 @@ class CheckRequirements extends Command
         $message = $violation->getLabel();
 
         if ($help = $violation->getHelp()) {
-            $message .= $help;
+            $message .= "\n$help";
         }
 
         return $io->block(

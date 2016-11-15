@@ -14,18 +14,19 @@ namespace Manala\Manalize\Requirement\SemVer;
 class BinaryVersionParser implements VersionParserInterface
 {
     /**
-     * Example: ansible 1.9.4 [...].
+     * Regexp extracting a version from a command output.
+     *
+     * @example 'ansible 1.9.4' gives '1.9.4'
      */
-    const OUTPUT_PATTERN = '/^[a-zA-Z0-9]+\s([0-9]+\.[0-9]+\.[0-9]+)/';
+    const VERSION_PATTERN = '/\d+\.\d+\.\d+/';
 
     /**
      * {@inheritdoc}
      */
     public function getVersion(string $name, string $consoleOutput): string
     {
-        preg_match(self::OUTPUT_PATTERN, $consoleOutput, $matches);
-        $version = isset($matches[1]) ? $matches[1] : 0;
+        preg_match(self::VERSION_PATTERN, $consoleOutput, $matches);
 
-        return $version;
+        return $matches[0] ?? 0;
     }
 }
