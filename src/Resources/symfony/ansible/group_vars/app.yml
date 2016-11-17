@@ -82,7 +82,6 @@ app_patterns:
     # Composer
     - zip
     # App
-    - gd
 
   php_configs:
     - file: app_opcache.ini
