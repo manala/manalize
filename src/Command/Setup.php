@@ -18,6 +18,7 @@ use Manala\Manalize\Env\Defaults\Defaults;
 use Manala\Manalize\Env\Defaults\DefaultsParser;
 use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvName;
+use Manala\Manalize\Exception\HandlingFailureException;
 use Manala\Manalize\Handler\Setup as SetupHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -43,8 +44,7 @@ class Setup extends Command
             ->setDescription('Configures your environment on top of Manala ansible roles')
             ->addArgument('cwd', InputArgument::OPTIONAL, 'The path of the application for which to setup the environment', getcwd())
             ->addOption('env', null, InputOption::VALUE_OPTIONAL, 'One of the supported environment types', 'symfony')
-            ->addOption('no-update', null, InputOption::VALUE_NONE, 'If set, will only update metadata')
-        ;
+            ->addOption('no-update', null, InputOption::VALUE_NONE, 'If set, will only update metadata');
     }
 
     /**
@@ -63,19 +63,26 @@ class Setup extends Command
         $io->setDecorated(true);
         $io->comment(sprintf('Start composing your <info>%s</info> environment', (string) $envName));
 
-        $defaultAppName = strtolower(basename($cwd));
-        $appName = $io->ask('Application name', AppName::validate($defaultAppName, false) ? $defaultAppName : 'app', [AppName::class, 'validate']);
-
-        $envMetadata = DefaultsParser::parse($envName);
+        $appName = $this->askForAppName($io, strtolower(basename($cwd)));
+        $envDefaults = DefaultsParser::parse($envName);
         $options = ['dumper_flags' => $input->getOption('no-update') ? Dumper::DUMP_METADATA : Dumper::DUMP_ALL];
-        $dependencies = $this->shouldConfigureDependencies($io, $envMetadata, $envName)
-            ? $this->configureDependencies($io, $envMetadata)
-            : SetupHandler::createDefaultDependencySet($envMetadata);
+        $dependencies = $this->shouldConfigureDependencies($io, $envDefaults, $envName)
+            ? $this->configureDependencies($io, $envDefaults)
+            : SetupHandler::createDefaultDependencySet($envDefaults);
 
         $handler = new SetupHandler($cwd, new AppName($appName), $envName, $dependencies, $options);
-        $handler->handle(function ($target) use ($io) {
-            $io->writeln(sprintf('- %s', $target));
-        });
+
+        try {
+            $handler->handle(function (string $target) use ($io) {
+                $io->writeln(sprintf('- %s', $target));
+            }, function (string $target) use ($io, $handler, $cwd) {
+                return $this->askStrategyForExistingFile($io, $cwd, $target, $handler->getChoicesForAlreadyExistingFile());
+            });
+        } catch (HandlingFailureException $e) {
+            $io->error(['An error occurred while dumping files:', $e->getMessage()]);
+
+            return 1;
+        }
 
         $io->success('Environment successfully configured');
 
@@ -101,16 +108,11 @@ class Setup extends Command
                 continue;
             }
 
-            $versionConstraint = $settings['constraint'];
-            $requiredVersion = $io->ask(
-                sprintf('%s version? (%s)', $name, $versionConstraint),
-                $defaultVersion,
-                function ($version) use ($versionConstraint) {
-                    return VersionBounded::validate($version, $versionConstraint);
-                }
+            yield new VersionBounded(
+                $name,
+                $enabled,
+                $this->askForDependencyVersion($io, $name, $settings['constraint'], $defaultVersion)
             );
-
-            yield new VersionBounded($name, $enabled, $requiredVersion);
         }
     }
 
@@ -124,5 +126,35 @@ class Setup extends Command
         }, array_keys($packages), $packages));
 
         return $io->confirm('Do you want to customize your dependencies?', false);
+    }
+
+    private function askStrategyForExistingFile(SymfonyStyle $io, string $cwd, string $target, array $strategies): string
+    {
+        $strategy = $io->choice(
+            sprintf('The file "%s" needs to be updated.', str_replace($cwd.'/', '', $target)),
+            array_values($strategies),
+            $strategies[Dumper::DO_PATCH]
+        );
+
+        return array_search($strategy, $strategies, true);
+    }
+
+    private function askForDependencyVersion(SymfonyStyle $io, string $name, string $versionConstraint, string $defaultVersion): string
+    {
+        return $io->ask(
+            sprintf('%s version? (%s)', $name, $versionConstraint),
+            $defaultVersion,
+            function ($version) use ($versionConstraint) {
+                return VersionBounded::validate($version, $versionConstraint);
+            }
+        );
+    }
+
+    private function askForAppName(SymfonyStyle $io, $default): string
+    {
+        return $io->ask(
+            'Application name',
+            AppName::validate($default, false) ? $default : 'app', [AppName::class, 'validate']
+        );
     }
 }

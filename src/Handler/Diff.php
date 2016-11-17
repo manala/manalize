@@ -15,8 +15,8 @@ use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvFactory;
 use Manala\Manalize\Env\EnvName;
 use Manala\Manalize\Exception\HandlingFailureException;
+use Manala\Manalize\Process\GitDiff;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -24,15 +24,10 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Diff
 {
-    const EXIT_SUCCESS_DIFF = 1;
-    const EXIT_SUCCESS_NO_DIFF = 0;
-
     private $envName;
     private $cwd;
     private $fs;
     private $colorSupport;
-    private $lastExitCode = 0;
-    private $errorOutput = '';
 
     /**
      * @param EnvName $envName
@@ -48,19 +43,18 @@ class Diff
         $this->fs = new Filesystem();
     }
 
-    public function handle(callable $notifier): int
+    public function handle(callable $notifier, callable $noDiffNotifier = null): int
     {
         $resourcesPath = $this->createTmpEnv();
+        $diffOptions = [
+            '--diff-filter=d',
+            '--no-index',
+            '--patch',
+            $this->colorSupport ? '--color' : '--no-color',
+        ];
 
-        $colorOpt = $this->colorSupport ? '--color' : '--no-color';
-
-        $process = new Process("git diff --diff-filter=d --no-index --patch $colorOpt . $resourcesPath", $this->cwd);
-
+        $process = new GitDiff($diffOptions, '.', $resourcesPath, $this->cwd);
         $process->run(function ($type, $buffer) use ($resourcesPath, $notifier) {
-            if (Process::ERR === $type) {
-                return $this->errorOutput .= $buffer;
-            }
-
             $diff = strtr($buffer, [
                 "b$resourcesPath" => 'b',
                 "a$resourcesPath" => 'a',
@@ -71,40 +65,17 @@ class Diff
             $notifier($diff);
         });
 
-        $this->lastExitCode = $process->getExitCode();
-
-        if (!$this->isSuccessful()) {
-            throw new HandlingFailureException(sprintf(
-                'An error occurred while running process "%s". Use "%s::getErrorOutput()" for getting the error output.',
-                $process->getCommandLine(),
-                __CLASS__
-            ));
+        if (!$process->isSuccessful()) {
+            throw new HandlingFailureException($process->getErrorOutput());
         }
 
         $this->fs->remove($resourcesPath);
 
-        return $this->lastExitCode;
-    }
+        if (!$process->hasDiff() && $noDiffNotifier) {
+            $noDiffNotifier();
+        }
 
-    public function getExitCode(): int
-    {
-        return $this->lastExitCode;
-    }
-
-    public function isSuccessful(): bool
-    {
-        // git-diff is also successful if the exit code is `1`
-        return in_array($this->lastExitCode, [static::EXIT_SUCCESS_NO_DIFF, static::EXIT_SUCCESS_DIFF], true) && !$this->errorOutput;
-    }
-
-    public function hasDiff(): bool
-    {
-        return $this->lastExitCode === static::EXIT_SUCCESS_DIFF;
-    }
-
-    public function getErrorOutput(): string
-    {
-        return $this->errorOutput;
+        return $process->getExitCode();
     }
 
     private function createTmpEnv(): string
@@ -113,11 +84,12 @@ class Diff
 
         $this->fs->mkdir($tmpPath);
 
+        $dumper = new Dumper($tmpPath);
         $metadata = Yaml::parse(file_get_contents("$this->cwd/ansible/.manalize.yml"));
         $envName = key($metadata);
 
         for (
-            $dump = Dumper::dump(EnvFactory::createEnvFromMetadata($envName, $metadata[$envName]), $tmpPath, Dumper::DUMP_FILES);
+            $dump = $dumper->dump(EnvFactory::createEnvFromMetadata($envName, $metadata[$envName]), Dumper::DUMP_FILES);
             $dump->valid();
             $dump->next()
         );

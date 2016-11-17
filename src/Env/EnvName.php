@@ -14,9 +14,7 @@ namespace Manala\Manalize\Env;
 use Elao\Enum\ReadableEnum;
 
 /**
- * Manala Env type.
- *
- * @author Robin Chalas <robin.chalas@gmail.com>
+ * @method static EnvName SYMFONY()
  */
 final class EnvName extends ReadableEnum
 {
