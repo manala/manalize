@@ -30,3 +30,15 @@ install:
 script:
     - phpunit --exclude-group infra
     - if [[ "$CHECK_PHP_SYNTAX" == "yes" ]]; then vendor/bin/php-cs-fixer fix --config=.php_cs --dry-run --no-interaction --diff; fi;
+
+You need to configure your Travis job to send Webhook notifications.
+
+Add the following to your .travis.yml configuration:
+
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/430e0a92ad6370b7b805
+    on_success: change
+    on_failure: always
+    on_start: never
