@@ -14,19 +14,20 @@ namespace Manala\Manalize\Requirement\SemVer;
 class VagrantPluginVersionParser implements VersionParserInterface
 {
     /**
-     * Example: landrush (0.18.0).
+     * Regexp extracting a version of a vagrant plugin from a command output.
+     *
+     * @example 'ansible 1.9.4' gives '1.9.4'
      */
-    const OUTPUT_PATTERN = '/%s\s\(([0-9]+\.[0-9]+\.[0-9]+)\)/';
+    const VERSION_PATTERN = '/%s\s\(([0-9]+\.[0-9]+\.[0-9]+)\)/';
 
     /**
      * {@inheritdoc}
      */
     public function getVersion(string $name, string $consoleOutput): string
     {
-        $pattern = sprintf(self::OUTPUT_PATTERN, $name);
+        $pattern = sprintf(self::VERSION_PATTERN, $name);
         preg_match($pattern, $consoleOutput, $matches);
-        $version = isset($matches[1]) ? $matches[1] : 0;
 
-        return $version;
+        return $matches[1] ?? 0;
     }
 }

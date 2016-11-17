@@ -56,8 +56,17 @@ class RequirementChecker
 
         $versionParser = $handlerFactory->getVersionParser();
         $version = $versionParser->getVersion($requirement->getName(), $output);
+        $isConflictingVersion = false;
 
-        if (!SemVer::satisfies($version, $requirement->getSemanticVersion())) {
+        foreach ($requirement->getConflicts() as $conflictingVersion) {
+            if (SemVer::satisfies($version, $conflictingVersion)) {
+                $isConflictingVersion = true;
+
+                break;
+            }
+        }
+
+        if (!SemVer::satisfies($version, $requirement->getSemanticVersion()) || $isConflictingVersion) {
             $violationList->addViolation($this->createViolation($requirement, $version));
         }
     }

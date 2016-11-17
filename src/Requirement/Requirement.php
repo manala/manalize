@@ -23,27 +23,45 @@ class Requirement implements Common\RequirementLevelHolderInterface
     const TYPE_BINARY = 'binary';
     const TYPE_VAGRANT_PLUGIN = 'vagrant_plugin';
 
+    private $label;
     private $name;
     private $semanticVersion;
     private $type;
+    private $conflicts;
     private $help;
 
-    public function __construct(
-        string $name,
-        string $type,
-        int $level,
-        string $semanticVersion,
-        $help = null
-    ) {
+    /**
+     * @param string      $label           The readable name
+     * @param string      $name            The CLI utility name
+     * @param string      $type
+     * @param int         $level           One of 'recommended' and 'required'
+     * @param string      $semanticVersion A semver constraint
+     * @param array       $conflicts       An array of semver constraints corresponding to the conflicting versions of the utility
+     * @param string|null $help            An help to resolve the requirement (i.e. a download link of the good version)
+     */
+    public function __construct(string $label, string $name, string $type, int $level, string $semanticVersion, array $conflicts = [], $help = null)
+    {
+        $this->label = $label;
         $this->name = $name;
         $this->type = $type;
         $this->level = $level;
         $this->semanticVersion = $semanticVersion;
+        $this->conflicts = $conflicts;
         $this->help = $help;
     }
 
     /**
-     * Gets the name of the required package/tool. Eg. Ansible, vagrant, landrush etc.
+     * Gets the label of the required package/tool. Eg. Ansible, Vagrant, VirtualBox, Landrush, etc.
+     *
+     * @return string
+     */
+    public function getLabel(): string
+    {
+        return $this->label;
+    }
+
+    /**
+     * Gets the name of the required CLI utility e.g. ansible, vagrant, VboxManage, etc.
      *
      * @return string
      */
@@ -74,6 +92,18 @@ class Requirement implements Common\RequirementLevelHolderInterface
     public function getSemanticVersion(): string
     {
         return $this->semanticVersion;
+    }
+
+    /**
+     * Gets the conflicting versions.
+     *
+     * @see https://getcomposer.org/doc/04-schema.md#conflict
+     *
+     * @return array An array of (semver compatible) versions
+     */
+    public function getConflicts(): array
+    {
+        return $this->conflicts;
     }
 
     /**
