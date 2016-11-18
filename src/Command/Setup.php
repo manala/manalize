@@ -120,7 +120,7 @@ class Setup extends Command
 
         $io->writeln(sprintf('The default set of dependencies for <info>%s</info> is:', (string) $envName));
         $io->table(['name', 'enabled', 'version'], array_map(function ($name, $package) {
-            return [$name, $package['enabled'] ? 'yes' : 'no', $defaults['default'] ?? '~'];
+            return [$name, $package['enabled'] ? 'yes' : 'no', $package['default'] ?? '~'];
         }, array_keys($packages), $packages));
 
         return $io->confirm('Do you want to customize your dependencies?', false);
