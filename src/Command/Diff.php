@@ -85,20 +85,18 @@ EOTXT
             throw new \RuntimeException(sprintf('The working directory "%s" doesn\'t exist.', $cwd));
         }
 
+        $errIo = $this->getErrIo($input, $output);
         $handler = new DiffHandler($envName, $cwd, $output->isDecorated());
 
         try {
-            $handler->handle(function ($type, $buffer) use ($output) {
-                $output->write($buffer);
+            $handler->handle(function ($diff) use ($output) {
+                $output->write($diff);
             });
         } catch (HandlingFailureException $e) {
-            $io = new SymfonyStyle($input, $output);
-            $io->error(['An error occurred during the process execution:', $handler->getErrorOutput()]);
+            $errIo->error(['An error occurred during the process execution:', $handler->getErrorOutput()]);
 
             return $handler->getExitCode();
         }
-
-        $errIo = $this->getErrIo($input, $output);
 
         if (!$handler->hasDiff()) {
             $errIo->success('No diff found.');
