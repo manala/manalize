@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index 506d7be..6826e54 100644
+index 0c6b44f..9c9f5b0 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -117,5 +117,3 @@ deploy@prod:

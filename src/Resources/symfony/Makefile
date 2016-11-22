@@ -66,7 +66,7 @@ install:
 	composer install --verbose
 	bin/console doctrine:database:create --if-not-exists
 
-install@test: SYMFONY_ENV = test
+install@test: export SYMFONY_ENV = test
 install@test:
 	# Composer
 	composer install --verbose --no-progress --no-interaction
@@ -75,7 +75,7 @@ install@test:
 	bin/console doctrine:database:create --if-not-exists
 	bin/console doctrine:schema:update --force
 
-install@demo: SYMFONY_ENV = prod
+install@demo: export SYMFONY_ENV = prod
 install@demo:
 	# Composer
 	composer install --verbose --no-progress --no-interaction --prefer-dist --optimize-autoloader
@@ -84,7 +84,7 @@ install@demo:
 	# Doctrine migrations
 	bin/console doctrine:migrations:migrate --no-debug --no-interaction
 
-install@prod: SYMFONY_ENV = prod
+install@prod: export SYMFONY_ENV = prod
 install@prod:
 	# Composer
 	composer install --verbose --no-progress --no-interaction --prefer-dist --optimize-autoloader --no-dev
