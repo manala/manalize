@@ -57,21 +57,23 @@ class Diff
         $process = new Process("git diff --diff-filter=d --no-index --patch $colorOpt . $resourcesPath", $this->cwd);
 
         $process->run(function ($type, $buffer) use ($resourcesPath, $notifier) {
-            $buffer = strtr($buffer, [
+            if (Process::ERR === $type) {
+                return $this->errorOutput .= $buffer;
+            }
+
+            $diff = strtr($buffer, [
                 "b$resourcesPath" => 'b',
                 "a$resourcesPath" => 'a',
                 'a/./' => 'a/',
                 'b/./' => 'b/',
             ]);
 
-            $notifier($type, $buffer);
+            $notifier($diff);
         });
 
         $this->lastExitCode = $process->getExitCode();
 
         if (!$this->isSuccessful()) {
-            $this->errorOutput = $process->getErrorOutput();
-
             throw new HandlingFailureException(sprintf(
                 'An error occurred while running process "%s". Use "%s::getErrorOutput()" for getting the error output.',
                 $process->getCommandLine(),
@@ -92,7 +94,7 @@ class Diff
     public function isSuccessful(): bool
     {
         // git-diff is also successful if the exit code is `1`
-        return in_array($this->lastExitCode, [static::EXIT_SUCCESS_NO_DIFF, static::EXIT_SUCCESS_DIFF], true);
+        return in_array($this->lastExitCode, [static::EXIT_SUCCESS_NO_DIFF, static::EXIT_SUCCESS_DIFF], true) && !$this->errorOutput;
     }
 
     public function hasDiff(): bool
