@@ -14,9 +14,9 @@ Why?
 Because we are too lazy for manually setting up local environments for each project we have to work on.  
 In short, we need to:
 
-- Work on any new/existing project from any platform in minuts
+- Be able to work on any new/existing project from any platform in minutes
+- Enable/disable support for language, package or any various utility as well
 - Keep a local environment consistent across projects (practices, tools)
-- Enable/disable support for languages, packages or any various utility as well
 - Have a local environment as close as possible from the production one
 - Destroy/rebuild an environment as needed
 
@@ -26,7 +26,7 @@ What's inside?
 - [Composer Semver](https://github.com/composer/semver)
 - [Nikic iter](https://github.com/nikic/iter)
 - [Guzzle](https://github.com/guzzle/guzzle)
-- The Symfony [Console](https://github.com/symfony/console), [Process](https://github.com/symfony/process), [Filesystem](https://github.com/symfony/filesystem), [Yaml](https://github.com/symfony/yaml) and [Stopwatch](https://github.com/symfony/stopwatch) components
+- The Symfony [Console](https://github.com/symfony/console), [Process](https://github.com/symfony/process), [Filesystem](https://github.com/symfony/filesystem) and [Yaml](https://github.com/symfony/yaml) components
 
 Prerequisites
 -------------
@@ -61,7 +61,7 @@ $ chmod a+x /usr/local/bin/manalize
 Usage
 -----
 
-### Checking your host requirements
+### Checking that your host meets our requirements
 
 Before using `manalize`, you need to ensure that your host is ready. It can easily be achieved by running the following command:
 
@@ -69,25 +69,25 @@ Before using `manalize`, you need to ensure that your host is ready. It can easi
 $ manalize check:requirements
 ```
 
-It will give you a list of requirements and recommendations to apply, sort as you can install/update packages depending on your needed, the current state of your host.
+A list of requirements and recommendations will be shown, sort as you can install/update packages depending on your need and the current state of your host.
 
 ### Setting up your environment
 
-Given you have a web project that you clone for the first time and you need to run locally, just use the `setup` command:
+Given you have a web project that you clone for the first time and you need to run locally, simply execute the `setup` command:
 
 ```sh
 $ manalize setup ~/my-awesome-project
 ```
 
 This command interactively configures the virtual machine for your project.  
-Once this step done, your environment is fully configured. Some files have been added to your project:
+Some files will be added to your project:
 
 - A `Vagrantfile`
 - A `Makefile` including some useful tasks that you'll need to use throughout your project
 - An `ansible/` directory containing all the configuration related to the VM provisioning
 - Eventually some files specific to the chosen environment
 
-At this point, the VM can be provisioned using the following command:
+Once this step done, your environment is ready so you can provision your VM using the following command:
 
 ```sh
 $ make setup
@@ -105,7 +105,7 @@ $ vagrant up/halt/reload/ssh
 ### Keeping your environment up-to-date
 
 Given your project's environment is there and your VM works well, its configuration is sticked to what we provided at the moment you created it.  
-Since the [manala ansible roles](http://manala.io/) evolve (and the corresponding templates as well), you may want to be aware of the additions and important changes made to, then update your environment accordingly.
+Since the [manala ansible roles](http://manala.io/) evolve (and the corresponding templates as well), you may want to be aware of the important changes made to in order to update your environment accordingly.
 
 To do so, there's two commands to be aware of: `self-update` and `diff`.
 
@@ -120,7 +120,7 @@ After that, you can safely use the `diff` command as shown below.
 
 #### diff
 
-The `diff` command allows you to get a patch representing the diff between your current project configuration and the ones that would have been provided by your current version of the `manalize` binary.
+The `diff` command allows you to get a patch representing the diff between your current project configuration and the one that your current version of the `manalize` binary would have provided.
 
 Getting the diff:
 ```
@@ -160,7 +160,7 @@ So you can then apply a patch provided by the [diff](#diff) command.
 Troubleshooting
 ---------------
 
-Before all, please [check your requirements](#checking-your-host-requirements) command to ensure that your issue doesn't come from your host.  
+Before all, please [ensure your host satisfies each of our requirements](#checking-your-host-requirements). Your issue(s) may result from unsupported or buggy versions of packages installed on your machine.
 
 If it doesn't, please consider [opening an issue](https://github.com/manala/manalize/issues/new) on this repository.
 We use github issues for tracking bugs, feature requests and ensuring support.
