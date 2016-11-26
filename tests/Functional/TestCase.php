@@ -16,7 +16,7 @@ use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
 use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
 use Manala\Manalize\Env\Config\Variable\VariableHydrator;
 use Manala\Manalize\Env\Defaults\DefaultsParser;
-use Manala\Manalize\Env\EnvEnum;
+use Manala\Manalize\Env\EnvName;
 use Manala\Manalize\Handler\Setup;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
@@ -43,7 +43,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         self::$symfonyStandardCopyPath = null;
     }
 
-    protected static function getDefaultDependenciesForEnv(EnvEnum $envType)
+    protected static function getDefaultDependenciesForEnv(EnvName $envType)
     {
         foreach (DefaultsParser::parse($envType)->get('packages') as $name => $configs) {
             if (isset($configs['constraint'])) {
@@ -107,7 +107,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         (new Filesystem())->mirror(self::$symfonyStandardCopyPath, $cwd);
     }
 
-    protected static function manalizeProject($cwd, $appName, EnvEnum $envType, \Traversable $dependencies = null)
+    protected static function manalizeProject($cwd, $appName, EnvName $envType, \Traversable $dependencies = null)
     {
         if (null === $dependencies) {
             $dependencies = Setup::createDefaultDependencySet(DefaultsParser::parse($envType));
@@ -117,12 +117,12 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         });
     }
 
-    protected static function createManalizedProject($cwd, $appName = 'dummy.manala', EnvEnum $envType = null, \Iterator $dependencies = null)
+    protected static function createManalizedProject($cwd, $appName = 'dummy.manala', EnvName $envType = null, \Iterator $dependencies = null)
     {
         self::createSymfonyStandardProject($cwd);
 
         if (null === $envType) {
-            $envType = EnvEnum::create(EnvEnum::SYMFONY);
+            $envType = EnvName::SYMFONY();
         }
 
         self::manalizeProject($cwd, $appName, $envType, $dependencies);

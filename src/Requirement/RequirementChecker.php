@@ -84,6 +84,6 @@ class RequirementChecker
     {
         $label = $this->violationLabelBuilder->buildViolationLabel($requirement, $currentVersion);
 
-        return new RequirementViolation($requirement->getName(), $label, $requirement->getLevel(), $requirement->getHelp());
+        return new RequirementViolation($requirement, $label);
     }
 }

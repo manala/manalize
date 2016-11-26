@@ -11,7 +11,7 @@
 
 namespace Manala\Manalize\Requirement\Violation;
 
-use Manala\Manalize\Requirement\Common\RequirementLevel;
+use Manala\Manalize\Requirement\RequirementLevel;
 
 /**
  * Iterable collection of requirement violations.
@@ -57,7 +57,9 @@ class RequirementViolationList extends \ArrayObject
     private function containsViolations($level): bool
     {
         foreach ($this->getViolations() as $violation) {
-            if ($violation->getLevel() === $level) {
+            $requirement = $violation->getViolatedRequirement();
+
+            if ($requirement->getLevel()->is($level)) {
                 return true;
             }
         }

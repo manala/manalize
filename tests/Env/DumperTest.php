@@ -14,9 +14,9 @@ namespace Manala\Manalize\Tests\Env;
 use Manala\Manalize\Env\Config\Config;
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Dumper;
-use Manala\Manalize\Env\EnvEnum;
 use Manala\Manalize\Env\EnvExporter;
 use Manala\Manalize\Env\EnvFactory;
+use Manala\Manalize\Env\EnvName;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
@@ -86,7 +86,7 @@ class DumperTest extends \PHPUnit_Framework_TestCase
             ->willReturn(null);
 
         $env = EnvFactory::createEnv(
-            EnvEnum::create(EnvEnum::SYMFONY),
+            EnvName::SYMFONY(),
             new AppName('dummy'),
             $this->prophesize(\Iterator::class)->reveal()
         );

@@ -26,10 +26,10 @@ use Manala\Manalize\Env\Config\Variable\VariableHydrator;
  */
 class EnvFactory
 {
-    public static function createEnv(EnvEnum $name, AppName $appName, \Traversable $dependencies): Env
+    public static function createEnv(EnvName $name, AppName $appName, \Traversable $dependencies): Env
     {
         return new Env(
-            (string) $name,
+            $name->getValue(),
             new Vagrant($name, $appName, VagrantBoxVersionResolver::resolve($dependencies)),
             new Ansible($name, ...$dependencies),
             new Make($name)
@@ -40,7 +40,7 @@ class EnvFactory
     {
         $hydrator = new VariableHydrator();
         $configRegistry = new Registry();
-        $name = EnvEnum::create($rawName);
+        $name = EnvName::get($rawName);
         $configs = [];
 
         foreach ($metadata as $configAlias => $perAliasVars) {

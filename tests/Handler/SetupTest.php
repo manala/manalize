@@ -13,7 +13,7 @@ namespace Manala\Manalize\Tests\Handler;
 
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Dumper;
-use Manala\Manalize\Env\EnvEnum;
+use Manala\Manalize\Env\EnvName;
 use Manala\Manalize\Handler\Setup;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -62,7 +62,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase
         $handler = new Setup(
             self::$cwd,
             new AppName('setup_test'),
-            EnvEnum::create(EnvEnum::SYMFONY),
+            EnvName::SYMFONY(),
             $this->prophesize(\Iterator::class)->reveal(),
             $options
         );

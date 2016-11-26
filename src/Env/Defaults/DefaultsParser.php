@@ -11,7 +11,7 @@
 
 namespace Manala\Manalize\Env\Defaults;
 
-use Manala\Manalize\Env\EnvEnum;
+use Manala\Manalize\Env\EnvName;
 use Symfony\Component\Yaml\Parser;
 
 /**
@@ -21,9 +21,9 @@ final class DefaultsParser
 {
     const DEFAULTS_PATH = MANALIZE_DIR.'/src/Resources/%s/defaults.yml';
 
-    public static function parse(EnvEnum $envName): Defaults
+    public static function parse(EnvName $envName): Defaults
     {
-        $raw = (new Parser())->parse(file_get_contents(sprintf(self::DEFAULTS_PATH, $envName)));
+        $raw = (new Parser())->parse(file_get_contents(sprintf(self::DEFAULTS_PATH, $envName->getValue())));
 
         return new Defaults($raw);
     }

@@ -16,31 +16,34 @@ namespace Manala\Manalize\Requirement;
  *
  * @author Xavier Roldo <xavier.roldo@elao.com>
  */
-class Requirement implements Common\RequirementLevelHolderInterface
+class Requirement
 {
-    use Common\RequirementLevelHolderTrait;
-
-    const TYPE_BINARY = 'binary';
-    const TYPE_VAGRANT_PLUGIN = 'vagrant_plugin';
-
     private $label;
     private $name;
+    private $level;
     private $semanticVersion;
     private $type;
     private $conflicts;
     private $help;
 
     /**
-     * @param string      $label           The readable name
-     * @param string      $name            The CLI utility name
-     * @param string      $type
-     * @param int         $level           One of 'recommended' and 'required'
-     * @param string      $semanticVersion A semver constraint
-     * @param array       $conflicts       An array of semver constraints corresponding to the conflicting versions of the utility
-     * @param string|null $help            An help to resolve the requirement (i.e. a download link of the good version)
+     * @param string           $label           The readable name
+     * @param string           $name            The CLI utility name
+     * @param RequirementType  $type
+     * @param RequirementLevel $level
+     * @param string           $semanticVersion A semver constraint
+     * @param array            $conflicts       An array of semver constraints corresponding to the conflicting versions of the utility
+     * @param string|null      $help            An help to resolve the requirement (i.e. a download link of the good version)
      */
-    public function __construct(string $label, string $name, string $type, int $level, string $semanticVersion, array $conflicts = [], $help = null)
-    {
+    public function __construct(
+        string $label,
+        string $name,
+        RequirementType $type,
+        RequirementLevel $level,
+        string $semanticVersion,
+        array $conflicts = [],
+        string $help = null
+    ) {
         $this->label = $label;
         $this->name = $name;
         $this->type = $type;
@@ -70,14 +73,14 @@ class Requirement implements Common\RequirementLevelHolderInterface
         return $this->name;
     }
 
-    /**
-     * Gets the requirement type.
-     *
-     * @return string One of {@link self::TYPE_BINARY} and {@link self::TYPE_VAGRANT_PLUGIN}
-     */
-    public function getType(): string
+    public function getType(): RequirementType
     {
         return $this->type;
+    }
+
+    public function getLevel(): RequirementLevel
+    {
+        return $this->level;
     }
 
     /**
@@ -115,5 +118,13 @@ class Requirement implements Common\RequirementLevelHolderInterface
     public function getHelp()
     {
         return $this->help;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRequired(): bool
+    {
+        return $this->level->is(RequirementLevel::REQUIRED);
     }
 }

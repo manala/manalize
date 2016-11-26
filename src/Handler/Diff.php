@@ -12,8 +12,8 @@
 namespace Manala\Manalize\Handler;
 
 use Manala\Manalize\Env\Dumper;
-use Manala\Manalize\Env\EnvEnum;
 use Manala\Manalize\Env\EnvFactory;
+use Manala\Manalize\Env\EnvName;
 use Manala\Manalize\Exception\HandlingFailureException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
@@ -35,11 +35,11 @@ class Diff
     private $errorOutput = '';
 
     /**
-     * @param EnvEnum $envName
+     * @param EnvName $envName
      * @param string  $cwd          The working dir
      * @param bool    $colorSupport
      */
-    public function __construct(EnvEnum $envName, string $cwd, bool $colorSupport = true)
+    public function __construct(EnvName $envName, string $cwd, bool $colorSupport = true)
     {
         $this->envName = $envName;
         $this->cwd = $cwd;

@@ -12,6 +12,7 @@
 namespace Manala\Manalize\Requirement\Factory;
 
 use Manala\Manalize\Requirement\Requirement;
+use Manala\Manalize\Requirement\RequirementType;
 
 /**
  * This resolver implements the abstract factory pattern: it returns the proper factory that instantiates the concrete
@@ -25,13 +26,14 @@ class HandlerFactoryResolver
     {
         $type = $requirement->getType();
 
-        switch ($type) {
-            case Requirement::TYPE_BINARY:
-                return new BinaryHandlerFactory();
-            case Requirement::TYPE_VAGRANT_PLUGIN:
-                return new VagrantPluginHandlerFactory();
-            default:
-                throw new \InvalidArgumentException(sprintf('No handler factory for type %s', $type));
+        if ($type->is(RequirementType::BINARY)) {
+            return new BinaryHandlerFactory();
         }
+
+        if ($type->is(RequirementType::VAGRANT_PLUGIN)) {
+            return new VagrantPluginHandlerFactory();
+        }
+
+        throw new \InvalidArgumentException(sprintf('No handler factory for type %s', $type));
     }
 }

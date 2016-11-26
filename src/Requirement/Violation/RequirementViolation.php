@@ -11,9 +11,7 @@
 
 namespace Manala\Manalize\Requirement\Violation;
 
-use Manala\Manalize\Requirement\Common\RequirementLevel;
-use Manala\Manalize\Requirement\Common\RequirementLevelHolderInterface;
-use Manala\Manalize\Requirement\Common\RequirementLevelHolderTrait;
+use Manala\Manalize\Requirement\Requirement;
 
 /**
  * Class that represents a requirement violation. It contains the name of the required binary (Ansible, vagrant, etc.),
@@ -22,37 +20,24 @@ use Manala\Manalize\Requirement\Common\RequirementLevelHolderTrait;
  *
  * @author Xavier Roldo <xavier.roldo@elao.com>
  */
-class RequirementViolation implements RequirementLevelHolderInterface
+final class RequirementViolation
 {
-    use RequirementLevelHolderTrait;
-
-    private $name;
+    private $violatedRequirement;
     private $label;
-    private $help;
 
-    public function __construct(string $name, string $label, string $level = RequirementLevel::REQUIRED, $help = null)
+    public function __construct(Requirement $violatedRequirement, string $label)
     {
-        $this->name = $name;
+        $this->violatedRequirement = $violatedRequirement;
         $this->label = $label;
-        $this->level = $level;
-        $this->help = $help;
     }
 
-    public function getName(): string
+    public function getViolatedRequirement(): Requirement
     {
-        return $this->name;
+        return $this->violatedRequirement;
     }
 
     public function getLabel(): string
     {
         return $this->label;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getHelp()
-    {
-        return $this->help;
     }
 }
