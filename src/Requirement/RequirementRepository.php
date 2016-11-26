@@ -55,6 +55,15 @@ class RequirementRepository
                 [],
                 'See https://www.virtualbox.org/wiki/Downloads'
             ),
+            new Requirement(
+                'Git',
+                'git',
+                RequirementType::BINARY(),
+                RequirementLevel::RECOMMENDED(),
+                '^2.0',
+                [],
+                'Required only if you intend to use the diff command. See https://git-scm.com/book/en/v2/Getting-Started-Installing-Git'
+            ),
         ];
     }
 }
