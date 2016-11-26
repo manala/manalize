@@ -22,7 +22,8 @@
         "symfony/yaml": "^3.1",
         "composer/semver": "^1.4",
         "nikic/iter": "^1.4",
-        "guzzlehttp/guzzle": "^6.2"
+        "guzzlehttp/guzzle": "^6.2",
+        "elao/enum": "^0.4.0"
     },
     "require-dev": {
         "symfony/console": "~3.2@dev",

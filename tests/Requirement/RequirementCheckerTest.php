@@ -11,13 +11,14 @@
 
 namespace Manala\Manalize\Tests\Requirement;
 
-use Manala\Manalize\Requirement\Common\RequirementLevel;
 use Manala\Manalize\Requirement\Exception\MissingRequirementException;
 use Manala\Manalize\Requirement\Factory\HandlerFactoryInterface;
 use Manala\Manalize\Requirement\Factory\HandlerFactoryResolver;
 use Manala\Manalize\Requirement\Processor\AbstractProcessor;
 use Manala\Manalize\Requirement\Requirement;
 use Manala\Manalize\Requirement\RequirementChecker;
+use Manala\Manalize\Requirement\RequirementLevel;
+use Manala\Manalize\Requirement\RequirementType;
 use Manala\Manalize\Requirement\SemVer\BinaryVersionParser;
 use Manala\Manalize\Requirement\Violation\RequirementViolationLabelBuilder;
 use Manala\Manalize\Requirement\Violation\RequirementViolationList;
@@ -57,8 +58,8 @@ class RequirementCheckerTest extends \PHPUnit_Framework_TestCase
         $requirement = new Requirement(
             'Vagrant',
             'vagrant',
-            Requirement::TYPE_BINARY,
-            RequirementLevel::REQUIRED,
+            RequirementType::BINARY(),
+            RequirementLevel::REQUIRED(),
             '^1.8.4',
             []
         );
@@ -78,8 +79,8 @@ class RequirementCheckerTest extends \PHPUnit_Framework_TestCase
         $requirement = new Requirement(
             'Vagrant',
             'vagrant',
-            Requirement::TYPE_BINARY,
-            RequirementLevel::RECOMMENDED,
+            RequirementType::BINARY(),
+            RequirementLevel::RECOMMENDED(),
             '^1.8.4',
             []
         );
@@ -99,8 +100,8 @@ class RequirementCheckerTest extends \PHPUnit_Framework_TestCase
         $requirement = new Requirement(
             'Vagrant',
             'vagrant',
-            Requirement::TYPE_BINARY,
-            RequirementLevel::REQUIRED,
+            RequirementType::BINARY(),
+            RequirementLevel::REQUIRED(),
             '^1.8.2',
             []
         );
@@ -118,8 +119,8 @@ class RequirementCheckerTest extends \PHPUnit_Framework_TestCase
         $requirement = new Requirement(
             'Vagrant',
             'vagrant',
-            Requirement::TYPE_BINARY,
-            RequirementLevel::REQUIRED,
+            RequirementType::BINARY(),
+            RequirementLevel::REQUIRED(),
             '^1.8.2',
             []
         );
@@ -139,8 +140,8 @@ class RequirementCheckerTest extends \PHPUnit_Framework_TestCase
         $requirement = new Requirement(
             'Vagrant',
             'vagrant',
-            Requirement::TYPE_BINARY,
-            RequirementLevel::REQUIRED,
+            RequirementType::BINARY(),
+            RequirementLevel::REQUIRED(),
             '>= 1.8.0 < 1.8.5 || ^1.8.6',
             []
         );
@@ -175,8 +176,8 @@ class RequirementCheckerTest extends \PHPUnit_Framework_TestCase
         $requirement = new Requirement(
             'Vagrant',
             'vagrant',
-            Requirement::TYPE_BINARY,
-            RequirementLevel::REQUIRED,
+            RequirementType::BINARY(),
+            RequirementLevel::REQUIRED(),
             '^1.8.4',
             ['1.8.5.*']
         );

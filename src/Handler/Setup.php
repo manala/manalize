@@ -16,8 +16,8 @@ use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
 use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
 use Manala\Manalize\Env\Defaults\Defaults;
 use Manala\Manalize\Env\Dumper;
-use Manala\Manalize\Env\EnvEnum;
 use Manala\Manalize\Env\EnvFactory;
+use Manala\Manalize\Env\EnvName;
 
 /**
  * @author Robin Chalas <robin.chalas@gmail.com>
@@ -33,7 +33,7 @@ class Setup
     public function __construct(
         string $cwd,
         AppName $appName,
-        EnvEnum $envName,
+        EnvName $envName,
         \Traversable $dependencies,
         array $options = []
     ) {

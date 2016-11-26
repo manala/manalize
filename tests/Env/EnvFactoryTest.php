@@ -17,14 +17,14 @@ use Manala\Manalize\Env\Config\Vagrant;
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Config\Variable\VagrantBoxVersion;
 use Manala\Manalize\Env\Env;
-use Manala\Manalize\Env\EnvEnum;
 use Manala\Manalize\Env\EnvFactory;
+use Manala\Manalize\Env\EnvName;
 
 class EnvFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreateEnv()
     {
-        $envType = EnvEnum::create(EnvEnum::SYMFONY);
+        $envType = EnvName::SYMFONY();
         $appName = new AppName('rch');
         $boxVersion = new VagrantBoxVersion('~> 3.0.0');
         $env = EnvFactory::createEnv($envType, $appName, $this->prophesize(\Iterator::class)->reveal());

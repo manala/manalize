@@ -12,7 +12,7 @@
 namespace Manala\Manalize\Env\Config;
 
 use Manala\Manalize\Env\Config\Variable\Variable;
-use Manala\Manalize\Env\EnvEnum;
+use Manala\Manalize\Env\EnvName;
 
 /**
  * Represents a config part of a Manala environment.
@@ -22,7 +22,7 @@ use Manala\Manalize\Env\EnvEnum;
 abstract class Config
 {
     /**
-     * @var EnvEnum
+     * @var EnvName
      */
     protected $envName;
 
@@ -31,12 +31,12 @@ abstract class Config
      */
     protected $vars;
 
-    public static function create(EnvEnum $envName, array $vars)
+    public static function create(EnvName $envName, array $vars)
     {
         return new static($envName, ...$vars);
     }
 
-    public function __construct(EnvEnum $envName, Variable ...$vars)
+    public function __construct(EnvName $envName, Variable ...$vars)
     {
         $this->envName = $envName;
         $this->vars = $vars;
@@ -61,7 +61,7 @@ abstract class Config
      */
     public function getOrigin(): \SplFileInfo
     {
-        return new \SplFileInfo(MANALIZE_DIR.'/src/Resources/'.$this->envName.'/'.$this->getPath());
+        return new \SplFileInfo(MANALIZE_DIR.'/src/Resources/'.$this->envName->getValue().'/'.$this->getPath());
     }
 
     /**

@@ -76,15 +76,16 @@ class CheckRequirements extends Command
     private function displayViolation(SymfonyStyle $io, RequirementViolation $violation)
     {
         $message = $violation->getLabel();
+        $violatedRequirement = $violation->getViolatedRequirement();
 
-        if ($help = $violation->getHelp()) {
+        if ($help = $violatedRequirement->getHelp()) {
             $message .= "\n$help";
         }
 
         return $io->block(
             $message,
-            strtoupper($violation->getLevelLabel()),
-            $violation->isRequired() ? 'fg=white;bg=red' : 'fg=black;bg=yellow',
+            strtoupper($violatedRequirement->getLevel()),
+            $violatedRequirement->isRequired() ? 'fg=white;bg=red' : 'fg=black;bg=yellow',
             ' ',
             true
         );

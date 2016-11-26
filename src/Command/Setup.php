@@ -17,7 +17,7 @@ use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
 use Manala\Manalize\Env\Defaults\Defaults;
 use Manala\Manalize\Env\Defaults\DefaultsParser;
 use Manala\Manalize\Env\Dumper;
-use Manala\Manalize\Env\EnvEnum;
+use Manala\Manalize\Env\EnvName;
 use Manala\Manalize\Handler\Setup as SetupHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -53,7 +53,7 @@ class Setup extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $cwd = realpath($input->getArgument('cwd'));
-        $envName = EnvEnum::create($input->getOption('env'));
+        $envName = EnvName::get($input->getOption('env'));
 
         if (!is_dir($cwd)) {
             throw new \RuntimeException(sprintf('The working directory "%s" doesn\'t exist.', $cwd));
@@ -114,7 +114,7 @@ class Setup extends Command
         }
     }
 
-    private function shouldConfigureDependencies(SymfonyStyle $io, Defaults $defaults, EnvEnum $envName): bool
+    private function shouldConfigureDependencies(SymfonyStyle $io, Defaults $defaults, EnvName $envName): bool
     {
         $packages = $defaults->get('packages');
 

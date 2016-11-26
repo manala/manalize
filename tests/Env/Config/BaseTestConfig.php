@@ -12,11 +12,11 @@
 namespace Manala\Manalize\Tests\Env\Config;
 
 use Manala\Manalize\Env\Config\Config;
-use Manala\Manalize\Env\EnvEnum;
+use Manala\Manalize\Env\EnvName;
 
 class BaseTestConfig extends \PHPUnit_Framework_TestCase
 {
-    const ENV = EnvEnum::SYMFONY;
+    const ENV = EnvName::SYMFONY;
 
     protected function assertOrigin(Config $config, $name)
     {
@@ -25,7 +25,7 @@ class BaseTestConfig extends \PHPUnit_Framework_TestCase
 
     protected function getEnvType()
     {
-        return EnvEnum::create(self::ENV);
+        return EnvName::get(self::ENV);
     }
 
     protected function getOrigin($name)

@@ -11,7 +11,7 @@
 
 namespace Manala\Manalize\Command;
 
-use Manala\Manalize\Env\EnvEnum;
+use Manala\Manalize\Env\EnvName;
 use Manala\Manalize\Exception\HandlingFailureException;
 use Manala\Manalize\Handler\Diff as DiffHandler;
 use Symfony\Component\Console\Command\Command;
@@ -79,7 +79,7 @@ EOTXT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $cwd = realpath($input->getArgument('cwd'));
-        $envName = EnvEnum::create($input->getOption('env'));
+        $envName = EnvName::get($input->getOption('env'));
 
         if (!is_dir($cwd)) {
             throw new \RuntimeException(sprintf('The working directory "%s" doesn\'t exist.', $cwd));
