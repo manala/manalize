@@ -65,6 +65,6 @@ abstract class AbstractProcessor
      */
     protected function handleCommandFailure(string $errorOutput)
     {
-        throw new MissingRequirementException();
+        throw new MissingRequirementException($errorOutput);
     }
 }

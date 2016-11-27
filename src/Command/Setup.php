@@ -69,7 +69,7 @@ class Setup extends Command
         $envMetadata = DefaultsParser::parse($envName);
         $options = ['dumper_flags' => $input->getOption('no-update') ? Dumper::DUMP_METADATA : Dumper::DUMP_ALL];
         $dependencies = $this->shouldConfigureDependencies($io, $envMetadata, $envName)
-            ? $this->configureDependencies($io, $envMetadata, $envName)
+            ? $this->configureDependencies($io, $envMetadata)
             : SetupHandler::createDefaultDependencySet($envMetadata);
 
         $handler = new SetupHandler($cwd, new AppName($appName), $envName, $dependencies, $options);
