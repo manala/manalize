@@ -13,7 +13,6 @@ namespace Manala\Manalize\Tests\Functional;
 
 use Manala\Manalize\Command\Diff;
 use Manala\Manalize\Env\EnvName;
-use Manala\Manalize\Handler\Diff as DiffHandler;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -42,11 +41,11 @@ class DiffTest extends TestCase
         $tester = new CommandTester(new Diff());
         $tester->execute(['cwd' => static::$cwd, '--env' => EnvName::SYMFONY]);
 
-        if (DiffHandler::EXIT_SUCCESS_DIFF !== $tester->getStatusCode()) {
+        if (0 !== $tester->getStatusCode()) {
             echo $tester->getDisplay();
         }
 
-        $this->assertSame(DiffHandler::EXIT_SUCCESS_DIFF, $tester->getStatusCode());
+        $this->assertSame(0, $tester->getStatusCode());
 
         UPDATE_FIXTURES ? file_put_contents(static::EXPECTED_PATCH_FILE, $tester->getDisplay(true)) : null;
 

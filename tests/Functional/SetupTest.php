@@ -12,6 +12,8 @@
 namespace Manala\Manalize\Tests\Functional;
 
 use Manala\Manalize\Command\Setup;
+use Manala\Manalize\Env\EnvName;
+use Manala\Manalize\Handler\Diff;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -97,7 +99,7 @@ class SetupTest extends TestCase
     {
         $tester = new CommandTester(new Setup());
         $tester
-            ->setInputs(["\n", "\n", "\n", "\n", "\n", "\n"])
+            ->setInputs(["\n", "\n"])
             ->execute(['cwd' => static::$cwd, '--no-update' => true]);
 
         if (0 !== $tester->getStatusCode()) {
@@ -113,5 +115,37 @@ class SetupTest extends TestCase
         $this->assertFileNotExists(self::$cwd.'/ansible/app.yml');
         $this->assertFileNotExists(self::$cwd.'/ansible/ansible.yml');
         $this->assertFileEquals(self::$cwd.'/ansible/.manalize.yml', __DIR__.'/../fixtures/Command/SetupTest/execute_no_update.yml');
+    }
+
+    public function testExecuteHandleConflicts()
+    {
+        touch(self::$cwd.'/Vagrantfile'); // add a conflicting file
+
+        $tester = new CommandTester(new Setup());
+        $tester
+            ->setInputs(["\n", "\n", '0']) // patch strategy
+            ->execute(['cwd' => self::$cwd]);
+
+        if (0 !== $tester->getStatusCode()) {
+            echo $tester->getDisplay();
+        }
+
+        $this->assertSame(0, $tester->getStatusCode());
+        $this->assertContains('Environment successfully configured', $tester->getDisplay());
+
+        $this->assertFileExists(self::$cwd.'/Makefile');
+        $this->assertFileExists(self::$cwd.'/ansible/group_vars/app.yml');
+        $this->assertFileExists(self::$cwd.'/ansible/app.yml');
+        $this->assertFileExists(self::$cwd.'/ansible/ansible.yml');
+
+        $this->assertSame('', file_get_contents(self::$cwd.'/Vagrantfile'));
+        $this->assertFileExists(self::$cwd.'/manalize.patch');
+
+        $expected = '';
+        (new Diff(EnvName::SYMFONY(), self::$cwd, false))->handle(function ($diff) use (&$expected) {
+            $expected .= $diff;
+        });
+
+        $this->assertSame($expected, file_get_contents(self::$cwd.'/manalize.patch'));
     }
 }

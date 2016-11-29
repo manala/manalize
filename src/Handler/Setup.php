@@ -18,6 +18,7 @@ use Manala\Manalize\Env\Defaults\Defaults;
 use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvFactory;
 use Manala\Manalize\Env\EnvName;
+use Manala\Manalize\Exception\HandlingFailureException;
 
 /**
  * @author Robin Chalas <robin.chalas@gmail.com>
@@ -29,6 +30,7 @@ class Setup
     private $envName;
     private $dependencies;
     private $options;
+    private $patch;
 
     public function __construct(
         string $cwd,
@@ -44,12 +46,17 @@ class Setup
         $this->options = $this->normalizeOptions($options);
     }
 
-    public function handle(callable $notifier)
+    public function handle(callable $notifier, callable $existingFileCallback = null)
     {
         $env = EnvFactory::createEnv($this->envName, $this->appName, $this->dependencies);
+        $dumper = new Dumper($this->cwd);
 
-        foreach (Dumper::dump($env, $this->cwd, $this->getDumperFlags()) as $target) {
-            $notifier(str_replace($this->cwd.'/', '', $target));
+        try {
+            foreach ($dumper->dump($env, $this->getDumperFlags(), $existingFileCallback) as $target) {
+                $notifier(str_replace($this->cwd.'/', '', $target));
+            }
+        } catch (\RuntimeException $e) {
+            throw new HandlingFailureException($e->getMessage(), 0, $e);
         }
     }
 
@@ -66,6 +73,15 @@ class Setup
 
             yield new VersionBounded($name, $package['enabled'], $defaultVersion);
         }
+    }
+
+    public static function getChoicesForAlreadyExistingFile()
+    {
+        return [
+            Dumper::DO_PATCH => 'Give me a patch that I can apply later',
+            Dumper::DO_REPLACE => 'Replace it',
+            Dumper::DO_NOTHING => 'Do nothing',
+        ];
     }
 
     private function normalizeOptions(array $options): array
