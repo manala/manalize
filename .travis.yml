@@ -4,13 +4,17 @@ language: php
 env:
     global:
         - CHECK_PHP_SYNTAX="no"
+        - DEPS="high"
 
 matrix:
     fast_finish: true
     include:
         - php: 7.0
+          env: DEPS=low
         - php: 7.1
           env: CHECK_PHP_SYNTAX="yes"
+        - php: 7.0
+        - php: 7.1
 
 cache:
     directories:
@@ -26,6 +30,7 @@ before_install:
 install:
     - composer global require kherge/box --prefer-dist --no-interaction --optimize-autoloader
     - composer update --prefer-dist --no-interaction --optimize-autoloader
+    - if [[ "$DEPS" == "low" ]]; then composer update --prefer-dist --prefer-lowest --no-interaction --optimize-autoloader; else composer update --optimize-autoloader --prefer-dist --no-interaction; fi;
 
 script:
     - phpunit --exclude-group infra
