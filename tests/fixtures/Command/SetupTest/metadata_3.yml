@@ -1,4 +1,5 @@
-symfony:
+name: symfony
+configs:
     vagrant:
         app_name:
             - { value: foo-bar.manala }
