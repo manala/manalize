@@ -38,15 +38,14 @@ final class EnvExporter
      */
     public function export(Env $env): array
     {
-        $envName = $env->getName();
-        $metadata = [$envName => []];
+        $metadata = [];
 
         foreach ($env->getConfigs() as $config) {
             $alias = $this->configRegistry->getAliasForClass(get_class($config));
-            $metadata[$envName][$alias] = $this->exportVars($config);
+            $metadata[$alias] = $this->exportVars($config);
         }
 
-        return $metadata;
+        return ['name' => $env->getName(), 'configs' => $metadata];
     }
 
     private function exportVars(Config $config): array

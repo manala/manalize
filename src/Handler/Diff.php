@@ -89,7 +89,7 @@ class Diff
         $envName = key($metadata);
 
         for (
-            $dump = $dumper->dump(EnvFactory::createEnvFromMetadata($envName, $metadata[$envName]), Dumper::DUMP_FILES);
+            $dump = $dumper->dump(EnvFactory::createEnvFromMetadata($metadata), Dumper::DUMP_FILES);
             $dump->valid();
             $dump->next()
         );
