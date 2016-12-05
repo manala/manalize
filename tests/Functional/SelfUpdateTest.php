@@ -35,12 +35,7 @@ class SelfUpdateTest extends TestCase
 
     public function testExecute()
     {
-        $process = new Process('make build', MANALIZE_DIR);
-        $process->run();
-
-        if (!$process->isSuccessful() && false !== strpos($process->getErrorOutput(), 'box: command not found')) {
-            $this->markTestSkipped('"kherge/box" is required and should be in your $PATH in order to build the phar.');
-        }
+        (new Process('make build', MANALIZE_DIR))->run();
 
         chmod(MANALIZE_DIR.'/manalize.phar', 0777);
         rename(MANALIZE_DIR.'/manalize.phar', self::$cwd.'/manalize.phar');
@@ -87,10 +82,6 @@ class SelfUpdateTest extends TestCase
         $process->setTimeout(null)->run();
 
         if (!$process->isSuccessful()) {
-            if (strpos($process->getErrorOutput(), 'Command "self-update" is not defined.')) {
-                return $this->markTestSkipped('The self-update command is not yet released.');
-            }
-
             echo $process->getErrorOutput();
         }
 
