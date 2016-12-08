@@ -27,6 +27,6 @@ build:
 	mkdir .build
 	cp -r ./* .build
 	composer install --verbose --no-progress --no-interaction --prefer-dist --optimize-autoloader --no-dev --working-dir=.build/
-	cd .build && ../vendor/bin/box build -v && cd ../
+	cd .build && php -d phar.readonly=0 ../vendor/bin/box build -v && cd ../
 	cp .build/manalize.phar .
 	rm -rf .build
