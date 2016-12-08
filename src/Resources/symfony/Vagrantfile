@@ -12,6 +12,9 @@ Vagrant.require_version '>= 1.8.4'
 
 Vagrant.configure(2) do |config|
 
+  # Force vagrant to use virtualbox provider
+  config.vm.provider "virtualbox"
+  
   # Ssh
   config.ssh.username      = 'app'
   config.ssh.forward_agent = true
