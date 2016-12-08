@@ -33,7 +33,7 @@ class SelfUpdateTest extends \PHPUnit_Framework_TestCase
 
         self::$cwd = $cwd;
 
-        $process = (new Process('make build', MANALIZE_DIR))run();
+        (new Process('make build', MANALIZE_DIR))->run();
 
         chmod(MANALIZE_DIR.'/manalize.phar', 0777);
         rename(MANALIZE_DIR.'/manalize.phar', self::$cwd.'/manalize.phar');
