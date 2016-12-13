@@ -28,7 +28,7 @@ final class VersionBounded extends Dependency
      *
      * @param string $version
      */
-    public function __construct($name, $enabled, $version)
+    public function __construct(string $name, bool $enabled, $version)
     {
         parent::__construct($name, $enabled);
 
