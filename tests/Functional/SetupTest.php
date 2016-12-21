@@ -79,7 +79,7 @@ class SetupTest extends TestCase
                 'metadata_1.yml',
             ],
             [
-              ['foo-bar.manala', 'yes', '5.6', "\n", "\n", "\n", "\n", "\n"],
+              ['foo-bar.manala', 'yes', '5.6', "\n", "\n", "\n", "\n", "\n", "\n"],
                 'foo-bar.manala',
                 '~> 2.0.0',
                 'dependencies_2.yml',
