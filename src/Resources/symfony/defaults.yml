@@ -24,6 +24,15 @@ packages:
         required:   false
         default:    '10.1'
         constraint: '10.0|10.1|10.2'
+    redis:
+        required:   false
+        enabled:    false
+    influxdb:
+        required:   false
+        enabled:    false
+    sqlite:
+        required:   false
+        enabled:    false
     elasticsearch:
         enabled:    false
         required:   false
@@ -34,12 +43,6 @@ packages:
         required:   false
         default:    '7'
         constraint: '0.10|0.12|4|5|6|7'
-    redis:
-        required:   false
-        enabled:    false
-    influxdb:
-        required:   false
-        enabled:    false
     java:
         required:   false
         enabled:    false
