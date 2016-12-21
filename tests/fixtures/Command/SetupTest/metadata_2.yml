@@ -8,7 +8,7 @@ configs:
     ansible:
         dependency_with_version:
             - { version: '5.6', name: php, enabled: true }
-            - { version: '5.6', name: mysql, enabled: false }
+            - { version: '5.6', name: mysql, enabled: true }
             - { version: '9.5', name: postgresql, enabled: false }
             - { version: '3.2', name: mongodb, enabled: false }
             - { version: '10.1', name: mariadb, enabled: false }
