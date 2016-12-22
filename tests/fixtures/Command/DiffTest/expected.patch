@@ -11,13 +11,13 @@ index 0c6b44f..9c9f5b0 100644
 \ No newline at end of file
 diff --git a/ansible/deploy.yml b/ansible/deploy.yml
 new file mode 100644
-index 0000000..9ab9e15
+index 0000000..1311a67
 --- /dev/null
 +++ b/ansible/deploy.yml
 @@ -0,0 +1,6 @@
 +---
 +
 +- hosts: deploy
-+  gather_facts: false
++  any_errors_fatal: true
 +  roles:
 +    - manala.deploy
