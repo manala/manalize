@@ -15,6 +15,7 @@ use Elao\Enum\ReadableEnum;
 
 /**
  * @method static EnvName SYMFONY()
+ * @method static EnvName CUSTOM()
  */
 final class EnvName extends ReadableEnum
 {

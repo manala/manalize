@@ -17,6 +17,7 @@ use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
 use Manala\Manalize\Env\Defaults\Defaults;
 use Manala\Manalize\Env\Defaults\DefaultsParser;
 use Manala\Manalize\Env\Dumper;
+use Manala\Manalize\Env\EnvGuesser\ChainEnvGuesser;
 use Manala\Manalize\Env\EnvName;
 use Manala\Manalize\Exception\HandlingFailureException;
 use Manala\Manalize\Handler\Setup as SetupHandler;
@@ -53,7 +54,6 @@ class Setup extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $cwd = realpath($input->getArgument('cwd'));
-        $envName = EnvName::get($input->getOption('env') ?: EnvName::CUSTOM);
 
         if (!is_dir($cwd)) {
             throw new \RuntimeException(sprintf('The working directory "%s" doesn\'t exist.', $cwd));
@@ -61,6 +61,12 @@ class Setup extends Command
 
         $io = new SymfonyStyle($input, $output);
         $io->setDecorated(true);
+
+        $envName = $this->getEnvName($input);
+        if ($envName->is(EnvName::CUSTOM)) {
+            $envName = $this->guessEnvName($io, $cwd) ?: $envName;
+        }
+
         $io->comment(sprintf('Start composing your <info>%s</info> environment', (string) $envName));
 
         $appName = $this->askForAppName($io, strtolower(basename($cwd)));
@@ -90,6 +96,37 @@ class Setup extends Command
         $io->success('Environment successfully configured');
 
         return 0;
+    }
+
+    private function getEnvName(InputInterface $input): EnvName
+    {
+        if ($rawName = $input->getOption('env')) {
+            if (!EnvName::accepts($rawName)) {
+                throw new \UnexpectedValueException(sprintf(
+                    'The value for the "--env" option must be one of [%s] (or null for a custom environment), "%s" given.',
+                    implode(',', EnvName::values()),
+                    $rawName
+                ));
+            }
+
+            return EnvName::get($rawName);
+        }
+
+        return EnvName::CUSTOM();
+    }
+
+    private function guessEnvName(SymfonyStyle $io, string $cwd)
+    {
+        if (!$envName = (new ChainEnvGuesser())->guess(new \SplFileinfo($cwd))) {
+            return;
+        }
+
+        $io->comment(sprintf(
+            "It seems you didn't choose to use one of our built-in environments,\nbut we think that there is one which may be adapted.",
+            $envName
+        ));
+
+        return $io->confirm(sprintf('Would you like to base your setup on the <comment>%s</comment> environment?', $envName)) ? $envName : null;
     }
 
     private function configureDependencies(SymfonyStyle $io, Defaults $defaults): \Generator
