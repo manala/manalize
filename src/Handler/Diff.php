@@ -30,9 +30,9 @@ class Diff
     private $colorSupport;
 
     /**
-     * @param EnvName $envName
-     * @param string  $cwd          The working dir
-     * @param bool    $colorSupport
+     * @param string       $cwd          The working dir
+     * @param bool         $colorSupport
+     * @param EnvName|null $envName
      */
     public function __construct(EnvName $envName, string $cwd, bool $colorSupport = true)
     {
@@ -86,10 +86,9 @@ class Diff
 
         $dumper = new Dumper($tmpPath);
         $metadata = Yaml::parse(file_get_contents("$this->cwd/ansible/.manalize.yml"));
-        $envName = key($metadata);
 
         for (
-            $dump = $dumper->dump(EnvFactory::createEnvFromMetadata($metadata), Dumper::DUMP_FILES);
+            $dump = $dumper->dump(EnvFactory::createEnvFromMetadata($metadata, $this->envName->getValue()), Dumper::DUMP_FILES);
             $dump->valid();
             $dump->next()
         );

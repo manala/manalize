@@ -34,28 +34,7 @@ setup:
 	vagrant provision
 	vagrant ssh -- "cd /srv/app && make install && make build"
 
-## Update environment
-update: export ANSIBLE_TAGS = manala.update
-update:
-	vagrant provision
-
-## Update ansible
-update-ansible: export ANSIBLE_TAGS = manala.update
-update-ansible:
-	vagrant provision --provision-with ansible
-
-## Provision environment
-provision: export ANSIBLE_EXTRA_VARS = {"manala":{"update":false}}
-provision:
-	vagrant provision --provision-with app
-
-## Provision nginx
-provision-nginx: export ANSIBLE_TAGS = manala_nginx
-provision-nginx: provision
-
-## Provision php
-provision-php: export ANSIBLE_TAGS = manala_php
-provision-php: provision
+{% include('common/make/environment_tasks') %}
 
 ###########
 # Install #
@@ -108,11 +87,7 @@ build@prod:
 # Deploy #
 ##########
 
-## Deploy application
-deploy@demo:
-	ansible-playbook ansible/deploy.yml --inventory-file=ansible/hosts --limit=deploy_demo
-deploy@prod:
-	ansible-playbook ansible/deploy.yml --inventory-file=ansible/hosts --limit=deploy_prod
+{% include('common/make/deploy_tasks') %}
 
 ##########
 # Custom #

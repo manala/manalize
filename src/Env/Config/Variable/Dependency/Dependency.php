@@ -23,10 +23,6 @@ class Dependency implements Variable
     protected $name;
     protected $enabled;
 
-    /**
-     * @param string $name
-     * @param bool   $enabled
-     */
     public function __construct(string $name, bool $enabled)
     {
         $this->name = $name;
@@ -49,7 +45,7 @@ class Dependency implements Variable
     public function getReplaces(): array
     {
         return [
-            sprintf('{{ %s_enabled }}', $this->getName()) => $this->isEnabled() ? 'true' : 'false',
+            sprintf('%s_enabled', $this->getName()) => $this->isEnabled() ? 'true' : 'false',
         ];
     }
 

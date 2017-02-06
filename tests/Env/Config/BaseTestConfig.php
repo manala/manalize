@@ -30,6 +30,6 @@ class BaseTestConfig extends \PHPUnit_Framework_TestCase
 
     protected function getOrigin($name)
     {
-        return MANALIZE_DIR.'/src/Resources/'.self::ENV.'/'.$name;
+        return MANALIZE_DIR.'/src/Resources/envs/'.self::ENV.'/'.$name;
     }
 }

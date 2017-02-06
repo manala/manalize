@@ -35,11 +35,13 @@ class Dumper
 
     private $workspace;
     private $patch;
+    private $renderer;
     private $fs;
 
-    public function __construct(string $workspace)
+    public function __construct(string $workspace, Renderer $renderer = null)
     {
         $this->workspace = $workspace;
+        $this->renderer = $renderer ?: new Renderer();
         $this->fs = new Filesystem();
     }
 
@@ -65,6 +67,8 @@ class Dumper
 
             if (null !== $this->patch) {
                 yield $this->dumpPatch();
+
+                $this->patch = null;
             }
         }
 
@@ -80,7 +84,7 @@ class Dumper
 
         foreach ($config->getFiles() as $file) {
             $target = str_replace($config->getOrigin(), $baseTarget, $file->getPathName());
-            $dump = $file->getPathname() === (string) $template ? Renderer::render($config) : file_get_contents($file);
+            $dump = $file->getPathname() === (string) $template ? $this->renderer->render($config) : file_get_contents($file);
 
             if ($conflictCallback && $this->fs->exists($target) && $dump !== file_get_contents($target)) {
                 $strategy = $conflictCallback($target);

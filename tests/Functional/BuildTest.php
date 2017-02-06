@@ -43,6 +43,7 @@ class BuildTest extends TestCase
 
         if (0 !== $process->getExitCode()) {
             echo "stdout:\n".$process->getOutput()."\nstderr:\n".$process->getErrorOutput();
+            $this->tearDown();
         }
 
         $this->assertSame(0, $process->getExitCode());
@@ -52,7 +53,7 @@ class BuildTest extends TestCase
         }
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         (new Process('vagrant destroy --force', self::$cwd))
             ->setTimeout(null)

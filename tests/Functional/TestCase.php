@@ -33,7 +33,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    protected function tearDown()
     {
         (new Filesystem())->remove(MANALIZE_TMP_ROOT_DIR);
     }

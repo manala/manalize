@@ -37,7 +37,7 @@ class Diff extends Command
             ->setName('diff')
             ->setDescription('Computes the diff between the current project and the Manala templates.')
             ->addArgument('cwd', InputArgument::OPTIONAL, 'The path of the application', getcwd())
-            ->addOption('env', null, InputOption::VALUE_OPTIONAL, 'One of the supported environment types', 'symfony')
+            ->addOption('env', null, InputOption::VALUE_OPTIONAL, 'One of the supported environment types or custom', 'custom')
             ->setHelp(<<<EOTXT
 {$this->getDescription()}
 
@@ -79,17 +79,16 @@ EOTXT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $cwd = realpath($input->getArgument('cwd'));
-        $envName = EnvName::get($input->getOption('env'));
 
         if (!is_dir($cwd)) {
             throw new \RuntimeException(sprintf('The working directory "%s" doesn\'t exist.', $cwd));
         }
 
-        $handler = new DiffHandler($envName, $cwd, $output->isDecorated());
+        $handler = new DiffHandler(EnvName::get($input->getOption('env')), $cwd, $output->isDecorated());
         $errorIo = $this->getErrorIo($input, $output);
 
         try {
-            $handler->handle(function ($diff) use ($output) {
+            $handler->handle(function (string $diff) use ($output) {
                 $output->write($diff);
             }, function () use ($errorIo) {
                 $errorIo->success('No diff found.');

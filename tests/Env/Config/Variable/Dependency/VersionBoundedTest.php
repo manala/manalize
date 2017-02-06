@@ -19,7 +19,7 @@ class VersionBoundedTest extends \PHPUnit_Framework_TestCase
     {
         $var = new VersionBounded('brainfuck', true, '2.6');
 
-        $this->assertSame(['{{ brainfuck_version }}' => '2.6', '{{ brainfuck_enabled }}' => 'true'], $var->getReplaces());
+        $this->assertSame(['brainfuck_version' => '2.6', 'brainfuck_enabled' => 'true'], $var->getReplaces());
     }
 
     public function testValidate()

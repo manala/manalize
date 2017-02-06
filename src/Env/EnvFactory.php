@@ -36,13 +36,17 @@ class EnvFactory
         );
     }
 
-    public static function createEnvFromMetadata(array $metadata): Env
+    public static function createEnvFromMetadata(array $metadata, string $rawName): Env
     {
         $hydrator = new VariableHydrator();
         $configRegistry = new Registry();
-        $rawName = $metadata['name'];
-        $rawConfigs = $metadata['configs'];
+
+        if (null === $rawName) {
+            $rawName = $metadata['name'];
+        }
+
         $name = EnvName::get($rawName);
+        $rawConfigs = $metadata['configs'];
         $configs = [];
 
         foreach ($rawConfigs as $configAlias => $perAliasVars) {

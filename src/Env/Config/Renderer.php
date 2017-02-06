@@ -11,6 +11,9 @@
 
 namespace Manala\Manalize\Env\Config;
 
+use Manala\Manalize\Twig\FilesystemLoader;
+use Manala\Manalize\Twig\Lexer;
+
 /**
  * Config' template renderer.
  *
@@ -18,6 +21,21 @@ namespace Manala\Manalize\Env\Config;
  */
 class Renderer
 {
+    private $twig;
+
+    public function __construct(\Twig_Environment $twig = null)
+    {
+        if (null === $twig) {
+            $twig = new \Twig_Environment(new FilesystemLoader(), [
+                'debug' => $debug = '' === \Phar::running(),
+                'cache' => $debug ? MANALIZE_DIR.'/var/cache' : manala_get_tmp_dir(),
+            ]);
+            $twig->setLexer(new Lexer($twig));
+        }
+
+        $this->twig = $twig;
+    }
+
     /**
      * Renders a config template.
      *
@@ -25,9 +43,9 @@ class Renderer
      *
      * @return string
      *
-     * @throws \InvalidArgumentException If the config template is not readable
+     * @throws \RuntimeException If the config template is not readable
      */
-    public static function render(Config $config): string
+    public function render(Config $config): string
     {
         $template = $config->getTemplate();
 
@@ -38,13 +56,11 @@ class Renderer
             ));
         }
 
-        $vars = $config->getVars();
-        $rendered = file_get_contents($template);
-
-        foreach ($vars as $var) {
-            $rendered = strtr($rendered, $var->getReplaces());
+        $context = [];
+        foreach ($config->getVars() as $var) {
+            $context = array_merge($context, $var->getReplaces());
         }
 
-        return $rendered;
+        return $this->twig->render($template, $context);
     }
 }

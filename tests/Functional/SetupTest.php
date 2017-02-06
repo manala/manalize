@@ -44,7 +44,7 @@ class SetupTest extends TestCase
         $tester = new CommandTester(new Setup());
         $tester
             ->setInputs($inputs)
-            ->execute(['cwd' => static::$cwd]);
+            ->execute(['cwd' => static::$cwd, '--env' => EnvName::SYMFONY]);
 
         if (0 !== $tester->getStatusCode()) {
             echo $tester->getDisplay();
@@ -64,8 +64,13 @@ class SetupTest extends TestCase
 
         $this->assertContains(":name        => '$expectedBoxName'", $vagrantFile);
         $this->assertContains(":box_version => '$expectedBoxVersion'", $vagrantFile);
-        $this->assertContains(file_get_contents("$fixturesDir/$expectedDeps"), file_get_contents(self::$cwd.'/ansible/group_vars/app.yml'));
-        $this->assertFileEquals(self::$cwd.'/ansible/.manalize.yml', "$fixturesDir/$expectedMetadataFilename");
+
+        if (UPDATE_FIXTURES) {
+            file_put_contents("$fixturesDir/$expectedDeps", file_get_contents(self::$cwd.'/ansible/group_vars/app.yml'));
+        }
+
+        $this->assertFileEquals("$fixturesDir/$expectedDeps", self::$cwd.'/ansible/group_vars/app.yml');
+        $this->assertFileEquals("$fixturesDir/$expectedMetadataFilename", self::$cwd.'/ansible/.manalize.yml');
     }
 
     public function provideEnvs()
@@ -75,21 +80,21 @@ class SetupTest extends TestCase
                 ["\n", "\n"],
                 'manalized-app',
                 '~> 3.0.0',
-                'dependencies_1.yml',
+                'app_1.yml',
                 'metadata_1.yml',
             ],
             [
               ['foo-bar.manala', 'yes', '5.6', "\n", "\n", "\n", "\n", "\n", "\n"],
                 'foo-bar.manala',
                 '~> 2.0.0',
-                'dependencies_2.yml',
+                'app_2.yml',
                 'metadata_2.yml',
             ],
             [
                 ['foo-bar.manala', "\n"],
                 'foo-bar.manala',
                 '~> 3.0.0',
-                'dependencies_3.yml',
+                'app_3.yml',
                 'metadata_3.yml',
             ],
         ];
@@ -100,7 +105,7 @@ class SetupTest extends TestCase
         $tester = new CommandTester(new Setup());
         $tester
             ->setInputs(["\n", "\n"])
-            ->execute(['cwd' => static::$cwd, '--no-update' => true]);
+            ->execute(['cwd' => static::$cwd, '--no-update' => true, '--env' => 'symfony']);
 
         if (0 !== $tester->getStatusCode()) {
             echo $tester->getDisplay();
@@ -124,7 +129,7 @@ class SetupTest extends TestCase
         $tester = new CommandTester(new Setup());
         $tester
             ->setInputs(["\n", "\n", '0']) // patch strategy
-            ->execute(['cwd' => self::$cwd]);
+            ->execute(['cwd' => self::$cwd, '--env' => 'symfony']);
 
         if (0 !== $tester->getStatusCode()) {
             echo $tester->getDisplay();

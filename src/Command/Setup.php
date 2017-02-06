@@ -43,7 +43,7 @@ class Setup extends Command
             ->setName('setup')
             ->setDescription('Configures your environment on top of Manala ansible roles')
             ->addArgument('cwd', InputArgument::OPTIONAL, 'The path of the application for which to setup the environment', getcwd())
-            ->addOption('env', null, InputOption::VALUE_OPTIONAL, 'One of the supported environment types', 'symfony')
+            ->addOption('env', null, InputOption::VALUE_OPTIONAL, 'One of the supported environment types. Don\'t use this option for building a full custom environment', null)
             ->addOption('no-update', null, InputOption::VALUE_NONE, 'If set, will only update metadata');
     }
 
@@ -53,7 +53,7 @@ class Setup extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $cwd = realpath($input->getArgument('cwd'));
-        $envName = EnvName::get($input->getOption('env'));
+        $envName = EnvName::get($input->getOption('env') ?: EnvName::CUSTOM);
 
         if (!is_dir($cwd)) {
             throw new \RuntimeException(sprintf('The working directory "%s" doesn\'t exist.', $cwd));
@@ -66,9 +66,12 @@ class Setup extends Command
         $appName = $this->askForAppName($io, strtolower(basename($cwd)));
         $envDefaults = DefaultsParser::parse($envName);
         $options = ['dumper_flags' => $input->getOption('no-update') ? Dumper::DUMP_METADATA : Dumper::DUMP_ALL];
-        $dependencies = $this->shouldConfigureDependencies($io, $envDefaults, $envName)
-            ? $this->configureDependencies($io, $envDefaults)
-            : SetupHandler::createDefaultDependencySet($envDefaults);
+
+        if ($envName->is(EnvName::CUSTOM) || $this->shouldConfigureDependencies($io, $envDefaults, $envName)) {
+            $dependencies = $this->configureDependencies($io, $envDefaults);
+        } else {
+            $dependencies = SetupHandler::createDefaultDependencySet($envDefaults);
+        }
 
         $handler = new SetupHandler($cwd, new AppName($appName), $envName, $dependencies, $options);
 

@@ -19,7 +19,7 @@ class VagrantBoxVersionTest extends \PHPUnit_Framework_TestCase
     {
         $var = new VagrantBoxVersion('~> 3.0.0');
 
-        $this->assertSame(['{{ box_version }}' => '~> 3.0.0'], $var->getReplaces());
+        $this->assertSame(['box_version' => '~> 3.0.0'], $var->getReplaces());
     }
 
     /**

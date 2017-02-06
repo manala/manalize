@@ -1,25 +1,6 @@
 ---
 
-app_options:
-
-  php:                   {{ php_enabled }}
-  php_version:           '{{ php_version }}'
-  nodejs:                {{ nodejs_enabled }}
-  nodejs_version:        '{{ nodejs_version }}'
-  mysql:                 {{ mysql_enabled }}
-  mysql_version:         '{{ mysql_version }}'
-  mariadb:               {{ mariadb_enabled }}
-  mariadb_version:       '{{ mariadb_version }}'
-  postgresql:            {{ postgresql_enabled }}
-  postgresql_version:    '{{ postgresql_version }}'
-  redis:                 {{ redis_enabled }}
-  mongodb:               {{ mongodb_enabled }}
-  mongodb_version:       '{{ mongodb_version }}'
-  influxdb:              {{ influxdb_enabled }}
-  sqlite:                {{ sqlite_enabled }}
-  elasticsearch:         {{ elasticsearch_enabled }}
-  elasticsearch_version: '{{ elasticsearch_version }}'
-  java:                  {{ java_enabled }}
+{% include('common/ansible/group_vars/app_options.yml') %}
 
 app_patterns:
 
@@ -33,29 +14,27 @@ app_patterns:
   # Environment #
   ###############
 
-  environment_variables:
-    - SYMFONY_ENV:                 "{{ app.env }}"
-    - APP_SECRET:                  ThisTokenIsNotSoSecretChangeIt
-    - APP_DATABASE_HOST:           127.0.0.1
-    - APP_DATABASE_PORT:           null
-    - APP_DATABASE_NAME:           app
-    - APP_DATABASE_USER:           "{{ app.user }}"
-    - APP_DATABASE_PASSWORD:       null
+  # environment_variables:
+  #   - APP_DATABASE_HOST:           127.0.0.1
+  #   - APP_DATABASE_PORT:           null
+  #   - APP_DATABASE_NAME:           app
+  #   - APP_DATABASE_USER:           "{{ app.user }}"
+  #   - APP_DATABASE_PASSWORD:       null
 
   #########
   # Files #
   #########
-
-  files_attributes:
-    - path:  "{{ app.dir }}{{ app.dir_release }}/var/logs"
-      src:   "{{ app.log_dir }}"
-      state: link_directory
-    - path:  "{{ app.dir }}{{ app.dir_release }}/var/cache"
-      src:   "{{ app.cache_dir }}"
-      state: link_directory
-    - path:  "{{ app.dir }}{{ app.dir_release }}/var/sessions"
-      src:   "{{ app.sessions_dir }}"
-      state: link_directory
+  #
+  # files_attributes:
+  #   - path:  "{{ app.dir }}{{ app.dir_release }}/var/logs"
+  #     src:   "{{ app.log_dir }}"
+  #     state: link_directory
+  #   - path:  "{{ app.dir }}{{ app.dir_release }}/var/cache"
+  #     src:   "{{ app.cache_dir }}"
+  #     state: link_directory
+  #   - path:  "{{ app.dir }}{{ app.dir_release }}/var/sessions"
+  #     src:   "{{ app.sessions_dir }}"
+  #     state: link_directory
 
   #######
   # Npm #

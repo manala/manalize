@@ -1,0 +1,153 @@
+---
+
+app_options:
+
+  php:                   true
+  php_version:           '7.0'
+  nodejs:                false
+  nodejs_version:        '7'
+  mysql:                 true
+  mysql_version:         '5.6'
+  mongodb:               false
+  mongodb_version:       '3.2'
+  mariadb:               false
+  mariadb_version:       '10.1'
+  postgresql:            false
+  postgresql_version:    '9.5'
+  elasticsearch:         false
+  elasticsearch_version: '1.7'
+  redis:                 false
+  influxdb:              false
+  java:                  false
+
+app_patterns:
+
+  ############
+  # Timezone #
+  ############
+
+  timezone_default: Etc/UTC
+
+  ###############
+  # Environment #
+  ###############
+
+  environment_variables:
+    - SYMFONY_ENV:                 "{{ app.env }}"
+    - APP_SECRET:                  ThisTokenIsNotSoSecretChangeIt
+    - APP_DATABASE_HOST:           127.0.0.1
+    - APP_DATABASE_PORT:           null
+    - APP_DATABASE_NAME:           app
+    - APP_DATABASE_USER:           "{{ app.user }}"
+    - APP_DATABASE_PASSWORD:       null
+
+  #########
+  # Files #
+  #########
+
+  files_attributes:
+    - path:  "{{ app.dir }}{{ app.dir_release }}/var/logs"
+      src:   "{{ app.log_dir }}"
+      state: link_directory
+    - path:  "{{ app.dir }}{{ app.dir_release }}/var/cache"
+      src:   "{{ app.cache_dir }}"
+      state: link_directory
+    - path:  "{{ app.dir }}{{ app.dir_release }}/var/sessions"
+      src:   "{{ app.sessions_dir }}"
+      state: link_directory
+
+  #######
+  # Npm #
+  #######
+
+  #npm_packages:
+  #  - package: gulp
+  #    version: 3
+  #  - gulpjs/gulp-cli#4.0
+  #  - package: webpack
+  #    version: 1
+  #  - package: webpack
+  #    version: 2.1.0-beta.13
+
+  #######
+  # Php #
+  #######
+
+  php_extensions:
+    # Symfony
+    - intl
+    - curl
+    - mbstring
+    - xml
+    # Composer
+    - zip
+    # App
+
+  php_configs:
+    - file: app_opcache.ini
+      template: configs/app_opcache.{{ env }}.j2
+    - file: app.ini
+      template: configs/app.{{ env }}.j2
+      config:
+        - date.timezone: UTC
+
+  #########
+  # Nginx #
+  #########
+
+  nginx_configs:
+    # Php fpm
+    - file:     app_php_fpm
+      template: configs/app_php_fpm.{{ env }}.j2
+    # Gzip
+    - file:     app_gzip
+      template: configs/app_gzip.{{ env }}.j2
+    # App
+    - file: app.conf
+      config:
+        - server:
+          - server_name: "{{ app.host }}"
+          #- server_name: "*.ngrok.io"
+          - root:        "{{ app.dir }}{{ app.dir_release }}/web"
+          - access_log:  "{{ app.log_dir }}/nginx.access.log"
+          - error_log:   "{{ app.log_dir }}/nginx.error.log"
+          - include:     conf.d/app_gzip
+          - location /:
+            - try_files: $uri /app.php$is_args$args
+          - location ~ ^/(app(_[-\w]+)?)\.php(/|$):
+            - include: conf.d/app_php_fpm
+            #- internal;
+
+  ########
+  # Cron #
+  ########
+
+  #cron_files:
+  #  - file: app
+  #    user: "{{ app.user }}"
+  #    environment:
+  #      - SYMFONY_ENV: "{{ app.env }}"
+  #    jobs:
+  #      - name:   foo-bar
+  #        job:    "cd {{ app.dir }}{{ app.dir_release }} && php bin/console app:foo:bar --no-interaction -vv >> {{ app.log_dir }}/cron.foo-bar.log 2>&1"
+  #        minute: 0
+  #        hour:   7
+  #        # Dev
+  #        state:  absent
+
+  ##############
+  # Supervisor #
+  ##############
+
+  #supervisor_configs:
+  #  - file:     app.conf
+  #    template: configs/app_program.{{ env }}.j2
+  #    config:
+  #      - foo-bar:
+  #        - command:        php bin/console app:foo:bar --no-interaction -vv
+  #        - directory:      "{{ app.dir }}{{ app.dir_release }}"
+  #        - user:           "{{ app.user }}"
+  #        - stdout_logfile: "{{ app.log_dir }}/supervisor.foo-bar.log"
+  #        - environment:    "SYMFONY_ENV=\"{{ app.env }}\""
+  #        # Dev
+  #        - autostart:       false

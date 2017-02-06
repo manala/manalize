@@ -19,7 +19,7 @@ class AppNameTest extends \PHPUnit_Framework_TestCase
     {
         $var = new AppName('dummy-app.manala');
 
-        $this->assertSame(['{{ app_name }}' => 'dummy-app.manala'], $var->getReplaces());
+        $this->assertSame(['app_name' => 'dummy-app.manala'], $var->getReplaces());
     }
 
     /**

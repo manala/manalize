@@ -19,11 +19,13 @@ use Elao\Enum\ReadableEnum;
 final class EnvName extends ReadableEnum
 {
     const SYMFONY = 'symfony';
+    const CUSTOM = 'custom';
 
     public static function values(): array
     {
         return [
             self::SYMFONY,
+            self::CUSTOM,
         ];
     }
 
@@ -31,6 +33,7 @@ final class EnvName extends ReadableEnum
     {
         return [
             self::SYMFONY => ucfirst(self::SYMFONY),
+            self::CUSTOM => ucfirst(self::CUSTOM),
         ];
     }
 }

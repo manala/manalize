@@ -1,8 +1,8 @@
 diff --git a/Makefile b/Makefile
-index 0c6b44f..9c9f5b0 100644
+index 53b707e..5bd68ba 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -117,5 +117,3 @@ deploy@prod:
+@@ -118,5 +118,3 @@ deploy@prod:
  ##########
  # Custom #
  ##########
@@ -11,13 +11,13 @@ index 0c6b44f..9c9f5b0 100644
 \ No newline at end of file
 diff --git a/ansible/deploy.yml b/ansible/deploy.yml
 new file mode 100644
-index 0000000..1311a67
+index 0000000..9ab9e15
 --- /dev/null
 +++ b/ansible/deploy.yml
 @@ -0,0 +1,6 @@
 +---
 +
 +- hosts: deploy
-+  any_errors_fatal: true
++  gather_facts: false
 +  roles:
 +    - manala.deploy

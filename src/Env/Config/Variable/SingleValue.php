@@ -33,8 +33,6 @@ abstract class SingleValue implements Variable
      */
     public function getReplaces(): array
     {
-        return [
-            sprintf('{{ %s }}', $this->getName()) => $this->value,
-        ];
+        return [$this->getName() => $this->value];
     }
 }
