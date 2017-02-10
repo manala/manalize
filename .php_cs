@@ -20,8 +20,10 @@ return PhpCsFixer\Config::create()
     ->setRules([
         '@Symfony' => true,
         'psr0' => false,
-        'unalign_equals' => false,
-        'unalign_double_arrow' => false,
+        'binary_operator_spaces' => [
+            'align_equals' => false,
+            'align_double_arrow' => false,
+        ],
         'ordered_imports' => true,
         'array_syntax' => ['syntax' => 'short'],
         'header_comment' => [
