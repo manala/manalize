@@ -19,7 +19,7 @@ use Symfony\Component\Yaml\Parser;
  */
 final class DefaultsParser
 {
-    const DEFAULTS_PATH = MANALIZE_DIR.'/src/Resources/envs/%s/defaults.yml';
+    const DEFAULTS_PATH = MANALIZE_HOME.'/templates/%s/defaults.yml';
 
     public static function parse(EnvName $envName): Defaults
     {

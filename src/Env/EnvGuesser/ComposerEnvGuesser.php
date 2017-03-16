@@ -20,6 +20,10 @@ use Manala\Manalize\Env\EnvName;
  */
 class ComposerEnvGuesser implements EnvGuesserInterface
 {
+    private static $envMap = [
+        'symfony/symfony' => EnvName::ELAO_SYMFONY,
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -39,9 +43,9 @@ class ComposerEnvGuesser implements EnvGuesserInterface
             return;
         }
 
-        foreach (array_keys($rawConfig['require']) as $package) {
-            if (EnvName::accepts($name = $this->stripVendorName($package))) {
-                return EnvName::get($name);
+        foreach ($rawConfig['require'] as $package => $version) {
+            if (isset(self::$envMap[$package])) {
+                return EnvName::get(self::$envMap[$package]);
             }
         }
     }
@@ -63,10 +67,5 @@ class ComposerEnvGuesser implements EnvGuesserInterface
         $expectedPath = "$directory/composer.json";
 
         return is_file($expectedPath) ? new \SplFileInfo("$directory/composer.json") : false;
-    }
-
-    private static function stripVendorName(string $package)
-    {
-        return substr($package, strpos($package, '/') + 1);
     }
 }

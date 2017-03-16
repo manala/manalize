@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 
 /*
@@ -10,8 +9,8 @@
  * file that was distributed with this source code.
  */
 
-require_once __DIR__.'/../src/bootstrap.php';
+namespace Manala\Manalize\Exception;
 
-use Manala\Manalize\Application;
-
-(new Application)->run();
+class InvalidConfigurationException extends \RuntimeException
+{
+}

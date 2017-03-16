@@ -62,7 +62,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase
         $handler = new Setup(
             self::$cwd,
             new AppName('setup_test'),
-            EnvName::SYMFONY(),
+            EnvName::ELAO_SYMFONY(),
             $this->prophesize(\Iterator::class)->reveal(),
             $options
         );

@@ -31,6 +31,6 @@ class VagrantTest extends BaseTestConfig
     {
         $vagrant = new Vagrant($this->getEnvType());
 
-        $this->assertSame(realpath($this->getOrigin('Vagrantfile')), realpath($vagrant->getTemplate()));
+        $this->assertSame(realpath($this->getOrigin('Vagrantfile').'.twig'), realpath($vagrant->getTemplate()));
     }
 }
