@@ -17,30 +17,23 @@ use Manala\Manalize\Env\Config\Variable\Variable;
 
 class RendererTest extends \PHPUnit_Framework_TestCase
 {
-    private static $tempdir;
-
-    public static function setUpBeforeClass()
-    {
-        self::$tempdir = sys_get_temp_dir().'/ManalaRendererTest';
-        @mkdir(self::$tempdir);
-    }
-
     public function testRender()
     {
-        file_put_contents(self::$tempdir.'/template', 'foo {# placeholder #} baz');
+        file_put_contents(MANALIZE_HOME.'/templates/template', 'foo {# placeholder #} baz');
         $var = $this->prophesize(Variable::class);
         $var->getReplaces()->willReturn(['placeholder' => 'bar']);
         $config = $this->prophesize(Config::class);
         $config->getVars()->willReturn([$var->reveal()]);
-        $config->getTemplate()->willReturn(new \SplFileInfo(self::$tempdir.'/template'));
+        $config->getTemplate()->willReturn(new \SplFileInfo(MANALIZE_HOME.'/templates/template'));
 
         $this->assertSame('foo bar baz', (new Renderer())->render($config->reveal()));
     }
 
     public static function tearDownAfterClass()
     {
-        @unlink(self::$tempdir.'/template');
-        @unlink(self::$tempdir.'/template.yml');
-        @rmdir(self::$tempdir);
+        @unlink(MANALIZE_HOME.'/templates/template');
+        @unlink(MANALIZE_HOME.'/templates/template.yml');
+
+        parent::tearDownAfterClass();
     }
 }

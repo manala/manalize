@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 
 /*
@@ -10,8 +9,14 @@
  * file that was distributed with this source code.
  */
 
-require_once __DIR__.'/../src/bootstrap.php';
+namespace Manala\Manalize\Process;
 
-use Manala\Manalize\Application;
+use Symfony\Component\Process\Process;
 
-(new Application)->run();
+final class GitFetch extends Process
+{
+    public function __construct($cwd)
+    {
+        parent::__construct('git fetch', $cwd);
+    }
+}

@@ -23,7 +23,7 @@ final class FilesystemLoader extends \Twig_Loader_Filesystem
      */
     public function __construct(array $paths = [], $rootPath = '/')
     {
-        parent::__construct([$rootPath, MANALIZE_DIR.'/src/Resources'] + $paths, $rootPath);
+        parent::__construct([$rootPath, MANALIZE_HOME.'/templates'] + $paths, $rootPath);
     }
 
     /**

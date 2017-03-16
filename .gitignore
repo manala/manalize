@@ -3,3 +3,5 @@
 /composer.lock
 /manalize.phar
 /var/
+/tests/var/
+/tests/fixtures/templates/

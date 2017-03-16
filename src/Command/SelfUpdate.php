@@ -73,7 +73,7 @@ class SelfUpdate extends Command
             $io->error([
                 'Unable to download the latest manalize build.'.($reason ? "\nReason: $reason" : ''),
                 'Please try to run the command again.',
-              ]);
+            ]);
 
             return 1;
         } catch (\PharException $e) {

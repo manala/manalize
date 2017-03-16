@@ -31,6 +31,6 @@ class AnsibleTest extends BaseTestConfig
     {
         $ansible = new Ansible($this->getEnvType());
 
-        $this->assertSame(realpath($this->getOrigin('ansible').'/group_vars/app.yml'), realpath($ansible->getTemplate()));
+        $this->assertSame(realpath($this->getOrigin('ansible').'/group_vars/app.yml.twig'), realpath($ansible->getTemplate()));
     }
 }

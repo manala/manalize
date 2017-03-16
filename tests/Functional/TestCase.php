@@ -30,17 +30,17 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
 
     private static $symfonyStandardCopyPath = null;
 
+    public static function tearDownAfterClass()
+    {
+        self::$symfonyStandardCopyPath = null;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function tearDown()
     {
         (new Filesystem())->remove(MANALIZE_TMP_ROOT_DIR);
-    }
-
-    public static function tearDownAfterClass()
-    {
-        self::$symfonyStandardCopyPath = null;
     }
 
     protected static function getDefaultDependenciesForEnv(EnvName $envType)
@@ -122,7 +122,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         self::createSymfonyStandardProject($cwd);
 
         if (null === $envType) {
-            $envType = EnvName::SYMFONY();
+            $envType = EnvName::ELAO_SYMFONY();
         }
 
         self::manalizeProject($cwd, $appName, $envType, $dependencies);

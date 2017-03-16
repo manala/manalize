@@ -28,7 +28,7 @@ class Renderer
         if (null === $twig) {
             $twig = new \Twig_Environment(new FilesystemLoader(), [
                 'debug' => $debug = '' === \Phar::running(),
-                'cache' => $debug ? MANALIZE_DIR.'/var/cache' : manala_get_tmp_dir(),
+                'cache' => $debug ? MANALIZE_DIR.'/var/cache' : MANALIZE_HOME.'/cache',
             ]);
             $twig->setLexer(new Lexer($twig));
         }

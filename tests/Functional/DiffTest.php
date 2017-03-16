@@ -12,7 +12,6 @@
 namespace Manala\Manalize\Tests\Functional;
 
 use Manala\Manalize\Command\Diff;
-use Manala\Manalize\Env\EnvName;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -39,7 +38,7 @@ class DiffTest extends TestCase
     public function testExecute()
     {
         $tester = new CommandTester(new Diff());
-        $tester->execute(['cwd' => static::$cwd, '--env' => EnvName::SYMFONY]);
+        $tester->execute(['cwd' => static::$cwd, '--env' => 'elao-symfony']);
 
         if (0 !== $tester->getStatusCode()) {
             echo $tester->getDisplay();

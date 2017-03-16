@@ -1,4 +1,4 @@
-name: symfony
+name: elao-symfony
 configs:
     vagrant:
         app_name:

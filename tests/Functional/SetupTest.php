@@ -44,7 +44,7 @@ class SetupTest extends TestCase
         $tester = new CommandTester(new Setup());
         $tester
             ->setInputs($inputs)
-            ->execute(['cwd' => static::$cwd, '--env' => EnvName::SYMFONY]);
+            ->execute(['cwd' => static::$cwd, '--env' => 'elao-symfony']);
 
         if (0 !== $tester->getStatusCode()) {
             echo $tester->getDisplay();
@@ -105,7 +105,7 @@ class SetupTest extends TestCase
         $tester = new CommandTester(new Setup());
         $tester
             ->setInputs(["\n", "\n"])
-            ->execute(['cwd' => static::$cwd, '--no-update' => true, '--env' => 'symfony']);
+            ->execute(['cwd' => static::$cwd, '--no-update' => true, '--env' => 'elao-symfony']);
 
         if (0 !== $tester->getStatusCode()) {
             echo $tester->getDisplay();
@@ -129,7 +129,7 @@ class SetupTest extends TestCase
         $tester = new CommandTester(new Setup());
         $tester
             ->setInputs(["\n", "\n", '0']) // patch strategy
-            ->execute(['cwd' => self::$cwd, '--env' => 'symfony']);
+            ->execute(['cwd' => self::$cwd, '--env' => 'elao-symfony']);
 
         if (0 !== $tester->getStatusCode()) {
             echo $tester->getDisplay();
@@ -147,7 +147,7 @@ class SetupTest extends TestCase
         $this->assertFileExists(self::$cwd.'/manalize.patch');
 
         $expected = '';
-        (new Diff(EnvName::SYMFONY(), self::$cwd, false))->handle(function ($diff) use (&$expected) {
+        (new Diff(EnvName::ELAO_SYMFONY(), self::$cwd, false))->handle(function ($diff) use (&$expected) {
             $expected .= $diff;
         });
 

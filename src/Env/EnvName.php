@@ -14,18 +14,18 @@ namespace Manala\Manalize\Env;
 use Elao\Enum\ReadableEnum;
 
 /**
- * @method static EnvName SYMFONY()
+ * @method static EnvName ELAO_SYMFONY()
  * @method static EnvName CUSTOM()
  */
 final class EnvName extends ReadableEnum
 {
-    const SYMFONY = 'symfony';
+    const ELAO_SYMFONY = 'elao-symfony';
     const CUSTOM = 'custom';
 
     public static function values(): array
     {
         return [
-            self::SYMFONY,
+            self::ELAO_SYMFONY,
             self::CUSTOM,
         ];
     }
@@ -33,7 +33,7 @@ final class EnvName extends ReadableEnum
     public static function readables(): array
     {
         return [
-            self::SYMFONY => ucfirst(self::SYMFONY),
+            self::ELAO_SYMFONY => 'Elao Symfony',
             self::CUSTOM => ucfirst(self::CUSTOM),
         ];
     }
