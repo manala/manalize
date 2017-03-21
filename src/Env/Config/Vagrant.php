@@ -18,11 +18,8 @@ namespace Manala\Manalize\Env\Config;
  */
 class Vagrant extends Config
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getPath(): string
+    public function getFiles(): \Traversable
     {
-        return 'Vagrantfile';
+        yield new \SplFileInfo($this->getOrigin().'/manala/Vagrantfile');
     }
 }

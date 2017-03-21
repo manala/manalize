@@ -15,13 +15,6 @@ use Manala\Manalize\Env\Config\Ansible;
 
 class AnsibleTest extends BaseTestConfig
 {
-    public function testGetPath()
-    {
-        $ansible = new Ansible($this->getEnvType());
-
-        $this->assertSame('ansible', $ansible->getPath());
-    }
-
     public function testGetOrigin()
     {
         $this->assertOrigin(new Ansible($this->getEnvType()), 'ansible');

@@ -12,6 +12,7 @@
 namespace Manala\Manalize\Env;
 
 use Manala\Manalize\Env\Config\Config;
+use Manala\Manalize\Env\Config\Manala;
 use Manala\Manalize\Env\Config\Renderer;
 use Manala\Manalize\Exception\FailedDumpException;
 use Manala\Manalize\Process\GitDiff;
@@ -25,7 +26,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Dumper
 {
-    const DUMP_METADATA = 1;
+    const DUMP_MANALA = 1;
     const DUMP_FILES = 2;
     const DUMP_ALL = 3;
 
@@ -49,20 +50,22 @@ class Dumper
      * Creates and dumps final config files from stubs.
      *
      * Note: If a file already exists, it can either be erased, a patch can be created for, or
-     * it can be skipped.
+     * it can be skipped (see Dumper::DO_*).
      *
      * @param Env      $env              The Env for which to dump the rendered config templates
      * @param int      $flags
      * @param callable $conflictCallback A callback returning the strategy to be use in case
      *                                   of existing file
      *
-     * @return \Generator The dumped file paths
+     * @return \Traversable|string[] The dumped file paths
      */
-    public function dump(Env $env, int $flags = self::DUMP_ALL, callable $conflictCallback = null): \Generator
+    public function dump(Env $env, int $flags = self::DUMP_ALL, callable $conflictCallback = null): \Traversable
     {
+        $templateDir = $env->getBaseDir();
+
         if (self::DUMP_FILES & $flags) {
             foreach ($env->getConfigs() as $config) {
-                yield from $this->dumpFiles($config, $conflictCallback);
+                yield from $this->dumpFiles($config, $templateDir, $conflictCallback);
             }
 
             if (null !== $this->patch) {
@@ -72,19 +75,31 @@ class Dumper
             }
         }
 
-        if (self::DUMP_METADATA & $flags) {
+        if (self::DUMP_MANALA & $flags) {
             yield $this->dumpMetadata($env);
+            yield $this->dumpManala($env);
         }
     }
 
-    private function dumpFiles(Config $config, callable $conflictCallback = null): \Generator
+    private function dumpFiles(Config $config, string $templateDir, callable $conflictCallback = null): \Traversable
     {
-        $baseTarget = "$this->workspace/{$config->getPath()}";
+        if ($dist = $config->getDist()) {
+            $distTarget = "$this->workspace/$dist";
+            $this->fs->dumpFile("$distTarget", file_get_contents("$templateDir/dist/$dist"));
+
+            yield $distTarget;
+        }
+
         $template = $config->getTemplate();
 
         foreach ($config->getFiles() as $file) {
-            $dump = $file->getPathname() === (string) $template || $file->getPathname().'.twig' === (string) $template ? $this->renderer->render($config) : file_get_contents($file);
-            $target = str_replace($config->getOrigin(), $baseTarget, 'twig' === $file->getExtension() ? substr($file->getPathname(), 0, -5) : $file->getPathname());
+            if ($template && file_exists($template) && in_array((string) $template, [$file->getPathname().'.twig', $file->getPathname()])) {
+                $dump = $this->renderer->render($config);
+            } else {
+                $dump = file_get_contents($file);
+            }
+
+            $target = str_replace($templateDir, $this->workspace, 'twig' === $file->getExtension() ? substr($file->getPathname(), 0, -5) : $file->getPathname());
 
             if ($conflictCallback && $this->fs->exists($target) && $dump !== file_get_contents($target)) {
                 $strategy = $conflictCallback($target);
@@ -108,10 +123,32 @@ class Dumper
 
     private function dumpMetadata(Env $env): string
     {
-        (new Filesystem())->dumpFile(
-            $target = "$this->workspace/ansible/.manalize.yml",
-            Yaml::dump((new EnvExporter())->export($env), 4)
+        $this->fs->dumpFile(
+            $target = "$this->workspace/manala/metadata.yml",
+            Yaml::dump($env->getMetadata(), 4)
         );
+
+        return $target;
+    }
+
+    private function dumpManala(Env $env): string
+    {
+        $manala = [
+            'app' => [
+                'name' => $env->getAppName()->getValue(),
+                'template' => $env->getName(),
+            ],
+            'system' => [
+                'cpus' => 1,
+                'memory' => 2048,
+            ],
+        ];
+
+        foreach ($env->getPackages() as $var) {
+            $manala['system'][$var->getName()] = $var->getValue();
+        }
+
+        $this->fs->dumpFile($target = "$this->workspace/manala.yml", Yaml::dump($manala, 4));
 
         return $target;
     }

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Tests\Env\Config\Dependency;
+namespace Manala\Manalize\Tests\Env\Defaults;
 
 use Manala\Manalize\Env\Defaults\Defaults;
 

@@ -25,6 +25,10 @@ class SelfUpdateTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        if (!shell_exec('which box')) {
+            $this->markTestSkipped('Needs "kherge/box" globally installed');
+        }
+
         $cwd = manala_get_tmp_dir('tests_selfupdate_handler_');
         $fs = new Filesystem();
 

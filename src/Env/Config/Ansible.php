@@ -18,28 +18,16 @@ namespace Manala\Manalize\Env\Config;
  */
 class Ansible extends Config
 {
+    use DirectoryIterable;
+
     /**
      * Lazy loads ansible configuration files.
      *
      * {@inheritdoc}
      */
-    public function getFiles(): \Generator
+    public function getFiles(): \Traversable
     {
-        $originDirectory = $this->getOrigin();
-
-        if (!is_readable($originDirectory)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Unable to load an Ansible configuration from directory "%s" as it is either not readable or doesn\'t exist.',
-                $originDirectory
-            ));
-        }
-
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($originDirectory, \FilesystemIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::LEAVES_ONLY
-        );
-
-        foreach ($iterator as $file) {
+        foreach ($this->getIterator($this->getOrigin()) as $file) {
             yield $file;
         }
     }
@@ -52,11 +40,8 @@ class Ansible extends Config
         return new \SplFileInfo($this->getOrigin().'/group_vars/app.yml.twig');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPath(): string
+    public function getOrigin(): \SplFileInfo
     {
-        return 'ansible';
+        return new \SplFileInfo(parent::getOrigin().'/ansible');
     }
 }

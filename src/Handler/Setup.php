@@ -12,8 +12,7 @@
 namespace Manala\Manalize\Handler;
 
 use Manala\Manalize\Env\Config\Variable\AppName;
-use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
-use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
+use Manala\Manalize\Env\Config\Variable\Package;
 use Manala\Manalize\Env\Defaults\Defaults;
 use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvFactory;
@@ -28,27 +27,26 @@ class Setup
     private $cwd;
     private $appName;
     private $envName;
-    private $dependencies;
+    private $packages;
     private $options;
-    private $patch;
 
     public function __construct(
         string $cwd,
         AppName $appName,
         EnvName $envName,
-        \Traversable $dependencies,
+        \Traversable $packages,
         array $options = []
     ) {
         $this->cwd = $cwd;
         $this->appName = $appName;
         $this->envName = $envName;
-        $this->dependencies = $dependencies;
+        $this->packages = $packages;
         $this->options = $this->normalizeOptions($options);
     }
 
     public function handle(callable $notifier, callable $existingFileCallback = null)
     {
-        $env = EnvFactory::createEnv($this->envName, $this->appName, $this->dependencies);
+        $env = EnvFactory::createEnv($this->envName, $this->appName, $this->packages);
         $dumper = new Dumper($this->cwd);
 
         try {
@@ -60,18 +58,16 @@ class Setup
         }
     }
 
-    public static function createDefaultDependencySet(Defaults $defaults)
+    public static function createDefaultPackageSet(Defaults $defaults)
     {
         foreach ($defaults->get('packages') as $name => $package) {
-            $defaultVersion = $package['default'] ?? null;
-
-            if (null === $defaultVersion) {
-                yield new Dependency($name, $package['enabled']);
+            if (!isset($package['default'])) {
+                yield new Package($name, $package['enabled']);
 
                 continue;
             }
 
-            yield new VersionBounded($name, $package['enabled'], $defaultVersion);
+            yield new Package($name, $package['enabled'], $package['default']);
         }
     }
 

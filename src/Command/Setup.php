@@ -12,14 +12,12 @@
 namespace Manala\Manalize\Command;
 
 use Manala\Manalize\Env\Config\Variable\AppName;
-use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
-use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
+use Manala\Manalize\Env\Config\Variable\Package;
 use Manala\Manalize\Env\Defaults\Defaults;
 use Manala\Manalize\Env\Defaults\DefaultsParser;
 use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvGuesser\ChainEnvGuesser;
 use Manala\Manalize\Env\EnvName;
-use Manala\Manalize\Exception\HandlingFailureException;
 use Manala\Manalize\Exception\InvalidConfigurationException;
 use Manala\Manalize\Handler\Setup as SetupHandler;
 use Manala\Manalize\Template\Syncer;
@@ -73,7 +71,7 @@ class Setup extends Command
 
         try {
             $syncer = new Syncer();
-            $syncer->sync();
+            $syncer->sync('e91a633');
         } catch (\Throwable $e) {
             $io->error('An error occured while syncing templates: '.$e->getMessage());
 
@@ -84,27 +82,20 @@ class Setup extends Command
 
         $appName = $this->askForAppName($io, strtolower(basename($cwd)));
         $envDefaults = DefaultsParser::parse($envName);
-        $options = ['dumper_flags' => $input->getOption('no-update') ? Dumper::DUMP_METADATA : Dumper::DUMP_ALL];
+        $options = ['dumper_flags' => $input->getOption('no-update') ? Dumper::DUMP_MANALA : Dumper::DUMP_ALL];
 
-        if ($envName->is(EnvName::CUSTOM) || $this->shouldConfigureDependencies($io, $envDefaults, $envName)) {
-            $dependencies = $this->configureDependencies($io, $envDefaults);
+        if ($envName->is(EnvName::CUSTOM) || $this->shouldConfigurePackages($io, $envDefaults, $envName)) {
+            $packages = $this->configurePackages($io, $envDefaults);
         } else {
-            $dependencies = SetupHandler::createDefaultDependencySet($envDefaults);
+            $packages = SetupHandler::createDefaultPackageSet($envDefaults);
         }
 
-        $handler = new SetupHandler($cwd, new AppName($appName), $envName, $dependencies, $options);
-
-        try {
-            $handler->handle(function (string $target) use ($io) {
-                $io->writeln(sprintf('- %s', $target));
-            }, function (string $target) use ($io, $handler, $cwd) {
-                return $this->askStrategyForExistingFile($io, $cwd, $target, $handler->getChoicesForAlreadyExistingFile());
-            });
-        } catch (HandlingFailureException $e) {
-            $io->error(['An error occurred while dumping files:', $e->getMessage()]);
-
-            return 1;
-        }
+        $handler = new SetupHandler($cwd, new AppName($appName), $envName, $packages, $options);
+        $handler->handle(function (string $target) use ($io) {
+            $io->writeln(sprintf('- %s', $target));
+        }, function (string $target) use ($io, $handler, $cwd) {
+            return $this->askStrategyForExistingFile($io, $cwd, $target, $handler->getChoicesForAlreadyExistingFile());
+        });
 
         $io->success('Environment successfully configured');
 
@@ -156,7 +147,7 @@ class Setup extends Command
         return $io->confirm(sprintf('Would you like to base your setup on the <comment>%s</comment> environment?', $envName)) ? $envName : null;
     }
 
-    private function configureDependencies(SymfonyStyle $io, Defaults $defaults): \Generator
+    private function configurePackages(SymfonyStyle $io, Defaults $defaults): \Generator
     {
         foreach ($defaults->get('packages') as $name => $settings) {
             $defaultEnabled = $settings['enabled'] ?: false;
@@ -164,35 +155,31 @@ class Setup extends Command
             $enabled = $settings['required'] ?: $io->confirm(sprintf('Install %s?', $name), $defaultEnabled);
 
             if (null === $defaultVersion) {
-                yield new Dependency($name, $enabled);
+                yield new Package($name, $enabled);
 
                 continue;
             }
 
             if (false === $enabled) {
-                yield new VersionBounded($name, $enabled, $defaultVersion);
+                yield new Package($name, $enabled, $defaultVersion);
 
                 continue;
             }
 
-            yield new VersionBounded(
-                $name,
-                $enabled,
-                $this->askForDependencyVersion($io, $name, $settings['constraint'], $defaultVersion)
-            );
+            yield new Package($name, $enabled, $this->askForPackageVersion($io, $name, $settings['constraint'], $defaultVersion));
         }
     }
 
-    private function shouldConfigureDependencies(SymfonyStyle $io, Defaults $defaults, EnvName $envName): bool
+    private function shouldConfigurePackages(SymfonyStyle $io, Defaults $defaults, EnvName $envName): bool
     {
         $packages = $defaults->get('packages');
 
-        $io->writeln(sprintf('The default set of dependencies for <info>%s</info> is:', (string) $envName));
+        $io->writeln(sprintf('The default set of packages for <info>%s</info> is:', (string) $envName));
         $io->table(['name', 'enabled', 'version'], array_map(function ($name, $package) {
             return [$name, $package['enabled'] ? 'yes' : 'no', $package['default'] ?? '~'];
         }, array_keys($packages), $packages));
 
-        return $io->confirm('Do you want to customize your dependencies?', false);
+        return $io->confirm('Do you want to customize your packages?', false);
     }
 
     private function askStrategyForExistingFile(SymfonyStyle $io, string $cwd, string $target, array $strategies): string
@@ -206,13 +193,13 @@ class Setup extends Command
         return array_search($strategy, $strategies, true);
     }
 
-    private function askForDependencyVersion(SymfonyStyle $io, string $name, string $versionConstraint, string $defaultVersion): string
+    private function askForPackageVersion(SymfonyStyle $io, string $name, string $versionConstraint, string $defaultVersion): string
     {
         return $io->ask(
             sprintf('%s version? (%s)', $name, $versionConstraint),
             $defaultVersion,
             function ($version) use ($versionConstraint) {
-                return VersionBounded::validate($version, $versionConstraint);
+                return Package::validate($version, $versionConstraint);
             }
         );
     }

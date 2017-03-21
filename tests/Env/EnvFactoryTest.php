@@ -15,10 +15,12 @@ use Manala\Manalize\Env\Config\Ansible;
 use Manala\Manalize\Env\Config\Make;
 use Manala\Manalize\Env\Config\Vagrant;
 use Manala\Manalize\Env\Config\Variable\AppName;
+use Manala\Manalize\Env\Config\Variable\Package;
 use Manala\Manalize\Env\Config\Variable\VagrantBoxVersion;
 use Manala\Manalize\Env\Env;
 use Manala\Manalize\Env\EnvFactory;
 use Manala\Manalize\Env\EnvName;
+use Symfony\Component\Yaml\Yaml;
 
 class EnvFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -33,5 +35,30 @@ class EnvFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Env::class, $env);
         $this->assertEquals($expectedConfigs, $env->getConfigs());
         $this->assertCount(3, $env->getConfigs());
+    }
+
+    public function testCreateEnvFromManala()
+    {
+        $manala = <<<MANALA
+app:
+    name: foo.bar
+    template: elao-symfony
+system:
+    php: 
+        version: 7.1
+    brainfuck:
+        enabled: false
+    redis: true
+MANALA;
+
+        $expectedEnvName = EnvName::ELAO_SYMFONY();
+        $expectedPackages = [new Package('php', true, '7.1'), new Package('brainfuck', false), new Package('redis', true)];
+        $expectedConfigs = [
+            new Vagrant($expectedEnvName, new AppName('foo.bar'), new VagrantBoxVersion()),
+            Ansible::create($expectedEnvName, $expectedPackages),
+            new Make($expectedEnvName),
+        ];
+
+        $this->assertEquals($expectedConfigs, EnvFactory::createEnvFromManala(Yaml::parse($manala))->getConfigs());
     }
 }

@@ -30,7 +30,7 @@ class BuildTest extends TestCase
             self::$cwd,
             'build-test',
             $envType,
-            self::enableDependency(self::getDefaultDependenciesForEnv($envType), 'mysql')
+            self::enablePackage(self::getDefaultPackagesForEnv($envType), 'mysql')
         );
     }
 

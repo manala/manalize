@@ -12,24 +12,21 @@
 namespace Manala\Manalize\Env\Config\Variable;
 
 /**
- * The "app" var.
+ * The "APP" var.
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-final class AppName extends SingleValue
+final class AppName extends Variable
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getName(): string
+    public function __construct(string $value)
     {
-        return 'app_name';
+        parent::__construct('app_name', $value);
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function validate(string $value, $throwException = true)
+    public static function validate($value, $throwException = true)
     {
         $isValid = preg_match('/^([-.A-Z0-9])*$/i', $value);
 
