@@ -9,22 +9,22 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Tests\Env\Config\Variable\Dependency;
+namespace Manala\Manalize\Tests\Env\Config\Variable;
 
-use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
+use Manala\Manalize\Env\Config\Variable\Package;
 
-class VersionBoundedTest extends \PHPUnit_Framework_TestCase
+class PackageTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetReplaces()
     {
-        $var = new VersionBounded('brainfuck', true, '2.6');
+        $var = new Package('brainfuck', true, '2.6');
 
         $this->assertSame(['brainfuck_version' => '2.6', 'brainfuck_enabled' => 'true'], $var->getReplaces());
     }
 
     public function testValidate()
     {
-        $this->assertSame('2.6', VersionBounded::validate('2.6', '2.6|~3.0'));
+        $this->assertSame('2.6', Package::validate('2.6', '2.6|~3.0'));
     }
 
     /**
@@ -33,6 +33,6 @@ class VersionBoundedTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidateFailsOnIncompatibleVersion()
     {
-        VersionBounded::validate('2.6', '~3.0');
+        Package::validate('2.6', '~3.0');
     }
 }

@@ -12,6 +12,7 @@
 namespace Manala\Manalize\Tests\Env;
 
 use Manala\Manalize\Env\Config\Config;
+use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Env;
 
 class EnvTest extends \PHPUnit_Framework_TestCase
@@ -19,7 +20,7 @@ class EnvTest extends \PHPUnit_Framework_TestCase
     public function testGetConfig()
     {
         $config = $this->prophesize(Config::class);
-        $env = new Env('foo', $config->reveal());
+        $env = new Env('foo', new AppName('foobar'), [], $config->reveal());
 
         $this->assertSame([$config->reveal()], $env->getConfigs());
     }

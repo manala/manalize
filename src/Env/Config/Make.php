@@ -18,11 +18,33 @@ namespace Manala\Manalize\Env\Config;
  */
 class Make extends Config
 {
+    use DirectoryIterable;
+
     /**
      * {@inheritdoc}
      */
-    public function getPath(): string
+    public function getOrigin(): \SplFileInfo
+    {
+        return new \SplFileInfo(parent::getOrigin().'/manala/make');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFiles(): \Traversable
+    {
+        foreach ($this->getIterator($this->getOrigin()) as $file) {
+            yield $file;
+        }
+    }
+
+    public function getDist()
     {
         return 'Makefile';
+    }
+
+    public function getTemplate()
+    {
+        return;
     }
 }

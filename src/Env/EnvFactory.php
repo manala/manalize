@@ -13,11 +13,11 @@ namespace Manala\Manalize\Env;
 
 use Manala\Manalize\Env\Config\Ansible;
 use Manala\Manalize\Env\Config\Make;
-use Manala\Manalize\Env\Config\Registry;
 use Manala\Manalize\Env\Config\Vagrant;
 use Manala\Manalize\Env\Config\Variable\AppName;
-use Manala\Manalize\Env\Config\Variable\VagrantBoxVersionResolver;
-use Manala\Manalize\Env\Config\Variable\VariableHydrator;
+use Manala\Manalize\Env\Config\Variable\Package;
+use Manala\Manalize\Env\Config\Variable\VagrantBoxVersion;
+use function iter\toArray;
 
 /**
  * Provides Env instances.
@@ -26,45 +26,56 @@ use Manala\Manalize\Env\Config\Variable\VariableHydrator;
  */
 class EnvFactory
 {
-    public static function createEnv(EnvName $name, AppName $appName, \Traversable $dependencies): Env
+    public static function createEnv(EnvName $name, AppName $appName, $packages): Env
     {
+        if ($packages instanceof \Traversable) {
+            $packages = toArray($packages);
+        }
+
         return new Env(
             $name->getValue(),
-            new Vagrant($name, $appName, VagrantBoxVersionResolver::resolve($dependencies)),
-            new Ansible($name, ...$dependencies),
+            $appName,
+            $packages,
+            new Vagrant($name, $appName, new VagrantBoxVersion('~> 3.0.0')),
+            Ansible::create($name, $packages),
             new Make($name)
         );
     }
 
-    public static function createEnvFromMetadata(array $metadata, string $rawName): Env
+    /**
+     * @param array $manala The parsed manala.yaml e.g:
+     *
+     *   app:
+     *      name: foo.bar
+     *      template: elao-symfony
+     *   system:
+     *      redis: true        # equals { enabled: true, version: ~ }
+     *      java: ~            # equals { enabled: true, version: ~ }
+     *      php:
+     *          version: 7.1
+     *          extensions: []
+     *      cpus: 1
+     *      memory: 2048
+     *
+     * @return Env
+     */
+    public static function createEnvFromManala(array $manala, string $template = null): Env
     {
-        $hydrator = new VariableHydrator();
-        $configRegistry = new Registry();
+        $app = $manala['app'] ?? [];
+        $system = $manala['system'] ?? [];
 
-        if (null === $rawName) {
-            $rawName = $metadata['name'];
+        if (!$template) {
+            $template = $app['template'] ?? EnvName::CUSTOM;
         }
 
-        $name = EnvName::get($rawName);
-        $rawConfigs = $metadata['configs'];
-        $configs = [];
-
-        foreach ($rawConfigs as $configAlias => $perAliasVars) {
-            $hydratedVars = [];
-            $configClass = $configRegistry->getClassForAlias($configAlias);
-
-            foreach ($perAliasVars as $alias => $vars) {
-                $class = $configRegistry->getClassForAlias($alias);
-                foreach ($vars as $data) {
-                    $var = (new \ReflectionClass($class))->newInstanceWithoutConstructor();
-                    $hydrator->hydrate($var, $data);
-                    $hydratedVars[] = $var;
-                }
-            }
-
-            $configs[] = $configClass::create($name, $hydratedVars);
+        $packages = [];
+        foreach ($system as $name => $package) {
+            $enabled = is_bool($package) ? $package : $package['enabled'] ?? (bool) $package;
+            $version = is_string($package) ? $package : $package['version'] ?? null;
+            // TODO manifest-based validation
+            $packages[] = new Package($name, $enabled, $version);
         }
 
-        return new Env($rawName, ...$configs);
+        return self::createEnv(EnvName::get($template), new AppName($app['name']), $packages);
     }
 }

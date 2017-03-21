@@ -37,7 +37,7 @@ class Diff extends Command
             ->setName('diff')
             ->setDescription('Computes the diff between the current project and the Manala templates.')
             ->addArgument('cwd', InputArgument::OPTIONAL, 'The path of the application', getcwd())
-            ->addOption('env', null, InputOption::VALUE_OPTIONAL, 'One of the supported environment types or custom', 'custom')
+            ->addOption('env', null, InputOption::VALUE_OPTIONAL, 'One of the supported environment types or custom.', null)
             ->setHelp(<<<EOTXT
 {$this->getDescription()}
 
@@ -84,7 +84,8 @@ EOTXT
             throw new \RuntimeException(sprintf('The working directory "%s" doesn\'t exist.', $cwd));
         }
 
-        $handler = new DiffHandler(EnvName::get($input->getOption('env')), $cwd, $output->isDecorated());
+        $envName = $input->getOption('env') ? EnvName::get($input->getOption('env')) : null;
+        $handler = new DiffHandler($cwd, $envName, $output->isDecorated());
         $errorIo = $this->getErrorIo($input, $output);
 
         try {

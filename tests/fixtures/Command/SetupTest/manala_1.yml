@@ -1,0 +1,39 @@
+app:
+    name: manalized-app
+    template: elao-symfony
+system:
+    cpus: 1
+    memory: 2048
+    php:
+        enabled: true
+        version: '7.0'
+    mysql:
+        enabled: true
+        version: '5.6'
+    postgresql:
+        enabled: false
+        version: '9.5'
+    mongodb:
+        enabled: false
+        version: '3.2'
+    mariadb:
+        enabled: false
+        version: '10.1'
+    redis:
+        enabled: false
+        version: null
+    influxdb:
+        enabled: false
+        version: null
+    sqlite:
+        enabled: false
+        version: null
+    elasticsearch:
+        enabled: false
+        version: '1.7'
+    nodejs:
+        enabled: false
+        version: '7'
+    java:
+        enabled: false
+        version: null

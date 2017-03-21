@@ -12,6 +12,9 @@
 namespace Manala\Manalize\Env;
 
 use Manala\Manalize\Env\Config\Config;
+use Manala\Manalize\Env\Config\Manifest;
+use Manala\Manalize\Env\Config\Variable\AppName;
+use Manala\Manalize\Env\Config\Variable\Package;
 
 /**
  * Manala Env.
@@ -21,11 +24,20 @@ use Manala\Manalize\Env\Config\Config;
 class Env
 {
     private $name;
+    private $appName;
     private $configs = [];
+    private $packages;
 
-    public function __construct(string $name, Config ...$configs)
+    /**
+     * @param string    $name
+     * @param Package[] $packages
+     * @param Config[]  ...$configs
+     */
+    public function __construct(string $name, AppName $appName, array $packages, Config ...$configs)
     {
         $this->name = $name;
+        $this->appName = $appName;
+        $this->packages = $packages;
         $this->configs = $configs;
     }
 
@@ -40,5 +52,40 @@ class Env
     public function getConfigs(): array
     {
         return $this->configs;
+    }
+
+    public function getBaseDir(): \SplFileInfo
+    {
+        return new \SplFileInfo(MANALIZE_HOME.'/templates/'.$this->name);
+    }
+
+    public function getManifest(): Manifest
+    {
+        return new Manifest();
+    }
+
+    public function getAppName(): AppName
+    {
+        return $this->appName;
+    }
+
+    /**
+     * @return Package[]
+     */
+    public function getPackages(): array
+    {
+        return $this->packages;
+    }
+
+    public function getMetadata(): array
+    {
+        return [
+            'app' => [
+                'dir' => '/srv/app',
+                'log_dir' => '/var/log/app',
+                'cache_dir' => '/var/cache/app',
+                'sessions_dir' => '/var/lib/app/sessions',
+            ],
+        ];
     }
 }

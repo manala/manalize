@@ -15,22 +15,15 @@ use Manala\Manalize\Env\Config\Vagrant;
 
 class VagrantTest extends BaseTestConfig
 {
-    public function testGetPath()
+    public function testGetFiles()
     {
-        $vagrant = new Vagrant($this->getEnvType());
-
-        $this->assertSame('Vagrantfile', $vagrant->getPath());
-    }
-
-    public function testGetOrigin()
-    {
-        $this->assertOrigin(new Vagrant($this->getEnvType()), 'Vagrantfile');
+        $this->assertSame($this->getOrigin('manala/Vagrantfile'), (string) (new Vagrant($this->getEnvType()))->getFiles()->current());
     }
 
     public function testGetTemplate()
     {
         $vagrant = new Vagrant($this->getEnvType());
 
-        $this->assertSame(realpath($this->getOrigin('Vagrantfile').'.twig'), realpath($vagrant->getTemplate()));
+        $this->assertSame(realpath($this->getOrigin('manala/Vagrantfile').'.twig'), realpath($vagrant->getTemplate()));
     }
 }

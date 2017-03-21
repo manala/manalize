@@ -12,35 +12,38 @@
 namespace Manala\Manalize\Env\Config\Variable;
 
 /**
- * Must be implemented by classes representing a variable to be replaced when
- * rendering a given config template.
+ * A simple key-value variable.
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-interface Variable
+class Variable
 {
-    /**
-     * Returns the name of the implementation.
-     *
-     * @return string
-     */
-    public function getName(): string;
+    private $name;
+    private $value;
 
-    /**
-     * Returns the replaces to be used for rendering a config file.
-     *
-     * @return array Of format [placeholder => value]
-     */
-    public function getReplaces(): array;
+    public function __construct($name, $value = null)
+    {
+        $this->name = $name;
+        $this->value = $value;
+    }
 
-    /**
-     * Checks that a given value is properly formatted for the current implementation.
-     *
-     * @param string $value The value to assert
-     *
-     * @return mixed The validated value
-     *
-     * @throws \InvalidArgumentException If the value is incorrect
-     */
-    public static function validate(string $value);
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    public function getReplaces(): array
+    {
+        return [$this->name => $this->value];
+    }
+
+    public static function validate($value)
+    {
+        return $value;
+    }
 }

@@ -1,13 +1,15 @@
 diff --git a/Makefile b/Makefile
-index 53b707e..5bd68ba 100644
+index b1be3e0..0d8aaed 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -118,5 +118,3 @@ deploy@prod:
- ##########
- # Custom #
- ##########
-- 
+@@ -181,5 +181,4 @@ deploy@production:
+ 
+ #######
+ # App #
+-####### 
 - This line is expected in the patch
+\ No newline at end of file
++#######
 \ No newline at end of file
 diff --git a/ansible/deploy.yml b/ansible/deploy.yml
 new file mode 100644

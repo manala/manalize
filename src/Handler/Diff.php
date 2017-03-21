@@ -34,7 +34,7 @@ class Diff
      * @param bool         $colorSupport
      * @param EnvName|null $envName
      */
-    public function __construct(EnvName $envName, string $cwd, bool $colorSupport = true)
+    public function __construct(string $cwd, EnvName $envName = null, bool $colorSupport = true)
     {
         $this->envName = $envName;
         $this->cwd = $cwd;
@@ -85,13 +85,13 @@ class Diff
         $this->fs->mkdir($tmpPath);
 
         $dumper = new Dumper($tmpPath);
-        $metadata = Yaml::parse(file_get_contents("$this->cwd/ansible/.manalize.yml"));
+        $manala = Yaml::parse(file_get_contents("$this->cwd/manala.yml"));
 
-        for (
-            $dump = $dumper->dump(EnvFactory::createEnvFromMetadata($metadata, $this->envName->getValue()), Dumper::DUMP_FILES);
-            $dump->valid();
-            $dump->next()
-        );
+        if (!$this->envName || !$envName = $this->envName->getValue()) {
+            $envName = $manala['app']['template'] ?? EnvName::CUSTOM;
+        }
+
+        foreach ($dumper->dump(EnvFactory::createEnvFromManala($manala, $envName), Dumper::DUMP_FILES) as $_);
 
         return $tmpPath;
     }

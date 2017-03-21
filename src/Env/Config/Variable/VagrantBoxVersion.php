@@ -16,20 +16,17 @@ namespace Manala\Manalize\Env\Config\Variable;
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-final class VagrantBoxVersion extends SingleValue
+final class VagrantBoxVersion extends Variable
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getName(): string
+    public function __construct(string $version = '~> 3.0.0')
     {
-        return 'box_version';
+        parent::__construct('box_version', $version);
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function validate(string $version)
+    public static function validate($version)
     {
         if (!in_array($version, self::getSupportedVersions(), true)) {
             throw new \InvalidArgumentException(sprintf(

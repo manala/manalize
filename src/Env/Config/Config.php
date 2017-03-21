@@ -42,12 +42,7 @@ abstract class Config
         $this->vars = $vars;
     }
 
-    /**
-     * Gets the files of this configuration.
-     *
-     * @return \Generator A collection of \SplFileInfo instances
-     */
-    public function getFiles(): \Generator
+    public function getFiles(): \Traversable
     {
         $origin = $this->getOrigin();
 
@@ -61,7 +56,7 @@ abstract class Config
      */
     public function getOrigin(): \SplFileInfo
     {
-        return new \SplFileInfo(MANALIZE_HOME.'/templates/'.$this->envName->getValue().'/'.$this->getPath());
+        return new \SplFileInfo(MANALIZE_HOME.'/templates/'.$this->envName->getValue());
     }
 
     /**
@@ -69,19 +64,10 @@ abstract class Config
      *
      * @return \SplFileInfo
      */
-    public function getTemplate(): \SplFileInfo
+    public function getTemplate()
     {
         return new \SplFileInfo((string) $this->getOrigin().'.twig');
     }
-
-    /**
-     * Returns the path name of the configuration file or directory.
-     *
-     * Note: This needs to be concatenated to a given working directory.
-     *
-     * @return string
-     */
-    abstract public function getPath(): string;
 
     /**
      * Returns the variables to be used for rendering the template.
@@ -91,5 +77,15 @@ abstract class Config
     public function getVars(): array
     {
         return $this->vars;
+    }
+
+    /**
+     * @return null|string A file to find in the "dist" directory of
+     *                     the corresponding template and to place at
+     *                     the root directory of the workspace, e.g.
+     *                     'Makefile' => dump from "TEMPLATE-DIR/dist/Makefile" to "Makefile"
+     */
+    public function getDist()
+    {
     }
 }

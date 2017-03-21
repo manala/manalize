@@ -24,6 +24,10 @@ class SelfUpdateTest extends TestCase
 
     public function setUp()
     {
+        if (!shell_exec('which box')) {
+            $this->markTestSkipped('Needs "kherge/box" globally installed');
+        }
+
         $cwd = manala_get_tmp_dir('tests_selfupdate_');
         $fs = new Filesystem();
 
@@ -38,10 +42,11 @@ class SelfUpdateTest extends TestCase
 
     public function testExecute()
     {
-        (new Process('make build', MANALIZE_DIR))->run();
+        $process = new Process('make build', MANALIZE_DIR);
+        $process->run();
 
-        chmod(MANALIZE_DIR.'/manalize.phar', 0777);
-        rename(MANALIZE_DIR.'/manalize.phar', self::$cwd.'/manalize.phar');
+        @chmod(MANALIZE_DIR.'/manalize.phar', 0777);
+        @rename(MANALIZE_DIR.'/manalize.phar', self::$cwd.'/manalize.phar');
 
         $latestBuild = json_decode(file_get_contents(
             sprintf('https://api.github.com/repos/%s/releases/latest', Application::REPOSITORY_NAME),
@@ -49,15 +54,14 @@ class SelfUpdateTest extends TestCase
             stream_context_create(['http' => ['header' => 'User-Agent: '.Application::REPOSITORY_NAME]])
         ), true);
         $latestTag = $latestBuild['tag_name'];
-
         $process = new Process('php '.self::$cwd.'/manalize.phar self-update');
         $process->setTimeout(null)->run();
 
         if (!$process->isSuccessful()) {
-            echo $process->getErrorOutput();
+            $this->fail($process->getOutput());
         }
 
-        $this->assertTrue($process->isSuccessful());
+        $this->addToAssertionCount(1);
 
         if ('v'.Application::VERSION === $latestTag) {
             return $this->assertContains("manalize is already up to date ($latestTag)", $process->getOutput());

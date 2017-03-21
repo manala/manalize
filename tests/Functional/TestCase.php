@@ -12,8 +12,8 @@
 namespace Manala\Manalize\Tests\Functional;
 
 use Manala\Manalize\Env\Config\Variable\AppName;
-use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
-use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
+use Manala\Manalize\Env\Config\Variable\Package;
+use Manala\Manalize\Env\Config\Variable\Package\VersionBounded;
 use Manala\Manalize\Env\Config\Variable\VariableHydrator;
 use Manala\Manalize\Env\Defaults\DefaultsParser;
 use Manala\Manalize\Env\EnvName;
@@ -43,7 +43,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         (new Filesystem())->remove(MANALIZE_TMP_ROOT_DIR);
     }
 
-    protected static function getDefaultDependenciesForEnv(EnvName $envType)
+    protected static function getDefaultPackagesForEnv(EnvName $envType)
     {
         foreach (DefaultsParser::parse($envType)->get('packages') as $name => $configs) {
             if (isset($configs['constraint'])) {
@@ -52,45 +52,45 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
                 continue;
             }
 
-            yield new Dependency($name, $configs['enabled']);
+            yield new Package($name, $configs['enabled']);
         }
     }
 
-    protected static function updateDependencyVersion(\Traversable $dependencies, $name, $version)
+    protected static function updatePackageVersion(\Traversable $packages, $name, $version)
     {
-        foreach ($dependencies as $dependency) {
-            if ($dependency->getName() === $name) {
-                yield new VersionBounded($name, $dependency->isEnabled(), $version);
+        foreach ($packages as $package) {
+            if ($package->getName() === $name) {
+                yield new VersionBounded($name, $package->isEnabled(), $version);
 
                 continue;
             }
 
-            yield $dependency;
+            yield $package;
         }
     }
 
-    protected static function enableDependencyWithVersion(\Traversable $dependencies, $name, $version = null)
+    protected static function enablePackageWithVersion(\Traversable $packages, $name, $version = null)
     {
-        foreach ($dependencies as $dependency) {
-            if ($dependency->getName() === $name) {
+        foreach ($packages as $package) {
+            if ($package->getName() === $name) {
                 (new VariableHydrator())->hydrate(
-                    $dependency,
-                    ['enabled' => true, 'version' => $version ?? $dependency->getVersion()]
+                    $package,
+                    ['enabled' => true, 'version' => $version ?? $package->getVersion()]
                 );
             }
 
-            yield $dependency;
+            yield $package;
         }
     }
 
-    protected static function enableDependency(\Traversable $dependencies, $name)
+    protected static function enablePackage(\Traversable $packages, $name)
     {
-        foreach ($dependencies as $dependency) {
-            if ($dependency->getName() === $name) {
-                (new VariableHydrator())->hydrate($dependency, ['enabled' => true]);
+        foreach ($packages as $package) {
+            if ($package->getName() === $name) {
+                (new VariableHydrator())->hydrate($package, ['enabled' => true]);
             }
 
-            yield $dependency;
+            yield $package;
         }
     }
 
@@ -107,17 +107,17 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         (new Filesystem())->mirror(self::$symfonyStandardCopyPath, $cwd);
     }
 
-    protected static function manalizeProject($cwd, $appName, EnvName $envType, \Traversable $dependencies = null)
+    protected static function manalizeProject($cwd, $appName, EnvName $envType, \Traversable $packages = null)
     {
-        if (null === $dependencies) {
-            $dependencies = Setup::createDefaultDependencySet(DefaultsParser::parse($envType));
+        if (null === $packages) {
+            $packages = Setup::createDefaultPackageSet(DefaultsParser::parse($envType));
         }
 
-        (new Setup($cwd, new AppName($appName), $envType, $dependencies))->handle(function () {
+        (new Setup($cwd, new AppName($appName), $envType, $packages))->handle(function () {
         });
     }
 
-    protected static function createManalizedProject($cwd, $appName = 'dummy.manala', EnvName $envType = null, \Iterator $dependencies = null)
+    protected static function createManalizedProject($cwd, $appName = 'dummy.manala', EnvName $envType = null, \Iterator $packages = null)
     {
         self::createSymfonyStandardProject($cwd);
 
@@ -125,6 +125,6 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
             $envType = EnvName::ELAO_SYMFONY();
         }
 
-        self::manalizeProject($cwd, $appName, $envType, $dependencies);
+        self::manalizeProject($cwd, $appName, $envType, $packages);
     }
 }

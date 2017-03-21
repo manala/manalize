@@ -15,22 +15,15 @@ use Manala\Manalize\Env\Config\Make;
 
 class MakeTest extends BaseTestConfig
 {
-    public function testGetPath()
+    public function testGetFiles()
     {
-        $make = new Make($this->getEnvType());
-
-        $this->assertSame('Makefile', $make->getPath());
-    }
-
-    public function testGetOrigin()
-    {
-        $this->assertOrigin(new Make($this->getEnvType()), 'Makefile');
+        $this->assertOrigin(new Make($this->getEnvType()), 'manala/make');
     }
 
     public function testGetTemplate()
     {
         $make = new Make($this->getEnvType());
 
-        $this->assertInstanceOf(\SplFileInfo::class, $make->getTemplate());
+        $this->assertNull($make->getTemplate());
     }
 }

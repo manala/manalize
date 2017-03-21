@@ -14,11 +14,9 @@ namespace Manala\Manalize\Tests\Env;
 use Manala\Manalize\Env\Config\Config;
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Dumper;
-use Manala\Manalize\Env\EnvExporter;
 use Manala\Manalize\Env\EnvFactory;
 use Manala\Manalize\Env\EnvName;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Yaml\Yaml;
 
 class DumperTest extends \PHPUnit_Framework_TestCase
 {
@@ -34,30 +32,30 @@ class DumperTest extends \PHPUnit_Framework_TestCase
     {
         list($env, $cwd) = $this->createEnv();
 
-        foreach ((new Dumper($cwd))->dump($env) as $̄);
+        foreach ((new Dumper($cwd))->dump($env) as $_);
 
         $this->assertFileExists("$cwd/ansible/ansible.yml");
-        $this->assertStringEqualsFile("$cwd/ansible/.manalize.yml", Yaml::dump((new EnvExporter())->export($env), 4));
+        $this->assertFileExists("$cwd/manala.yml");
     }
 
     public function testDumpMetadataOnly()
     {
         list($env, $cwd) = $this->createEnv();
 
-        foreach ((new Dumper($cwd))->dump($env, Dumper::DUMP_METADATA) as $̄);
+        foreach ((new Dumper($cwd))->dump($env, Dumper::DUMP_MANALA) as $_);
 
         $this->assertFileNotExists("$cwd/ansible/ansible.yml");
-        $this->assertFileExists("$cwd/ansible/.manalize.yml");
+        $this->assertFileExists("$cwd/manala/metadata.yml");
     }
 
     public function testDumpFilesOnly()
     {
         list($env, $cwd) = $this->createEnv();
 
-        foreach ((new Dumper($cwd))->dump($env, Dumper::DUMP_FILES) as $̄);
+        foreach ((new Dumper($cwd))->dump($env, Dumper::DUMP_FILES) as $_);
 
         $this->assertFileExists("$cwd/ansible/ansible.yml");
-        $this->assertFileNotExists("$cwd/ansible/.manalize.yml");
+        $this->assertFileNotExists("$cwd/manala/metadata.yml");
     }
 
     public function tearDown()
@@ -65,16 +63,13 @@ class DumperTest extends \PHPUnit_Framework_TestCase
         (new Filesystem())->remove(self::$cwd);
     }
 
-    private function createEnv()
+    public function createEnv()
     {
         $baseOrigin = self::$cwd;
         @mkdir("$baseOrigin/dummy");
         file_put_contents("$baseOrigin/dummy/dummyconf", 'FooBar');
 
         $config = $this->prophesize(Config::class);
-        $config
-            ->getPath()
-            ->willReturn('dummy');
         $config
             ->getOrigin()
             ->willReturn("$baseOrigin/dummy");
