@@ -37,7 +37,7 @@ class EnvFactory
             $appName,
             $packages,
             new Vagrant($name, $appName, new VagrantBoxVersion('~> 3.0.0')),
-            Ansible::create($name, $packages),
+            new Ansible($name, $appName, ...$packages),
             new Make($name)
         );
     }

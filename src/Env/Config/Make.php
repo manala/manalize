@@ -45,6 +45,6 @@ class Make extends Config
 
     public function getTemplate()
     {
-        return;
+        return new \SplFileInfo($this->getOrigin().'/Makefile.vm.twig');
     }
 }

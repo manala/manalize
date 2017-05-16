@@ -71,7 +71,7 @@ class Setup extends Command
 
         try {
             $syncer = new Syncer();
-            $syncer->sync('e91a633');
+            $syncer->sync('5559987');
         } catch (\Throwable $e) {
             $io->error('An error occured while syncing templates: '.$e->getMessage());
 

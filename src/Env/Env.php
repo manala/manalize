@@ -76,16 +76,4 @@ class Env
     {
         return $this->packages;
     }
-
-    public function getMetadata(): array
-    {
-        return [
-            'app' => [
-                'dir' => '/srv/app',
-                'log_dir' => '/var/log/app',
-                'cache_dir' => '/var/cache/app',
-                'sessions_dir' => '/var/lib/app/sessions',
-            ],
-        ];
-    }
 }

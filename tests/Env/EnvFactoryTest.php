@@ -30,7 +30,7 @@ class EnvFactoryTest extends \PHPUnit_Framework_TestCase
         $appName = new AppName('rch');
         $boxVersion = new VagrantBoxVersion('~> 3.0.0');
         $env = EnvFactory::createEnv($envType, $appName, $this->prophesize(\Iterator::class)->reveal());
-        $expectedConfigs = [new Vagrant($envType, $appName, $boxVersion), new Ansible($envType), new Make($envType)];
+        $expectedConfigs = [new Vagrant($envType, $appName, $boxVersion), Ansible::create($envType, [$appName]), new Make($envType)];
 
         $this->assertInstanceOf(Env::class, $env);
         $this->assertEquals($expectedConfigs, $env->getConfigs());
@@ -52,10 +52,11 @@ system:
 MANALA;
 
         $expectedEnvName = EnvName::ELAO_SYMFONY();
+        $expectedAppName = new AppName('foo.bar');
         $expectedPackages = [new Package('php', true, '7.1'), new Package('brainfuck', false), new Package('redis', true)];
         $expectedConfigs = [
-            new Vagrant($expectedEnvName, new AppName('foo.bar'), new VagrantBoxVersion()),
-            Ansible::create($expectedEnvName, $expectedPackages),
+            new Vagrant($expectedEnvName, $expectedAppName, new VagrantBoxVersion()),
+            new Ansible($expectedEnvName, $expectedAppName, ...$expectedPackages),
             new Make($expectedEnvName),
         ];
 

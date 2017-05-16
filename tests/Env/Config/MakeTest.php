@@ -22,8 +22,6 @@ class MakeTest extends BaseTestConfig
 
     public function testGetTemplate()
     {
-        $make = new Make($this->getEnvType());
-
-        $this->assertNull($make->getTemplate());
+        $this->assertSame(realpath($this->getOrigin('manala/make').'/Makefile.vm.twig'), (new Make($this->getEnvType()))->getTemplate()->getPathname());
     }
 }

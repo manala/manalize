@@ -17,6 +17,6 @@ final class GitCheckout extends Process
 {
     public function __construct($revision, $cwd)
     {
-        parent::__construct("git checkout $revision", $cwd);
+        parent::__construct("git fetch && git checkout $revision", $cwd);
     }
 }
