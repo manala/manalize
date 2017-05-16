@@ -22,6 +22,13 @@ use Manala\Manalize\Twig\Lexer;
 class Renderer
 {
     private $twig;
+    private static $globals = [
+        'app_user' => 'app',
+        'app_dir' => '/srv/app',
+        'log_dir' => '/var/log/app',
+        'cache_dir' => '/var/cache/app',
+        'sessions_dir' => '/var/lib/app/sessions',
+    ];
 
     public function __construct(\Twig_Environment $twig = null)
     {
@@ -30,6 +37,11 @@ class Renderer
                 'debug' => $debug = '' === \Phar::running(),
                 'cache' => $debug ? MANALIZE_DIR.'/var/cache' : MANALIZE_HOME.'/cache',
             ]);
+
+            foreach (static::$globals as $k => $v) {
+                $twig->addGlobal($k, $v);
+            }
+
             $twig->setLexer(new Lexer($twig));
         }
 

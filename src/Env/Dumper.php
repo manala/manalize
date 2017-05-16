@@ -76,7 +76,6 @@ class Dumper
         }
 
         if (self::DUMP_MANALA & $flags) {
-            yield $this->dumpMetadata($env);
             yield $this->dumpManala($env);
         }
     }
@@ -119,16 +118,6 @@ class Dumper
 
             yield $target;
         }
-    }
-
-    private function dumpMetadata(Env $env): string
-    {
-        $this->fs->dumpFile(
-            $target = "$this->workspace/manala/metadata.yml",
-            Yaml::dump($env->getMetadata(), 4)
-        );
-
-        return $target;
     }
 
     private function dumpManala(Env $env): string

@@ -13,8 +13,6 @@ namespace Manala\Manalize\Tests\Functional;
 
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Config\Variable\Package;
-use Manala\Manalize\Env\Config\Variable\Package\VersionBounded;
-use Manala\Manalize\Env\Config\Variable\VariableHydrator;
 use Manala\Manalize\Env\Defaults\DefaultsParser;
 use Manala\Manalize\Env\EnvName;
 use Manala\Manalize\Handler\Setup;
@@ -47,7 +45,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     {
         foreach (DefaultsParser::parse($envType)->get('packages') as $name => $configs) {
             if (isset($configs['constraint'])) {
-                yield new VersionBounded($name, $configs['enabled'], $configs['default']);
+                yield new Package($name, $configs['enabled'], $configs['default']);
 
                 continue;
             }
@@ -60,7 +58,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     {
         foreach ($packages as $package) {
             if ($package->getName() === $name) {
-                yield new VersionBounded($name, $package->isEnabled(), $version);
+                yield new Package($name, $package->isEnabled(), $version);
 
                 continue;
             }
@@ -73,10 +71,10 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     {
         foreach ($packages as $package) {
             if ($package->getName() === $name) {
-                (new VariableHydrator())->hydrate(
-                    $package,
-                    ['enabled' => true, 'version' => $version ?? $package->getVersion()]
-                );
+                (\Closure::bind(function () use ($version) {
+                    $this->enabled = true;
+                    $this->version = $version;
+                }, $package, Package::class))();
             }
 
             yield $package;
@@ -87,7 +85,9 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     {
         foreach ($packages as $package) {
             if ($package->getName() === $name) {
-                (new VariableHydrator())->hydrate($package, ['enabled' => true]);
+                (\Closure::bind(function () {
+                    $this->enabled = true;
+                }, $package, Package::class))();
             }
 
             yield $package;

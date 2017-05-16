@@ -30,7 +30,7 @@ system:
     memory: 2048
     php:
         enabled: true
-        version: '7.0'
+        version: '7.1'
     mysql:
         enabled: true
         version: '5.6'

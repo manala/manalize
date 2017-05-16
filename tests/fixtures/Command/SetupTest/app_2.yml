@@ -1,5 +1,6 @@
 ---
 
+# TODO: REMOVE THIS ONCE manala.yaml is fully managed
 app_options:
 
   php:                   true
@@ -19,6 +20,17 @@ app_options:
   redis:                 false
   influxdb:              false
   java:                  false
+
+########
+# App #
+#######
+
+app:
+    name:      "foo-bar.manala"
+    user:      "app"
+    dir:       "/srv/app"
+    log_dir:   "/var/log/app"
+    cache_dir: "/var/cache/app"
 
 app_patterns:
 

@@ -33,7 +33,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase
                 [],
                 [
                     'manala/Vagrantfile',
-                    'manala/metadata.yml',
                     'ansible/ansible.yml',
                     'ansible/app.yml',
                     'ansible/deploy.yml',
@@ -43,11 +42,13 @@ class SetupTest extends \PHPUnit_Framework_TestCase
                     'ansible/group_vars/deploy_demo.yml',
                     'ansible/group_vars/deploy_prod.yml',
                     'Makefile',
+                    'manala/make/Makefile.vm',
+                    'manala.yml',
                 ],
             ],
             [
                 ['dumper_flags' => Dumper::DUMP_MANALA],
-                ['manala/metadata.yml'],
+                ['manala.yml'],
             ],
         ];
     }
