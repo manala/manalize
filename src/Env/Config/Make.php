@@ -33,9 +33,7 @@ class Make extends Config
      */
     public function getFiles(): \Traversable
     {
-        foreach ($this->getIterator($this->getOrigin()) as $file) {
-            yield $file;
-        }
+        yield from $this->getIterator($this->getOrigin());
     }
 
     public function getDist()
