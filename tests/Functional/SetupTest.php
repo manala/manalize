@@ -53,24 +53,24 @@ class SetupTest extends TestCase
         $fixturesDir = self::FIXTURES_DIR.'/Command/SetupTest';
 
         if (UPDATE_FIXTURES) {
-            file_put_contents("$fixturesDir/$expectedDeps", file_get_contents(self::$cwd.'/ansible/group_vars/app.yml'));
-            file_put_contents("$fixturesDir/$expectedManala", file_get_contents(self::$cwd.'/manala.yml'));
+            file_put_contents("$fixturesDir/$expectedDeps", file_get_contents(self::$cwd.'/ansible/group_vars/app.yaml'));
+            file_put_contents("$fixturesDir/$expectedManala", file_get_contents(self::$cwd.'/manala.yaml'));
         }
 
         $this->assertSame(0, $tester->getStatusCode());
         $this->assertContains('Environment successfully configured', $tester->getDisplay());
 
-        $this->assertFileExists(self::$cwd.'/manala.yml');
+        $this->assertFileExists(self::$cwd.'/manala.yaml');
         $this->assertFileExists(self::$cwd.'/manala/Vagrantfile');
         $this->assertFileExists(self::$cwd.'/Makefile');
-        $this->assertFileExists(self::$cwd.'/ansible/group_vars/app.yml');
-        $this->assertFileExists(self::$cwd.'/ansible/app.yml');
+        $this->assertFileExists(self::$cwd.'/ansible/group_vars/app.yaml');
+        $this->assertFileExists(self::$cwd.'/ansible/app.yaml');
         $this->assertFileExists(self::$cwd.'/ansible/ansible.yml');
 
         $vagrantFile = file_get_contents(self::$cwd.'/manala/Vagrantfile');
 
-        $this->assertFileEquals("$fixturesDir/$expectedDeps", self::$cwd.'/ansible/group_vars/app.yml');
-        $this->assertFileEquals("$fixturesDir/$expectedManala", self::$cwd.'/manala.yml');
+        $this->assertFileEquals("$fixturesDir/$expectedDeps", self::$cwd.'/ansible/group_vars/app.yaml');
+        $this->assertFileEquals("$fixturesDir/$expectedManala", self::$cwd.'/manala.yaml');
     }
 
     public function provideEnvs()
@@ -78,18 +78,18 @@ class SetupTest extends TestCase
         return [
             [
                 ["\n", "\n"],
-                'app_1.yml',
-                'manala_1.yml',
+                'app_1.yaml',
+                'manala_1.yaml',
             ],
             [
               ['foo-bar.manala', 'yes', '5.6', "\n", "\n", "\n", "\n", "\n", "\n"],
-                'app_2.yml',
-                'manala_2.yml',
+                'app_2.yaml',
+                'manala_2.yaml',
             ],
             [
                 ['foo-bar.manala', "\n"],
-                'app_3.yml',
-                'manala_3.yml',
+                'app_3.yaml',
+                'manala_3.yaml',
             ],
         ];
     }
@@ -110,15 +110,15 @@ class SetupTest extends TestCase
 
         $this->assertFileNotExists(self::$cwd.'/manala/Vagrantfile');
         $this->assertFileNotExists(self::$cwd.'/Makefile');
-        $this->assertFileNotExists(self::$cwd.'/ansible/group_vars/app.yml');
-        $this->assertFileNotExists(self::$cwd.'/ansible/app.yml');
+        $this->assertFileNotExists(self::$cwd.'/ansible/group_vars/app.yaml');
+        $this->assertFileNotExists(self::$cwd.'/ansible/app.yaml');
         $this->assertFileNotExists(self::$cwd.'/ansible/ansible.yml');
 
         if (UPDATE_FIXTURES) {
-            file_put_contents(__DIR__.'/../fixtures/Command/SetupTest/execute_no_update.yml', file_get_contents(self::$cwd.'/manala.yml'));
+            file_put_contents(__DIR__.'/../fixtures/Command/SetupTest/execute_no_update.yaml', file_get_contents(self::$cwd.'/manala.yaml'));
         }
 
-        $this->assertFileEquals(self::$cwd.'/manala.yml', __DIR__.'/../fixtures/Command/SetupTest/execute_no_update.yml');
+        $this->assertFileEquals(self::$cwd.'/manala.yaml', __DIR__.'/../fixtures/Command/SetupTest/execute_no_update.yaml');
     }
 
     public function testExecuteHandleConflicts()
@@ -138,10 +138,10 @@ class SetupTest extends TestCase
         $this->assertSame(0, $tester->getStatusCode());
         $this->assertContains('Environment successfully configured', $tester->getDisplay());
 
-        $this->assertFileExists(self::$cwd.'/manala.yml');
+        $this->assertFileExists(self::$cwd.'/manala.yaml');
         $this->assertFileExists(self::$cwd.'/Makefile');
-        $this->assertFileExists(self::$cwd.'/ansible/group_vars/app.yml');
-        $this->assertFileExists(self::$cwd.'/ansible/app.yml');
+        $this->assertFileExists(self::$cwd.'/ansible/group_vars/app.yaml');
+        $this->assertFileExists(self::$cwd.'/ansible/app.yaml');
         $this->assertFileExists(self::$cwd.'/ansible/ansible.yml');
 
         $this->assertSame('', file_get_contents(self::$cwd.'/manala/Vagrantfile'));

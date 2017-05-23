@@ -35,7 +35,7 @@ class DumperTest extends \PHPUnit_Framework_TestCase
         foreach ((new Dumper($cwd))->dump($env) as $_);
 
         $this->assertFileExists("$cwd/ansible/ansible.yml");
-        $this->assertFileExists("$cwd/manala.yml");
+        $this->assertFileExists("$cwd/manala.yaml");
     }
 
     public function testDumpManalaOnly()
@@ -45,7 +45,7 @@ class DumperTest extends \PHPUnit_Framework_TestCase
         foreach ((new Dumper($cwd))->dump($env, Dumper::DUMP_MANALA) as $_);
 
         $this->assertFileNotExists("$cwd/ansible/ansible.yml");
-        $this->assertFileExists("$cwd/manala.yml");
+        $this->assertFileExists("$cwd/manala.yaml");
     }
 
     public function testDumpFilesOnly()
@@ -55,7 +55,7 @@ class DumperTest extends \PHPUnit_Framework_TestCase
         foreach ((new Dumper($cwd))->dump($env, Dumper::DUMP_FILES) as $_);
 
         $this->assertFileExists("$cwd/ansible/ansible.yml");
-        $this->assertFileNotExists("$cwd/manala.yml");
+        $this->assertFileNotExists("$cwd/manala.yaml");
     }
 
     public function tearDown()

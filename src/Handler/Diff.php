@@ -85,7 +85,7 @@ class Diff
         $this->fs->mkdir($tmpPath);
 
         $dumper = new Dumper($tmpPath);
-        $manala = Yaml::parse(file_get_contents("$this->cwd/manala.yml"));
+        $manala = Yaml::parse(file_get_contents("$this->cwd/manala.yaml"));
 
         if (!$this->envName || !$envName = $this->envName->getValue()) {
             $envName = $manala['app']['template'] ?? EnvName::CUSTOM;

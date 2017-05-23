@@ -116,7 +116,7 @@ class Setup extends Command
             return EnvName::get($rawName);
         }
 
-        if (is_readable($dotfile = $cwd.'/manala.yml')) {
+        if (is_readable($dotfile = $cwd.'/manala.yaml')) {
             $rawConfig = Yaml::parse(file_get_contents($dotfile));
 
             if (!isset($rawConfig['template'])) {
