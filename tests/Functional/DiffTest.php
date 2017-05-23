@@ -29,7 +29,7 @@ class DiffTest extends TestCase
         self::createManalizedProject($cwd);
 
         // Tweak project files:
-        $fs->remove($cwd.'/ansible/deploy.yml');
+        $fs->remove($cwd.'/ansible/deploy.yaml');
         file_put_contents($cwd.'/Makefile', " \n This line is expected in the patch", FILE_APPEND);
 
         self::$cwd = $cwd;

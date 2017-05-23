@@ -27,7 +27,7 @@ class Ansible extends Config
      */
     public function getFiles(): \Traversable
     {
-       yield from $this->getIterator($this->getOrigin());
+        yield from $this->getIterator($this->getOrigin());
     }
 
     /**
@@ -35,7 +35,7 @@ class Ansible extends Config
      */
     public function getTemplate(): \SplFileInfo
     {
-        return new \SplFileInfo($this->getOrigin().'/group_vars/app.yml.twig');
+        return new \SplFileInfo($this->getOrigin().'/group_vars/app.yaml.twig');
     }
 
     public function getOrigin(): \SplFileInfo

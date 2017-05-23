@@ -32,7 +32,7 @@ class RendererTest extends \PHPUnit_Framework_TestCase
     public static function tearDownAfterClass()
     {
         @unlink(MANALIZE_HOME.'/templates/template');
-        @unlink(MANALIZE_HOME.'/templates/template.yml');
+        @unlink(MANALIZE_HOME.'/templates/template.yaml');
 
         parent::tearDownAfterClass();
     }

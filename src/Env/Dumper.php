@@ -137,7 +137,7 @@ class Dumper
             $manala['system'][$var->getName()] = $var->getValue();
         }
 
-        $this->fs->dumpFile($target = "$this->workspace/manala.yml", Yaml::dump($manala, 4));
+        $this->fs->dumpFile($target = "$this->workspace/manala.yaml", Yaml::dump($manala, 4));
 
         return $target;
     }
