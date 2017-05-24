@@ -13,6 +13,7 @@ namespace Manala\Manalize\Tests\Functional;
 
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Config\Variable\Package;
+use Manala\Manalize\Env\Manifest\ManifestLoader;
 use Manala\Manalize\Env\Manifest\ManifestParser;
 use Manala\Manalize\Env\TemplateName;
 use Manala\Manalize\Handler\Setup;
@@ -43,7 +44,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
 
     protected static function getDefaultPackagesForEnv(TemplateName $envType)
     {
-        foreach (ManifestParser::parse($envType)->get('packages') as $name => $configs) {
+        foreach ((new ManifestLoader($envType))->load()->get('packages') as $name => $configs) {
             if (isset($configs['constraint'])) {
                 yield new Package($name, $configs['enabled'], $configs['default']);
 
@@ -110,7 +111,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     protected static function manalizeProject($cwd, $appName, TemplateName $envType, \Traversable $packages = null)
     {
         if (null === $packages) {
-            $packages = Setup::createDefaultPackageSet(ManifestParser::parse($envType));
+            $packages = Setup::createDefaultPackageSet((new ManifestLoader($envType))->load());
         }
 
         (new Setup($cwd, new AppName($appName), $envType, $packages))->handle(function () {

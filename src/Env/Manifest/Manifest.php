@@ -12,7 +12,7 @@
 namespace Manala\Manalize\Env\Manifest;
 
 /**
- * A bag containing all defaults for a given template.
+ * A bag containing all the information for a given template (system & app configuration).
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */

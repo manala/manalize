@@ -18,6 +18,7 @@
         "symfony/filesystem": "^2.8|^3.0",
         "symfony/process": "^2.8|^3.0",
         "symfony/yaml": "^2.8|^3.0",
+        "symfony/config": "^2.8|^3.0",
         "composer/semver": "^1.4",
         "nikic/iter": "^1.4",
         "guzzlehttp/guzzle": "^6.2",

@@ -16,7 +16,7 @@ use Manala\Manalize\Env\Config\Variable\Package;
 use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvGuesser\ChainEnvGuesser;
 use Manala\Manalize\Env\Manifest\Manifest;
-use Manala\Manalize\Env\Manifest\ManifestParser;
+use Manala\Manalize\Env\Manifest\ManifestLoader;
 use Manala\Manalize\Env\TemplateName;
 use Manala\Manalize\Exception\InvalidConfigurationException;
 use Manala\Manalize\Handler\Setup as SetupHandler;
@@ -81,7 +81,7 @@ class Setup extends Command
         $io->comment(sprintf('Start composing your <info>%s</info> environment', (string) $envName));
 
         $appName = $this->askForAppName($io, strtolower(basename($cwd)));
-        $envManifest = ManifestParser::parse($envName);
+        $envManifest = (new ManifestLoader($envName))->load();
         $options = ['dumper_flags' => $input->getOption('no-update') ? Dumper::DUMP_MANALA : Dumper::DUMP_ALL];
 
         if ($envName->is(TemplateName::CUSTOM) || $this->shouldConfigurePackages($io, $envManifest, $envName)) {
