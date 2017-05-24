@@ -9,23 +9,23 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Env\Defaults;
+namespace Manala\Manalize\Env\Manifest;
 
 /**
- * A bag containing all defaults for a given env.
+ * A bag containing all defaults for a given template.
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-final class Defaults
+final class Manifest
 {
-    private $elements;
+    private $attributes;
 
     /**
-     * @param array $elements The raw defaults
+     * @param array $attributes The raw defaults
      */
-    public function __construct(array $elements)
+    public function __construct(array $attributes)
     {
-        $this->elements = $elements;
+        $this->attributes = $attributes;
     }
 
     /**
@@ -38,7 +38,7 @@ final class Defaults
      */
     public function get(string $path)
     {
-        return $this->doGet($this->elements, $path);
+        return $this->doGet($this->attributes, $path);
     }
 
     /**
@@ -50,11 +50,11 @@ final class Defaults
      */
     public function has(string $path): bool
     {
-        return (bool) $this->doGet($this->elements, $path, false);
+        return (bool) $this->doGet($this->attributes, $path, false);
     }
 
     /**
-     * @param array  $elements                    The elements to iterate over
+     * @param array  $attributes                  The elements to iterate over
      * @param string $path                        The path for which to find the value
      * @param bool   $throwExceptionOnInvalidPath
      *
@@ -63,7 +63,7 @@ final class Defaults
      * @throws \LogicException If the given path cannot be found in the given elements and
      *                         $throwExceptionOnInvalidPath is set to true
      */
-    private function doGet(array $elements, string $path, bool $throwExceptionOnInvalidPath = true)
+    private static function doGet(array $elements, string $path, bool $throwExceptionOnInvalidPath = true)
     {
         $result = $elements;
         $steps = explode('.', $path);
@@ -74,7 +74,7 @@ final class Defaults
                     return false;
                 }
 
-                throw $this->didYouMean($step, array_keys($result), $path);
+                throw self::didYouMean($step, array_keys($result), $path);
             }
 
             $result = $result[$step];
@@ -83,7 +83,7 @@ final class Defaults
         return $result;
     }
 
-    private function didYouMean(string $search, array $possibleMatches, string $fullPath): \LogicException
+    private static function didYouMean(string $search, array $possibleMatches, string $fullPath): \LogicException
     {
         $minScore = INF;
 

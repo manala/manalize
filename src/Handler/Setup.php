@@ -13,10 +13,10 @@ namespace Manala\Manalize\Handler;
 
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Config\Variable\Package;
-use Manala\Manalize\Env\Defaults\Defaults;
 use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvFactory;
-use Manala\Manalize\Env\EnvName;
+use Manala\Manalize\Env\Manifest\Manifest;
+use Manala\Manalize\Env\TemplateName;
 use Manala\Manalize\Exception\HandlingFailureException;
 
 /**
@@ -33,7 +33,7 @@ class Setup
     public function __construct(
         string $cwd,
         AppName $appName,
-        EnvName $envName,
+        TemplateName $envName,
         \Traversable $packages,
         array $options = []
     ) {
@@ -58,7 +58,7 @@ class Setup
         }
     }
 
-    public static function createDefaultPackageSet(Defaults $defaults)
+    public static function createDefaultPackageSet(Manifest $defaults)
     {
         foreach ($defaults->get('packages') as $name => $package) {
             if (!isset($package['default'])) {

@@ -12,7 +12,7 @@
 namespace Manala\Manalize\Tests\Functional;
 
 use Manala\Manalize\Command\Setup;
-use Manala\Manalize\Env\EnvName;
+use Manala\Manalize\Env\TemplateName;
 use Manala\Manalize\Handler\Diff;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
@@ -44,7 +44,7 @@ class SetupTest extends TestCase
         $tester = new CommandTester(new Setup());
         $tester
             ->setInputs($inputs)
-            ->execute(['cwd' => static::$cwd, '--env' => 'elao-symfony']);
+            ->execute(['cwd' => static::$cwd, '--template' => 'elao-symfony']);
 
         if (0 !== $tester->getStatusCode()) {
             echo $tester->getDisplay();
@@ -65,7 +65,7 @@ class SetupTest extends TestCase
         $this->assertFileExists(self::$cwd.'/Makefile');
         $this->assertFileExists(self::$cwd.'/ansible/group_vars/app.yaml');
         $this->assertFileExists(self::$cwd.'/ansible/app.yaml');
-        $this->assertFileExists(self::$cwd.'/ansible/ansible.yml');
+        $this->assertFileExists(self::$cwd.'/ansible/ansible.yaml');
 
         $vagrantFile = file_get_contents(self::$cwd.'/manala/Vagrantfile');
 
@@ -99,7 +99,7 @@ class SetupTest extends TestCase
         $tester = new CommandTester(new Setup());
         $tester
             ->setInputs(["\n", "\n"])
-            ->execute(['cwd' => static::$cwd, '--no-update' => true, '--env' => 'elao-symfony']);
+            ->execute(['cwd' => static::$cwd, '--no-update' => true, '--template' => 'elao-symfony']);
 
         if (0 !== $tester->getStatusCode()) {
             echo $tester->getDisplay();
@@ -112,7 +112,7 @@ class SetupTest extends TestCase
         $this->assertFileNotExists(self::$cwd.'/Makefile');
         $this->assertFileNotExists(self::$cwd.'/ansible/group_vars/app.yaml');
         $this->assertFileNotExists(self::$cwd.'/ansible/app.yaml');
-        $this->assertFileNotExists(self::$cwd.'/ansible/ansible.yml');
+        $this->assertFileNotExists(self::$cwd.'/ansible/ansible.yaml');
 
         if (UPDATE_FIXTURES) {
             file_put_contents(__DIR__.'/../fixtures/Command/SetupTest/execute_no_update.yaml', file_get_contents(self::$cwd.'/manala.yaml'));
@@ -129,7 +129,7 @@ class SetupTest extends TestCase
         $tester = new CommandTester(new Setup());
         $tester
             ->setInputs(["\n", "\n", '0']) // patch strategy
-            ->execute(['cwd' => self::$cwd, '--env' => 'elao-symfony']);
+            ->execute(['cwd' => self::$cwd, '--template' => 'elao-symfony']);
 
         if (0 !== $tester->getStatusCode()) {
             echo $tester->getDisplay();
@@ -142,13 +142,13 @@ class SetupTest extends TestCase
         $this->assertFileExists(self::$cwd.'/Makefile');
         $this->assertFileExists(self::$cwd.'/ansible/group_vars/app.yaml');
         $this->assertFileExists(self::$cwd.'/ansible/app.yaml');
-        $this->assertFileExists(self::$cwd.'/ansible/ansible.yml');
+        $this->assertFileExists(self::$cwd.'/ansible/ansible.yaml');
 
         $this->assertSame('', file_get_contents(self::$cwd.'/manala/Vagrantfile'));
         $this->assertFileExists(self::$cwd.'/manalize.patch');
 
         $expected = '';
-        (new Diff(self::$cwd, EnvName::ELAO_SYMFONY(), false))->handle(function ($diff) use (&$expected) {
+        (new Diff(self::$cwd, TemplateName::ELAO_SYMFONY(), false))->handle(function ($diff) use (&$expected) {
             $expected .= $diff;
         });
 

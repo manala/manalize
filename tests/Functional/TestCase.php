@@ -13,8 +13,8 @@ namespace Manala\Manalize\Tests\Functional;
 
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Config\Variable\Package;
-use Manala\Manalize\Env\Defaults\DefaultsParser;
-use Manala\Manalize\Env\EnvName;
+use Manala\Manalize\Env\Manifest\ManifestParser;
+use Manala\Manalize\Env\TemplateName;
 use Manala\Manalize\Handler\Setup;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
@@ -41,9 +41,9 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         (new Filesystem())->remove(MANALIZE_TMP_ROOT_DIR);
     }
 
-    protected static function getDefaultPackagesForEnv(EnvName $envType)
+    protected static function getDefaultPackagesForEnv(TemplateName $envType)
     {
-        foreach (DefaultsParser::parse($envType)->get('packages') as $name => $configs) {
+        foreach (ManifestParser::parse($envType)->get('packages') as $name => $configs) {
             if (isset($configs['constraint'])) {
                 yield new Package($name, $configs['enabled'], $configs['default']);
 
@@ -107,22 +107,22 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         (new Filesystem())->mirror(self::$symfonyStandardCopyPath, $cwd);
     }
 
-    protected static function manalizeProject($cwd, $appName, EnvName $envType, \Traversable $packages = null)
+    protected static function manalizeProject($cwd, $appName, TemplateName $envType, \Traversable $packages = null)
     {
         if (null === $packages) {
-            $packages = Setup::createDefaultPackageSet(DefaultsParser::parse($envType));
+            $packages = Setup::createDefaultPackageSet(ManifestParser::parse($envType));
         }
 
         (new Setup($cwd, new AppName($appName), $envType, $packages))->handle(function () {
         });
     }
 
-    protected static function createManalizedProject($cwd, $appName = 'dummy.manala', EnvName $envType = null, \Iterator $packages = null)
+    protected static function createManalizedProject($cwd, $appName = 'dummy.manala', TemplateName $envType = null, \Iterator $packages = null)
     {
         self::createSymfonyStandardProject($cwd);
 
         if (null === $envType) {
-            $envType = EnvName::ELAO_SYMFONY();
+            $envType = TemplateName::ELAO_SYMFONY();
         }
 
         self::manalizeProject($cwd, $appName, $envType, $packages);

@@ -11,7 +11,7 @@
 
 namespace Manala\Manalize\Tests\Functional;
 
-use Manala\Manalize\Env\EnvName;
+use Manala\Manalize\Env\TemplateName;
 use Symfony\Component\Process\Process;
 
 /**
@@ -24,7 +24,7 @@ class BuildTest extends TestCase
     public static function setUpBeforeClass()
     {
         self::$cwd = manala_get_tmp_dir('tests_build_');
-        $envType = EnvName::ELAO_SYMFONY();
+        $envType = TemplateName::ELAO_SYMFONY();
 
         self::createManalizedProject(
             self::$cwd,

@@ -14,10 +14,10 @@ namespace Manala\Manalize\Env;
 use Elao\Enum\ReadableEnum;
 
 /**
- * @method static EnvName ELAO_SYMFONY()
- * @method static EnvName CUSTOM()
+ * @method static TemplateName ELAO_SYMFONY()
+ * @method static TemplateName CUSTOM()
  */
-final class EnvName extends ReadableEnum
+final class TemplateName extends ReadableEnum
 {
     const ELAO_SYMFONY = 'elao-symfony';
     const CUSTOM = 'custom';

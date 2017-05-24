@@ -11,7 +11,7 @@
 
 namespace Manala\Manalize\Command;
 
-use Manala\Manalize\Env\EnvName;
+use Manala\Manalize\Env\TemplateName;
 use Manala\Manalize\Exception\HandlingFailureException;
 use Manala\Manalize\Handler\Diff as DiffHandler;
 use Symfony\Component\Console\Command\Command;
@@ -37,7 +37,7 @@ class Diff extends Command
             ->setName('diff')
             ->setDescription('Computes the diff between the current project and the Manala templates.')
             ->addArgument('cwd', InputArgument::OPTIONAL, 'The path of the application', getcwd())
-            ->addOption('env', null, InputOption::VALUE_OPTIONAL, 'One of the supported environment types or custom.', null)
+            ->addOption('template', null, InputOption::VALUE_OPTIONAL, 'One of the supported environment types or custom.', null)
             ->setHelp(<<<EOTXT
 {$this->getDescription()}
 
@@ -84,7 +84,7 @@ EOTXT
             throw new \RuntimeException(sprintf('The working directory "%s" doesn\'t exist.', $cwd));
         }
 
-        $envName = $input->getOption('env') ? EnvName::get($input->getOption('env')) : null;
+        $envName = $input->getOption('template') ? TemplateName::get($input->getOption('template')) : null;
         $handler = new DiffHandler($cwd, $envName, $output->isDecorated());
         $errorIo = $this->getErrorIo($input, $output);
 

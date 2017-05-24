@@ -11,7 +11,7 @@
 
 namespace Manala\Manalize\Env\EnvGuesser;
 
-use Manala\Manalize\Env\EnvName;
+use Manala\Manalize\Env\TemplateName;
 
 /**
  * Interface for classes that are able to guess the better env from a project configuration.
@@ -21,11 +21,11 @@ use Manala\Manalize\Env\EnvName;
 interface EnvGuesserInterface
 {
     /**
-     * Guesses the EnvName to use from a given project config.
+     * Guesses the TemplateName to use from a given project config.
      *
      * @param \SplFileInfo $config a config file or directory
      *
-     * @return EnvName|void
+     * @return TemplateName|void
      */
     public function guess(\SplFileInfo $config);
 

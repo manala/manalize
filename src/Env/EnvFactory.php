@@ -26,7 +26,7 @@ use function iter\toArray;
  */
 class EnvFactory
 {
-    public static function createEnv(EnvName $name, AppName $appName, $packages): Env
+    public static function createEnv(TemplateName $name, AppName $appName, $packages): Env
     {
         if ($packages instanceof \Traversable) {
             $packages = toArray($packages);
@@ -65,7 +65,7 @@ class EnvFactory
         $system = $manala['system'] ?? [];
 
         if (!$template) {
-            $template = $app['template'] ?? EnvName::CUSTOM;
+            $template = $app['template'] ?? TemplateName::CUSTOM;
         }
 
         $packages = [];
@@ -76,6 +76,6 @@ class EnvFactory
             $packages[] = new Package($name, $enabled, $version);
         }
 
-        return self::createEnv(EnvName::get($template), new AppName($app['name']), $packages);
+        return self::createEnv(TemplateName::get($template), new AppName($app['name']), $packages);
     }
 }
