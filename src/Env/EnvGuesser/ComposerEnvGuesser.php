@@ -11,7 +11,7 @@
 
 namespace Manala\Manalize\Env\EnvGuesser;
 
-use Manala\Manalize\Env\EnvName;
+use Manala\Manalize\Env\TemplateName;
 
 /**
  * Guesses the env based on a composer.json file.
@@ -21,7 +21,7 @@ use Manala\Manalize\Env\EnvName;
 class ComposerEnvGuesser implements EnvGuesserInterface
 {
     private static $envMap = [
-        'symfony/symfony' => EnvName::ELAO_SYMFONY,
+        'symfony/symfony' => TemplateName::ELAO_SYMFONY,
     ];
 
     /**
@@ -45,7 +45,7 @@ class ComposerEnvGuesser implements EnvGuesserInterface
 
         foreach ($rawConfig['require'] as $package => $version) {
             if (isset(self::$envMap[$package])) {
-                return EnvName::get(self::$envMap[$package]);
+                return TemplateName::get(self::$envMap[$package]);
             }
         }
     }

@@ -9,22 +9,22 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Env\Defaults;
+namespace Manala\Manalize\Env\Manifest;
 
-use Manala\Manalize\Env\EnvName;
+use Manala\Manalize\Env\TemplateName;
 use Symfony\Component\Yaml\Parser;
 
 /**
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-final class DefaultsParser
+final class ManifestParser
 {
-    const DEFAULTS_PATH = MANALIZE_HOME.'/templates/%s/defaults.yaml';
+    const DEFAULTS_PATH = MANALIZE_HOME.'/templates/%s/manifest.yaml';
 
-    public static function parse(EnvName $envName): Defaults
+    public static function parse(TemplateName $envName): Manifest
     {
         $raw = (new Parser())->parse(file_get_contents(sprintf(self::DEFAULTS_PATH, $envName->getValue())));
 
-        return new Defaults($raw);
+        return new Manifest($raw);
     }
 }

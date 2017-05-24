@@ -15,7 +15,7 @@ use Manala\Manalize\Env\Config\Config;
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvFactory;
-use Manala\Manalize\Env\EnvName;
+use Manala\Manalize\Env\TemplateName;
 use Symfony\Component\Filesystem\Filesystem;
 
 class DumperTest extends \PHPUnit_Framework_TestCase
@@ -34,7 +34,7 @@ class DumperTest extends \PHPUnit_Framework_TestCase
 
         foreach ((new Dumper($cwd))->dump($env) as $_);
 
-        $this->assertFileExists("$cwd/ansible/ansible.yml");
+        $this->assertFileExists("$cwd/ansible/ansible.yaml");
         $this->assertFileExists("$cwd/manala.yaml");
     }
 
@@ -44,7 +44,7 @@ class DumperTest extends \PHPUnit_Framework_TestCase
 
         foreach ((new Dumper($cwd))->dump($env, Dumper::DUMP_MANALA) as $_);
 
-        $this->assertFileNotExists("$cwd/ansible/ansible.yml");
+        $this->assertFileNotExists("$cwd/ansible/ansible.yaml");
         $this->assertFileExists("$cwd/manala.yaml");
     }
 
@@ -54,7 +54,7 @@ class DumperTest extends \PHPUnit_Framework_TestCase
 
         foreach ((new Dumper($cwd))->dump($env, Dumper::DUMP_FILES) as $_);
 
-        $this->assertFileExists("$cwd/ansible/ansible.yml");
+        $this->assertFileExists("$cwd/ansible/ansible.yaml");
         $this->assertFileNotExists("$cwd/manala.yaml");
     }
 
@@ -81,7 +81,7 @@ class DumperTest extends \PHPUnit_Framework_TestCase
             ->willReturn(null);
 
         $env = EnvFactory::createEnv(
-            EnvName::ELAO_SYMFONY(),
+            TemplateName::ELAO_SYMFONY(),
             new AppName('dummy'),
             $this->prophesize(\Iterator::class)->reveal()
         );

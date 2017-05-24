@@ -12,7 +12,7 @@
 namespace Manala\Manalize\Env\Config;
 
 use Manala\Manalize\Env\Config\Variable\Variable;
-use Manala\Manalize\Env\EnvName;
+use Manala\Manalize\Env\TemplateName;
 
 /**
  * Represents a config part of a Manala environment.
@@ -22,7 +22,7 @@ use Manala\Manalize\Env\EnvName;
 abstract class Config
 {
     /**
-     * @var EnvName
+     * @var TemplateName
      */
     protected $envName;
 
@@ -31,12 +31,12 @@ abstract class Config
      */
     protected $vars;
 
-    public static function create(EnvName $envName, array $vars)
+    public static function create(TemplateName $envName, array $vars)
     {
         return new static($envName, ...$vars);
     }
 
-    public function __construct(EnvName $envName, Variable ...$vars)
+    public function __construct(TemplateName $envName, Variable ...$vars)
     {
         $this->envName = $envName;
         $this->vars = $vars;

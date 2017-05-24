@@ -13,7 +13,7 @@ namespace Manala\Manalize\Handler;
 
 use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvFactory;
-use Manala\Manalize\Env\EnvName;
+use Manala\Manalize\Env\TemplateName;
 use Manala\Manalize\Exception\HandlingFailureException;
 use Manala\Manalize\Process\GitDiff;
 use Symfony\Component\Filesystem\Filesystem;
@@ -30,11 +30,11 @@ class Diff
     private $colorSupport;
 
     /**
-     * @param string       $cwd          The working dir
-     * @param bool         $colorSupport
-     * @param EnvName|null $envName
+     * @param string            $cwd          The working dir
+     * @param bool              $colorSupport
+     * @param TemplateName|null $envName
      */
-    public function __construct(string $cwd, EnvName $envName = null, bool $colorSupport = true)
+    public function __construct(string $cwd, TemplateName $envName = null, bool $colorSupport = true)
     {
         $this->envName = $envName;
         $this->cwd = $cwd;
@@ -88,7 +88,7 @@ class Diff
         $manala = Yaml::parse(file_get_contents("$this->cwd/manala.yaml"));
 
         if (!$this->envName || !$envName = $this->envName->getValue()) {
-            $envName = $manala['app']['template'] ?? EnvName::CUSTOM;
+            $envName = $manala['app']['template'] ?? TemplateName::CUSTOM;
         }
 
         foreach ($dumper->dump(EnvFactory::createEnvFromManala($manala, $envName), Dumper::DUMP_FILES) as $_);

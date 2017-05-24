@@ -13,11 +13,11 @@ namespace Manala\Manalize\Command;
 
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Config\Variable\Package;
-use Manala\Manalize\Env\Defaults\Defaults;
-use Manala\Manalize\Env\Defaults\DefaultsParser;
 use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvGuesser\ChainEnvGuesser;
-use Manala\Manalize\Env\EnvName;
+use Manala\Manalize\Env\Manifest\Manifest;
+use Manala\Manalize\Env\Manifest\ManifestParser;
+use Manala\Manalize\Env\TemplateName;
 use Manala\Manalize\Exception\InvalidConfigurationException;
 use Manala\Manalize\Handler\Setup as SetupHandler;
 use Manala\Manalize\Template\Syncer;
@@ -45,7 +45,7 @@ class Setup extends Command
             ->setName('setup')
             ->setDescription('Configures your environment on top of Manala ansible roles')
             ->addArgument('cwd', InputArgument::OPTIONAL, 'The path of the application for which to setup the environment', getcwd())
-            ->addOption('env', null, InputOption::VALUE_OPTIONAL, 'One of the supported environment types. Don\'t use this option for building a full custom environment', null)
+            ->addOption('template', null, InputOption::VALUE_OPTIONAL, 'One of the supported templates. Don\'t use this option for building a full custom environment', null)
             ->addOption('no-update', null, InputOption::VALUE_NONE, 'If set, will only update metadata')
         ;
     }
@@ -64,14 +64,14 @@ class Setup extends Command
         $io = new SymfonyStyle($input, $output);
         $io->setDecorated(true);
 
-        $envName = $this->getEnvName($input, $cwd);
-        if ($envName->is(EnvName::CUSTOM)) {
-            $envName = $this->guessEnvName($io, $cwd) ?: $envName;
+        $envName = $this->getTemplateName($input, $cwd);
+        if ($envName->is(TemplateName::CUSTOM)) {
+            $envName = $this->guessTemplateName($io, $cwd) ?: $envName;
         }
 
         try {
             $syncer = new Syncer();
-            $syncer->sync('5559987');
+            $syncer->sync('bcae854');
         } catch (\Throwable $e) {
             $io->error('An error occured while syncing templates: '.$e->getMessage());
 
@@ -81,13 +81,13 @@ class Setup extends Command
         $io->comment(sprintf('Start composing your <info>%s</info> environment', (string) $envName));
 
         $appName = $this->askForAppName($io, strtolower(basename($cwd)));
-        $envDefaults = DefaultsParser::parse($envName);
+        $envManifest = ManifestParser::parse($envName);
         $options = ['dumper_flags' => $input->getOption('no-update') ? Dumper::DUMP_MANALA : Dumper::DUMP_ALL];
 
-        if ($envName->is(EnvName::CUSTOM) || $this->shouldConfigurePackages($io, $envDefaults, $envName)) {
-            $packages = $this->configurePackages($io, $envDefaults);
+        if ($envName->is(TemplateName::CUSTOM) || $this->shouldConfigurePackages($io, $envManifest, $envName)) {
+            $packages = $this->configurePackages($io, $envManifest);
         } else {
-            $packages = SetupHandler::createDefaultPackageSet($envDefaults);
+            $packages = SetupHandler::createDefaultPackageSet($envManifest);
         }
 
         $handler = new SetupHandler($cwd, new AppName($appName), $envName, $packages, $options);
@@ -102,18 +102,18 @@ class Setup extends Command
         return 0;
     }
 
-    private function getEnvName(InputInterface $input, string $cwd): EnvName
+    private function getTemplateName(InputInterface $input, string $cwd): TemplateName
     {
-        if ($rawName = $input->getOption('env')) {
-            if (!EnvName::accepts($rawName)) {
+        if ($rawName = $input->getOption('template')) {
+            if (!TemplateName::accepts($rawName)) {
                 throw new \UnexpectedValueException(sprintf(
-                    'The value for the "--env" option must be one of [%s] (or null for a custom environment), "%s" given.',
-                    implode(',', EnvName::values()),
+                    'The value for the "--template" option must be one of [%s] (or null for a custom environment), "%s" given.',
+                    implode(',', TemplateName::values()),
                     $rawName
                 ));
             }
 
-            return EnvName::get($rawName);
+            return TemplateName::get($rawName);
         }
 
         if (is_readable($dotfile = $cwd.'/manala.yaml')) {
@@ -123,17 +123,17 @@ class Setup extends Command
                 throw new InvalidConfigurationException("The $dotfile file must contain a \"template\" key.");
             }
 
-            if (!EnvName::accepts($templateName = $rawConfig['template']['name'])) {
-                throw new InvalidConfigurationException(sprintf('There is no env called "%s". Possilble envs are [%s]', $templateName, implode(', ', EnvName::values())));
+            if (!TemplateName::accepts($templateName = $rawConfig['template']['name'])) {
+                throw new InvalidConfigurationException(sprintf('There is no env called "%s". Possilble envs are [%s]', $templateName, implode(', ', TemplateName::values())));
             }
 
-            return EnvName::get($templateName);
+            return TemplateName::get($templateName);
         }
 
-        return EnvName::CUSTOM();
+        return TemplateName::CUSTOM();
     }
 
-    private function guessEnvName(SymfonyStyle $io, string $cwd)
+    private function guessTemplateName(SymfonyStyle $io, string $cwd)
     {
         if (!$envName = (new ChainEnvGuesser())->guess(new \SplFileinfo($cwd))) {
             return;
@@ -147,7 +147,7 @@ class Setup extends Command
         return $io->confirm(sprintf('Would you like to base your setup on the <comment>%s</comment> environment?', $envName)) ? $envName : null;
     }
 
-    private function configurePackages(SymfonyStyle $io, Defaults $defaults): \Generator
+    private function configurePackages(SymfonyStyle $io, Manifest $defaults): \Generator
     {
         foreach ($defaults->get('packages') as $name => $settings) {
             $defaultEnabled = $settings['enabled'] ?: false;
@@ -170,7 +170,7 @@ class Setup extends Command
         }
     }
 
-    private function shouldConfigurePackages(SymfonyStyle $io, Defaults $defaults, EnvName $envName): bool
+    private function shouldConfigurePackages(SymfonyStyle $io, Manifest $defaults, TemplateName $envName): bool
     {
         $packages = $defaults->get('packages');
 

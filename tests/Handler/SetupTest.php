@@ -13,7 +13,7 @@ namespace Manala\Manalize\Tests\Handler;
 
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Dumper;
-use Manala\Manalize\Env\EnvName;
+use Manala\Manalize\Env\TemplateName;
 use Manala\Manalize\Handler\Setup;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -33,7 +33,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase
                 [],
                 [
                     'manala/Vagrantfile',
-                    'ansible/ansible.yml',
+                    'ansible/ansible.yaml',
                     'ansible/app.yaml',
                     'ansible/deploy.yaml',
                     'ansible/group_vars/app.yaml',
@@ -63,7 +63,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase
         $handler = new Setup(
             self::$cwd,
             new AppName('setup_test'),
-            EnvName::ELAO_SYMFONY(),
+            TemplateName::ELAO_SYMFONY(),
             $this->prophesize(\Iterator::class)->reveal(),
             $options
         );

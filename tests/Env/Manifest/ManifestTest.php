@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Manala\Manalize\Tests\Env\Defaults;
+namespace Manala\Manalize\Tests\Env\Manifest;
 
-use Manala\Manalize\Env\Defaults\Defaults;
+use Manala\Manalize\Env\Manifest\Manifest;
 
-class DefaultsTest extends \PHPUnit_Framework_TestCase
+class ManifestTest extends \PHPUnit_Framework_TestCase
 {
     public function testGet()
     {
-        $defaults = new Defaults(['foo' => ['bar' => 'baz']]);
+        $defaults = new Manifest(['foo' => ['bar' => 'baz']]);
         $this->assertSame('baz', $defaults->get('foo.bar'));
     }
 
@@ -27,7 +27,7 @@ class DefaultsTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetUndefinedPath()
     {
-        $defaults = new Defaults(['foo' => ['bar' => 'baz']]);
+        $defaults = new Manifest(['foo' => ['bar' => 'baz']]);
         $defaults->get('foo.bab');
     }
 
@@ -37,7 +37,7 @@ class DefaultsTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetUndefinedPathWithTooMuchDistance()
     {
-        $defaults = new Defaults(['foo' => ['bar' => 'baz']]);
+        $defaults = new Manifest(['foo' => ['bar' => 'baz']]);
         $defaults->get('foo.zyo');
     }
 }

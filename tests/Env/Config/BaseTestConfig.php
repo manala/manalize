@@ -12,11 +12,11 @@
 namespace Manala\Manalize\Tests\Env\Config;
 
 use Manala\Manalize\Env\Config\Config;
-use Manala\Manalize\Env\EnvName;
+use Manala\Manalize\Env\TemplateName;
 
 class BaseTestConfig extends \PHPUnit_Framework_TestCase
 {
-    const ENV = EnvName::ELAO_SYMFONY;
+    const ENV = TemplateName::ELAO_SYMFONY;
 
     protected function assertOrigin(Config $config, $name)
     {
@@ -25,7 +25,7 @@ class BaseTestConfig extends \PHPUnit_Framework_TestCase
 
     protected function getEnvType()
     {
-        return EnvName::get(self::ENV);
+        return TemplateName::get(self::ENV);
     }
 
     protected function getOrigin($name)

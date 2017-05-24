@@ -38,7 +38,7 @@ class DiffTest extends TestCase
     public function testExecute()
     {
         $tester = new CommandTester(new Diff());
-        $tester->execute(['cwd' => static::$cwd, '--env' => 'elao-symfony']);
+        $tester->execute(['cwd' => static::$cwd, '--template' => 'elao-symfony']);
 
         if (0 !== $tester->getStatusCode()) {
             echo $tester->getDisplay();
