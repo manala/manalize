@@ -15,6 +15,9 @@ use Manala\Manalize\Application;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
+/**
+ * @group github
+ */
 class SelfUpdateTest extends TestCase
 {
     private static $cwd;

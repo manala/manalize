@@ -20,6 +20,7 @@ class VagrantBoxVersionResolverTest extends \PHPUnit_Framework_TestCase
     public function getBoxVersionsForPhpVersions()
     {
         return [
+            ['~> 3.0.0', '7.1'],
             ['~> 3.0.0', '7.0'],
             ['~> 2.0.0', '5.6'],
             ['~> 2.0.0', '5.5'],

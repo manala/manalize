@@ -16,6 +16,9 @@ use Manala\Manalize\Handler\SelfUpdate;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
+/**
+ * @group github
+ */
 class SelfUpdateTest extends \PHPUnit_Framework_TestCase
 {
     private static $cwd;

@@ -2,8 +2,8 @@ packages:
     php:
         enabled:    true
         required:   true
-        default:    '7.0'
-        constraint: '5.4|5.5|5.6|7.0'
+        default:    '7.1'
+        constraint: '5.4|5.5|5.6|7.1'
     mysql:
         enabled:    true
         required:   false
