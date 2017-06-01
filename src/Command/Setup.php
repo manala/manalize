@@ -64,9 +64,9 @@ class Setup extends Command
         $io = new SymfonyStyle($input, $output);
         $io->setDecorated(true);
 
-        $envName = $this->getTemplateName($input, $cwd);
-        if ($envName->is(TemplateName::CUSTOM)) {
-            $envName = $this->guessTemplateName($io, $cwd) ?: $envName;
+        $template = $this->getTemplateName($input, $cwd);
+        if ($template->is(TemplateName::CUSTOM)) {
+            $template = $this->guessTemplateName($io, $cwd) ?: $template;
         }
 
         try {
@@ -78,19 +78,19 @@ class Setup extends Command
             return 1;
         }
 
-        $io->comment(sprintf('Start composing your <info>%s</info> environment', (string) $envName));
+        $io->comment(sprintf('Start composing your <info>%s</info> environment', (string) $template));
 
         $appName = $this->askForAppName($io, strtolower(basename($cwd)));
-        $envManifest = (new ManifestLoader($envName))->load();
+        $envManifest = (new ManifestLoader($template))->load();
         $options = ['dumper_flags' => $input->getOption('no-update') ? Dumper::DUMP_MANALA : Dumper::DUMP_ALL];
 
-        if ($envName->is(TemplateName::CUSTOM) || $this->shouldConfigurePackages($io, $envManifest, $envName)) {
+        if ($template->is(TemplateName::CUSTOM) || $this->shouldConfigurePackages($io, $envManifest, $template)) {
             $packages = $this->configurePackages($io, $envManifest);
         } else {
             $packages = SetupHandler::createDefaultPackageSet($envManifest);
         }
 
-        $handler = new SetupHandler($cwd, new AppName($appName), $envName, $packages, $options);
+        $handler = new SetupHandler($cwd, new AppName($appName), $template, $packages, $options);
         $handler->handle(function (string $target) use ($io) {
             $io->writeln(sprintf('- %s', $target));
         }, function (string $target) use ($io, $handler, $cwd) {
@@ -135,16 +135,16 @@ class Setup extends Command
 
     private function guessTemplateName(SymfonyStyle $io, string $cwd)
     {
-        if (!$envName = (new ChainEnvGuesser())->guess(new \SplFileinfo($cwd))) {
+        if (!$template = (new ChainEnvGuesser())->guess(new \SplFileinfo($cwd))) {
             return;
         }
 
         $io->comment(sprintf(
             "It seems you didn't choose to use one of our built-in environments,\nbut we think that there is one which may be adapted.",
-            $envName
+            $template
         ));
 
-        return $io->confirm(sprintf('Would you like to base your setup on the <comment>%s</comment> environment?', $envName)) ? $envName : null;
+        return $io->confirm(sprintf('Would you like to base your setup on the <comment>%s</comment> environment?', $template)) ? $template : null;
     }
 
     private function configurePackages(SymfonyStyle $io, Manifest $defaults): \Generator
@@ -170,11 +170,11 @@ class Setup extends Command
         }
     }
 
-    private function shouldConfigurePackages(SymfonyStyle $io, Manifest $defaults, TemplateName $envName): bool
+    private function shouldConfigurePackages(SymfonyStyle $io, Manifest $defaults, TemplateName $template): bool
     {
         $packages = $defaults->get('packages');
 
-        $io->writeln(sprintf('The default set of packages for <info>%s</info> is:', (string) $envName));
+        $io->writeln(sprintf('The default set of packages for <info>%s</info> is:', (string) $template));
         $io->table(['name', 'enabled', 'version'], array_map(function ($name, $package) {
             return [$name, $package['enabled'] ? 'yes' : 'no', $package['default'] ?? '~'];
         }, array_keys($packages), $packages));

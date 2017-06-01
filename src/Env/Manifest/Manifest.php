@@ -14,6 +14,8 @@ namespace Manala\Manalize\Env\Manifest;
 /**
  * A bag containing all the information for a given template (system & app configuration).
  *
+ * TODO: specify API, build Variable|Package instances from the parser and deal only with those (not mixed)
+ *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
 final class Manifest

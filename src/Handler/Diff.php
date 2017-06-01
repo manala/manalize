@@ -24,7 +24,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Diff
 {
-    private $envName;
+    private $template;
     private $cwd;
     private $fs;
     private $colorSupport;
@@ -32,11 +32,11 @@ class Diff
     /**
      * @param string            $cwd          The working dir
      * @param bool              $colorSupport
-     * @param TemplateName|null $envName
+     * @param TemplateName|null $template
      */
-    public function __construct(string $cwd, TemplateName $envName = null, bool $colorSupport = true)
+    public function __construct(string $cwd, TemplateName $template = null, bool $colorSupport = true)
     {
-        $this->envName = $envName;
+        $this->template = $template;
         $this->cwd = $cwd;
         $this->colorSupport = $colorSupport;
 
@@ -87,11 +87,11 @@ class Diff
         $dumper = new Dumper($tmpPath);
         $manala = Yaml::parse(file_get_contents("$this->cwd/manala.yaml"));
 
-        if (!$this->envName || !$envName = $this->envName->getValue()) {
-            $envName = $manala['app']['template'] ?? TemplateName::CUSTOM;
+        if (!$this->template || !$template = $this->template->getValue()) {
+            $template = $manala['app']['template'] ?? TemplateName::CUSTOM;
         }
 
-        foreach ($dumper->dump(EnvFactory::createEnvFromManala($manala, $envName), Dumper::DUMP_FILES) as $_);
+        foreach ($dumper->dump(EnvFactory::createEnvFromManala($manala, $template), Dumper::DUMP_FILES) as $_);
 
         return $tmpPath;
     }

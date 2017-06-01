@@ -24,21 +24,21 @@ abstract class Config
     /**
      * @var TemplateName
      */
-    protected $envName;
+    protected $template;
 
     /**
      * @var Variable[]
      */
     protected $vars;
 
-    public static function create(TemplateName $envName, array $vars)
+    public static function create(TemplateName $template, array $vars)
     {
-        return new static($envName, ...$vars);
+        return new static($template, ...$vars);
     }
 
-    public function __construct(TemplateName $envName, Variable ...$vars)
+    public function __construct(TemplateName $template, Variable ...$vars)
     {
-        $this->envName = $envName;
+        $this->template = $template;
         $this->vars = $vars;
     }
 
@@ -56,7 +56,7 @@ abstract class Config
      */
     public function getOrigin(): \SplFileInfo
     {
-        return new \SplFileInfo(MANALIZE_HOME.'/templates/'.$this->envName->getValue());
+        return new \SplFileInfo(MANALIZE_HOME.'/templates/'.$this->template->getValue());
     }
 
     /**

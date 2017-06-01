@@ -38,8 +38,8 @@ class ChainEnvGuesser implements EnvGuesserInterface
                 throw new \LogicException(sprintf('Env guessers must implement %s', EnvGuesserInterface::class));
             }
 
-            if ($guesser->supports($config) && $envName = $guesser->guess($config)) {
-                return $envName;
+            if ($guesser->supports($config) && $template = $guesser->guess($config)) {
+                return $template;
             }
         }
     }

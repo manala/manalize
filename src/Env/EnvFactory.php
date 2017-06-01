@@ -73,6 +73,7 @@ class EnvFactory
             $enabled = is_bool($package) ? $package : $package['enabled'] ?? (bool) $package;
             $version = is_string($package) ? $package : $package['version'] ?? null;
             // TODO manifest-based validation
+            // TODO If key exists in template manifest then it's a Package, otherwise a Variable (think cpus, memory)
             $packages[] = new Package($name, $enabled, $version);
         }
 

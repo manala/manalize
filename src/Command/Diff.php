@@ -84,8 +84,8 @@ EOTXT
             throw new \RuntimeException(sprintf('The working directory "%s" doesn\'t exist.', $cwd));
         }
 
-        $envName = $input->getOption('template') ? TemplateName::get($input->getOption('template')) : null;
-        $handler = new DiffHandler($cwd, $envName, $output->isDecorated());
+        $template = $input->getOption('template') ? TemplateName::get($input->getOption('template')) : null;
+        $handler = new DiffHandler($cwd, $template, $output->isDecorated());
         $errorIo = $this->getErrorIo($input, $output);
 
         try {

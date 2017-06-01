@@ -59,11 +59,6 @@ class Env
         return new \SplFileInfo(MANALIZE_HOME.'/templates/'.$this->name);
     }
 
-    public function getManifest(): Manifest
-    {
-        return new Manifest();
-    }
-
     public function getAppName(): AppName
     {
         return $this->appName;

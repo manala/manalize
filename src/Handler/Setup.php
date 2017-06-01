@@ -26,27 +26,27 @@ class Setup
 {
     private $cwd;
     private $appName;
-    private $envName;
+    private $template;
     private $packages;
     private $options;
 
     public function __construct(
         string $cwd,
         AppName $appName,
-        TemplateName $envName,
+        TemplateName $template,
         \Traversable $packages,
         array $options = []
     ) {
         $this->cwd = $cwd;
         $this->appName = $appName;
-        $this->envName = $envName;
+        $this->template = $template;
         $this->packages = $packages;
         $this->options = $this->normalizeOptions($options);
     }
 
     public function handle(callable $notifier, callable $existingFileCallback = null)
     {
-        $env = EnvFactory::createEnv($this->envName, $this->appName, $this->packages);
+        $env = EnvFactory::createEnv($this->template, $this->appName, $this->packages);
         $dumper = new Dumper($this->cwd);
 
         try {

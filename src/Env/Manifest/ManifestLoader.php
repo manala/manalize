@@ -28,10 +28,13 @@ final class ManifestLoader extends FileLoader
     private $templateDir;
     private $parser;
 
-    public function __construct(TemplateName $envName, FileLocatorInterface $fileLocator = null, Parser $parser = null)
+    public function __construct(TemplateName $template = null, FileLocatorInterface $fileLocator = null, Parser $parser = null)
     {
-        $this->templateDir = self::TEMPLATE_PATH.'/'.$envName->getValue();
         $this->parser = $parser ?: new Parser();
+
+        if ($template) {
+            $this->templateDir = self::TEMPLATE_PATH.'/'.$template->getValue();
+        }
 
         parent::__construct($fileLocator ?: new FileLocator($this->templateDir));
     }
