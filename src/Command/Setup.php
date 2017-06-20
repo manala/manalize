@@ -47,7 +47,7 @@ class Setup extends Command
             ->setName('setup')
             ->setDescription('Configures your environment on top of Manala ansible roles')
             ->addArgument('cwd', InputArgument::OPTIONAL, 'The path of the application for which to setup the environment', getcwd())
-            ->addOption('env', null, InputOption::VALUE_OPTIONAL, 'One of the supported environment types. Don\'t use this option for building a full custom environment', null)
+            ->addOption('env', null, InputOption::VALUE_OPTIONAL, sprintf('One of the supported environment types: [%s]', implode(', ', EnvName::values())), null)
             ->addOption('no-update', null, InputOption::VALUE_NONE, 'If set, will only update metadata')
         ;
     }
@@ -66,7 +66,7 @@ class Setup extends Command
         $io = new SymfonyStyle($input, $output);
         $io->setDecorated(true);
 
-        $envName = $this->getEnvName($input, $cwd);
+        $envName = $this->getEnvName($io, $input, $cwd);
         if ($envName->is(EnvName::CUSTOM)) {
             $envName = $this->guessEnvName($io, $cwd) ?: $envName;
         }
@@ -111,7 +111,7 @@ class Setup extends Command
         return 0;
     }
 
-    private function getEnvName(InputInterface $input, string $cwd): EnvName
+    private function getEnvName(SymfonyStyle $io, InputInterface $input, string $cwd): EnvName
     {
         if ($rawName = $input->getOption('env')) {
             if (!EnvName::accepts($rawName)) {
@@ -139,7 +139,7 @@ class Setup extends Command
             return EnvName::get($templateName);
         }
 
-        return EnvName::CUSTOM();
+        return EnvName::get($this->getEnvNameFromChoiceList($io));
     }
 
     private function guessEnvName(SymfonyStyle $io, string $cwd)
@@ -154,6 +154,22 @@ class Setup extends Command
         ));
 
         return $io->confirm(sprintf('Would you like to base your setup on the <comment>%s</comment> environment?', $envName)) ? $envName : null;
+    }
+
+    /**
+     * Let user select environment name from a choice list.
+     *
+     * @param SymfonyStyle $io
+     *
+     * @return EnvName
+     */
+    private function getEnvNameFromChoiceList(SymfonyStyle $io)
+    {
+        return $io->choice(
+            'Select your environment:',
+            EnvName::values(),
+            EnvName::CUSTOM
+        );
     }
 
     private function configureDependencies(SymfonyStyle $io, Defaults $defaults): \Generator
