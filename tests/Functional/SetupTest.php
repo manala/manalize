@@ -26,8 +26,6 @@ class SetupTest extends TestCase
         $cwd = manala_get_tmp_dir('tests_setup_');
         mkdir($cwd = $cwd.'/manalized-app');
 
-        self::createSymfonyStandardProject($cwd);
-
         self::$cwd = $cwd;
     }
 
@@ -41,6 +39,7 @@ class SetupTest extends TestCase
      */
     public function testExecute(array $inputs, $expectedBoxName, $expectedBoxVersion, $expectedDeps, $expectedMetadataFilename)
     {
+        self::createSymfonyStandardProject(self::$cwd);
         $tester = new CommandTester(new Setup());
         $tester
             ->setInputs($inputs)
@@ -71,6 +70,40 @@ class SetupTest extends TestCase
 
         $this->assertFileEquals("$fixturesDir/$expectedDeps", self::$cwd.'/ansible/group_vars/app.yml');
         $this->assertFileEquals("$fixturesDir/$expectedMetadataFilename", self::$cwd.'/ansible/.manalize.yml');
+    }
+
+    public function testExecuteEnvNameChoice()
+    {
+        $inputs = ['0', "\n", "\n", "\n"];
+        $tester = new CommandTester(new Setup());
+        $tester
+            ->setInputs($inputs)
+            ->execute(['cwd' => static::$cwd])
+        ;
+
+        $consoleDisplay = $tester->getDisplay();
+        $this->assertFileExists(self::$cwd.'/Vagrantfile');
+        $this->assertSame(0, $tester->getStatusCode());
+        $this->assertContains('Select your environment', $consoleDisplay);
+        $this->assertContains('Environment successfully configured', $consoleDisplay);
+    }
+
+    public function testExecuteEnvNameWithIncorrectChoice()
+    {
+        $countEnvs = count(EnvName::values());
+        $inputs = [(string) $countEnvs, '0', "\n", "\n", "\n", "\n"];
+        $tester = new CommandTester(new Setup());
+        $tester
+            ->setInputs($inputs)
+            ->execute(['cwd' => static::$cwd])
+        ;
+
+        $consoleDisplay = $tester->getDisplay();
+        $this->assertFileExists(self::$cwd.'/Vagrantfile');
+        $this->assertSame(0, $tester->getStatusCode());
+        $this->assertContains('Select your environment', $consoleDisplay);
+        $this->assertContains(sprintf('[ERROR] Value "%u" is invalid ', $countEnvs), $consoleDisplay, 'Out of bounds choice should display an error');
+        $this->assertContains('Environment successfully configured', $consoleDisplay);
     }
 
     public function provideEnvs()

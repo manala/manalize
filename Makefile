@@ -30,3 +30,7 @@ build:
 	cd .build && php -d phar.readonly=0 ../vendor/bin/box build -v && cd ../
 	cp .build/manalize.phar .
 	rm -rf .build
+
+## Test
+test:
+	vendor/bin/phpunit
