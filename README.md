@@ -77,8 +77,10 @@ A list of requirements and recommendations will be shown, sort as you can instal
 Given you have a web project that you clone for the first time and you need to run locally, simply execute the `setup` command:
 
 ```sh
-$ manalize setup ~/my-awesome-project
+$ manalize setup ~/my-awesome-app
 ```
+
+<img src="doc/res/manalize-setup.gif">
 
 This command interactively configures the virtual machine for your project.  
 Some files will be added to your project:
@@ -103,6 +105,8 @@ To manage it and work with it, just use the `vagrant` command-line tool as usual
 $ vagrant up|halt|reload|ssh
 ```
 
+<img src="doc/res/manalize-vagrant-ssh.gif">
+
 ### Keeping your environment up-to-date
 
 Given your project's environment is there and your VM works well, its configuration is sticked to what we provided at the moment you created it.  
@@ -125,18 +129,18 @@ The `diff` command allows you to get a patch representing the diff between your 
 
 Getting the diff:
 ```
-$ manalize diff ~/my-awesome-project
+$ manalize diff ~/my-awesome-app
 ```
 
 Getting the diff for applying the patch immediately:
 ```
-$ cd ~/my-awesome-project
+$ cd ~/my-awesome-app
 $ manalize diff | git apply
 ```
 
 Getting the diff for applying the patch later:
 ```
-$ cd ~/my-awesome-project
+$ cd ~/my-awesome-app
 $ manalize diff > manalize.patch
 $ git apply manalize.patch
 ```
@@ -153,7 +157,7 @@ Sometimes, it can be useful to setup the environment without affecting the exist
 The following command will only update the `ansible/.manalize` metadata file from what you will configure:
 
 ```
-$ manalize setup --no-update ~/my-awesome-project
+$ manalize setup --no-update ~/my-awesome-app
 ```
 
 So you can then apply a patch provided by the [diff](#diff) command.
