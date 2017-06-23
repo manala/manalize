@@ -3,25 +3,27 @@ Manalize
 
 [![Build Status](https://travis-ci.org/manala/manalize.svg?branch=master)](https://travis-ci.org/manala/manalize)
 
-This project provides ready-to-use environments for various projects.
+This project provides ready-to-use development environments for various projects (Symfony projects, custom apps, etc.).
 
 At this moment, provided environments are based on Vagrant and provisioned through [Manala ansible roles](http://www.manala.io/).  
-Some Docker based implementations are planed and should appear really soon.
+Some Docker based implementations are planned and should appear really soon.
 
 Why?
 ----
 
-Because we are too lazy for manually setting up local environments for each project we have to work on.  
+Because we are too lazy for manually setting up local development environments for each project we have to work on.
 In short, we need to:
 
 - Be able to work on any new/existing project from any platform in minutes
 - Enable/disable support for language, package or any various utility as well
 - Keep a local environment consistent across projects (practices, tools)
 - Have a local environment as close as possible from the production one
-- Destroy/rebuild an environment as needed
+- Destroy/rebuild any environment as needed
 
 What's inside?
 --------------
+
+Manalize is built on the shoulders of the following libs :
 
 - [Composer Semver](https://github.com/composer/semver)
 - [Guzzle](https://github.com/guzzle/guzzle)
@@ -94,11 +96,11 @@ $ make setup
 
 ### Working with your environment
 
-Once the [`setup`](#setting-up-your-environment) process is finished (may take a few minuts), your environment is operational and your VM is running.  
-To manage it and work with, just use the `vagrant` command-line tool as usual:
+Once the [`setup`](#setting-up-your-environment) process is finished (it may take a few minutes), your environment is operational and your VM is running.
+To manage it and work with it, just use the `vagrant` command-line tool as usual:
 
 ```sh
-$ vagrant up/halt/reload/ssh
+$ vagrant up|halt|reload|ssh
 ```
 
 ### Keeping your environment up-to-date
@@ -106,7 +108,7 @@ $ vagrant up/halt/reload/ssh
 Given your project's environment is there and your VM works well, its configuration is sticked to what we provided at the moment you created it.  
 Since the [manala ansible roles](http://manala.io/) evolve (and the corresponding templates as well), you may want to be aware of the important changes made to in order to update your environment accordingly.
 
-To do so, there's two commands to be aware of: `self-update` and `diff`.
+To do so, there are two commands to be aware of: `self-update` and `diff`.
 
 #### self-update
 
@@ -141,7 +143,7 @@ $ git apply manalize.patch
 
 _Note:_
   
-Be careful when applying the patch, any custom change made to your environment configuration will be erased.  
+> :warning: Be careful when applying the patch, any custom change made to your environment configuration will be erased.
 To minimize risks, we recommend you to look at the patch before trying to apply it. 
 
 ### Updating an existing environment without immediatly altering its configuration
@@ -169,6 +171,23 @@ License
 
 This project is licensed under MIT.  
 For the whole copyright, see the [LICENSE](LICENSE) file distributed with this source code.
+
+Contribute
+----------
+
+## How to run
+
+```shell
+    cd <path-to-your-awesome-project-root-dir>
+    <path-to-manalize-root-dir>/bin/manalize setup .
+```
+
+## How to test
+
+```shell
+    cd <path-to-manalize-root-dir>
+    make test
+```
 
 Author information
 ------------------
