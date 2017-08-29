@@ -72,9 +72,9 @@ final class Syncer
 
         (new GitFetch($this->templateDir))->run();
 
-        $getLatestHash = new GitRevList($this->templateDir);
-        $getLatestHash->run();
+        $getLastTag = new GitRevList($this->templateDir);
+        $getLastTag->run();
 
-        return $this->latestRevision = $getLatestHash->getOutput();
+        return $this->latestRevision = $getLastTag->getOutput();
     }
 }

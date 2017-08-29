@@ -15,8 +15,8 @@ use Symfony\Component\Process\Process;
 
 final class GitRevList extends Process
 {
-    public function __construct($cwd, $branch = 'master')
+    public function __construct($cwd)
     {
-        parent::__construct("git log -n 1 $branch", $cwd);
+        parent::__construct('git rev-list --tags --max-count=1', $cwd);
     }
 }
