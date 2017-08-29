@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of the Manalize project.
- *
- * (c) Manala <contact@manala.io>
- *
- * For the full copyright and license information, please refer to the LICENSE
- * file that was distributed with this source code.
- */
-
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -29,6 +20,7 @@ if (PHP_MAJOR_VERSION < 7) {
 
 define('MANALIZE_DIR', __DIR__);
 define('MANALIZE_TMP_ROOT_DIR', sys_get_temp_dir().'/Manala');
+define('UPDATE_FIXTURES', filter_var(getenv('UPDATE_FIXTURES'), FILTER_VALIDATE_BOOLEAN));
 
 /**
  * Creates a unique tmp dir.

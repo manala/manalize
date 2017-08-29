@@ -16,7 +16,7 @@ use Manala\Manalize\Env\EnvName;
 
 class BaseTestConfig extends \PHPUnit_Framework_TestCase
 {
-    const ENV = EnvName::ELAO_SYMFONY;
+    const ENV = EnvName::SYMFONY;
 
     protected function assertOrigin(Config $config, $name)
     {
@@ -30,6 +30,6 @@ class BaseTestConfig extends \PHPUnit_Framework_TestCase
 
     protected function getOrigin($name)
     {
-        return MANALIZE_HOME.'/templates/'.self::ENV.'/'.$name;
+        return MANALIZE_DIR.'/src/Resources/envs/'.self::ENV.'/'.$name;
     }
 }

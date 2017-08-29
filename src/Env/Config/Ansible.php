@@ -49,7 +49,7 @@ class Ansible extends Config
      */
     public function getTemplate(): \SplFileInfo
     {
-        return new \SplFileInfo($this->getOrigin().'/group_vars/app.yml.twig');
+        return new \SplFileInfo($this->getOrigin().'/group_vars/app.yml');
     }
 
     /**

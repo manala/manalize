@@ -24,7 +24,7 @@ class BuildTest extends TestCase
     public static function setUpBeforeClass()
     {
         self::$cwd = manala_get_tmp_dir('tests_build_');
-        $envType = EnvName::ELAO_SYMFONY();
+        $envType = EnvName::SYMFONY();
 
         self::createManalizedProject(
             self::$cwd,

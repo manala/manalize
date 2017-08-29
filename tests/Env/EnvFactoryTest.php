@@ -24,7 +24,7 @@ class EnvFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreateEnv()
     {
-        $envType = EnvName::ELAO_SYMFONY();
+        $envType = EnvName::SYMFONY();
         $appName = new AppName('rch');
         $boxVersion = new VagrantBoxVersion('~> 3.0.0');
         $env = EnvFactory::createEnv($envType, $appName, $this->prophesize(\Iterator::class)->reveal());

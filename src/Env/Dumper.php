@@ -83,8 +83,8 @@ class Dumper
         $template = $config->getTemplate();
 
         foreach ($config->getFiles() as $file) {
-            $dump = $file->getPathname() === (string) $template || $file->getPathname().'.twig' === (string) $template ? $this->renderer->render($config) : file_get_contents($file);
-            $target = str_replace($config->getOrigin(), $baseTarget, 'twig' === $file->getExtension() ? substr($file->getPathname(), 0, -5) : $file->getPathname());
+            $target = str_replace($config->getOrigin(), $baseTarget, $file->getPathName());
+            $dump = $file->getPathname() === (string) $template ? $this->renderer->render($config) : file_get_contents($file);
 
             if ($conflictCallback && $this->fs->exists($target) && $dump !== file_get_contents($target)) {
                 $strategy = $conflictCallback($target);

@@ -1,0 +1,6 @@
+---
+
+- hosts: deploy
+  gather_facts: false
+  roles:
+    - manala.deploy
