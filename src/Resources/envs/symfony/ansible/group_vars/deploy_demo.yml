@@ -1,0 +1,16 @@
+---
+
+###########
+# Removed #
+###########
+
+manala_deploy_removed:
+  - web/app_test.php
+
+#########
+# Tasks #
+#########
+
+manala_deploy_tasks:
+  - make: install@demo
+  - make: build@demo

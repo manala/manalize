@@ -20,16 +20,13 @@ use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvGuesser\ChainEnvGuesser;
 use Manala\Manalize\Env\EnvName;
 use Manala\Manalize\Exception\HandlingFailureException;
-use Manala\Manalize\Exception\InvalidConfigurationException;
 use Manala\Manalize\Handler\Setup as SetupHandler;
-use Manala\Manalize\Template\Syncer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Setups a full stack environment on top of Manala' ansible roles.
@@ -48,8 +45,7 @@ class Setup extends Command
             ->setDescription('Configures your environment on top of Manala ansible roles')
             ->addArgument('cwd', InputArgument::OPTIONAL, 'The path of the application for which to setup the environment', getcwd())
             ->addOption('env', null, InputOption::VALUE_OPTIONAL, sprintf('One of the supported environment types: [%s]', implode(', ', EnvName::values())), null)
-            ->addOption('no-update', null, InputOption::VALUE_NONE, 'If set, will only update metadata')
-        ;
+            ->addOption('no-update', null, InputOption::VALUE_NONE, 'If set, will only update metadata');
     }
 
     /**
@@ -66,18 +62,9 @@ class Setup extends Command
         $io = new SymfonyStyle($input, $output);
         $io->setDecorated(true);
 
-        $envName = $this->getEnvName($io, $input, $cwd);
+        $envName = $this->getEnvName($io, $input);
         if ($envName->is(EnvName::CUSTOM)) {
             $envName = $this->guessEnvName($io, $cwd) ?: $envName;
-        }
-
-        try {
-            $syncer = new Syncer();
-            $syncer->sync();
-        } catch (\Throwable $e) {
-            $io->error('An error occured while syncing templates: '.$e->getMessage());
-
-            return 1;
         }
 
         $io->comment(sprintf('Start composing your <info>%s</info> environment', (string) $envName));
@@ -111,7 +98,7 @@ class Setup extends Command
         return 0;
     }
 
-    private function getEnvName(SymfonyStyle $io, InputInterface $input, string $cwd): EnvName
+    private function getEnvName(SymfonyStyle $io, InputInterface $input): EnvName
     {
         if ($rawName = $input->getOption('env')) {
             if (!EnvName::accepts($rawName)) {
@@ -123,20 +110,6 @@ class Setup extends Command
             }
 
             return EnvName::get($rawName);
-        }
-
-        if (is_readable($dotfile = $cwd.'/manala.yml')) {
-            $rawConfig = Yaml::parse(file_get_contents($dotfile));
-
-            if (!isset($rawConfig['template'])) {
-                throw new InvalidConfigurationException("The $dotfile file must contain a \"template\" key.");
-            }
-
-            if (!EnvName::accepts($templateName = $rawConfig['template']['name'])) {
-                throw new InvalidConfigurationException(sprintf('There is no env called "%s". Possilble envs are [%s]', $templateName, implode(', ', EnvName::values())));
-            }
-
-            return EnvName::get($templateName);
         }
 
         return EnvName::get($this->getEnvNameFromChoiceList($io));

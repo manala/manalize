@@ -120,6 +120,9 @@ class Requirement
         return $this->help;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function isRequired(): bool
     {
         return $this->level->is(RequirementLevel::REQUIRED);

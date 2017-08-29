@@ -86,7 +86,7 @@ class DumperTest extends \PHPUnit_Framework_TestCase
             ->willReturn(null);
 
         $env = EnvFactory::createEnv(
-            EnvName::ELAO_SYMFONY(),
+            EnvName::SYMFONY(),
             new AppName('dummy'),
             $this->prophesize(\Iterator::class)->reveal()
         );
