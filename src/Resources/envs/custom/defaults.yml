@@ -41,8 +41,8 @@ packages:
     nodejs:
         enabled:    false
         required:   false
-        default:    '7'
-        constraint: '0.10|0.12|4|5|6|7'
+        default:    '8'
+        constraint: '0.10|0.12|4|5|6|7|8'
     java:
         required:   false
         enabled:    false

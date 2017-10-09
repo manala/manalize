@@ -5,7 +5,7 @@ app_options:
   php:                   true
   php_version:           '7.1'
   nodejs:                false
-  nodejs_version:        '7'
+  nodejs_version:        '8'
   mysql:                 true
   mysql_version:         '5.6'
   mongodb:               false
