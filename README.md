@@ -54,6 +54,7 @@ $ composer global require manala/manalize
 ```
 $ git clone git@github.com:manala/manalize
 $ cd manalize
+$ composer install
 $ make build
 $ mv manalize.phar /usr/local/bin/manalize
 $ chmod a+x /usr/local/bin/manalize
