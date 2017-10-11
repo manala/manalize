@@ -81,7 +81,7 @@ Given you have a web project that you clone for the first time and you need to r
 $ manalize setup ~/my-awesome-app
 ```
 
-<img src="doc/res/manalize-setup.gif">
+![](res/manalize-setup.gif)
 
 This command interactively configures the virtual machine for your project.  
 Some files will be added to your project:
@@ -106,7 +106,7 @@ To manage it and work with it, just use the `vagrant` command-line tool as usual
 $ vagrant up|halt|reload|ssh
 ```
 
-<img src="doc/res/manalize-vagrant-ssh.gif">
+![](res/manalize-vagrant-ssh.gif)
 
 ### Keeping your environment up-to-date
 
@@ -163,6 +163,28 @@ $ manalize setup --no-update ~/my-awesome-app
 
 So you can then apply a patch provided by the [diff](#diff) command.
 
+Contributing
+------------
+
+#### Getting the source code
+```sh
+$ git clone git@github.com:manala/manalize <path-to-manalize>
+```
+
+#### Using the executable
+
+```sh
+$ cd <my-awesome-app>
+$ <path-to-manalize>/bin/manalize
+```
+
+#### Running the test suite
+
+```sh
+$ cd <path-to-manalize>
+$ make test
+```
+
 Troubleshooting
 ---------------
 
@@ -176,23 +198,6 @@ License
 
 This project is licensed under MIT.  
 For the whole copyright, see the [LICENSE](LICENSE) file distributed with this source code.
-
-Contribute
-----------
-
-## How to run
-
-```shell
-    cd <path-to-your-awesome-project-root-dir>
-    <path-to-manalize-root-dir>/bin/manalize setup .
-```
-
-## How to test
-
-```shell
-    cd <path-to-manalize-root-dir>
-    make test
-```
 
 Author information
 ------------------
