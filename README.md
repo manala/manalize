@@ -42,22 +42,22 @@ Installation
 
 #### Using the installer (recommended):
 ```
-$ curl -LSs https://raw.githubusercontent.com/manala/manalize/master/installer.php | php
+curl -LSs https://raw.githubusercontent.com/manala/manalize/master/installer.php | php
 ```
 
 #### Using composer:
 ```
-$ composer global require manala/manalize
+composer global require manala/manalize
 ```
 
 #### Using git:
 ```
-$ git clone git@github.com:manala/manalize
-$ cd manalize
-$ composer install
-$ make build
-$ mv manalize.phar /usr/local/bin/manalize
-$ chmod a+x /usr/local/bin/manalize
+git clone git@github.com:manala/manalize
+cd manalize
+composer install
+make build
+mv manalize.phar /usr/local/bin/manalize
+chmod a+x /usr/local/bin/manalize
 ```
 
 Usage
@@ -68,7 +68,7 @@ Usage
 Before using `manalize`, you need to ensure that your host is ready. It can easily be achieved by running the following command:
 
 ```sh
-$ manalize check:requirements
+manalize check:requirements
 ```
 
 A list of requirements and recommendations will be shown, sort as you can install/update packages depending on your need and the current state of your host.
@@ -78,7 +78,7 @@ A list of requirements and recommendations will be shown, sort as you can instal
 Given you have a web project that you clone for the first time and you need to run locally, simply execute the `setup` command:
 
 ```sh
-$ manalize setup ~/my-awesome-app
+manalize setup <my-awesome-app>
 ```
 
 ![](res/manalize-setup.gif)
@@ -94,7 +94,7 @@ Some files will be added to your project:
 Once this step done, your environment is ready so you can provision your VM using the following command:
 
 ```sh
-$ make setup
+make setup
 ```
 
 ### Working with your environment
@@ -103,7 +103,7 @@ Once the [`setup`](#setting-up-your-environment) process is finished (it may tak
 To manage it and work with it, just use the `vagrant` command-line tool as usual:
 
 ```sh
-$ vagrant up|halt|reload|ssh
+vagrant up|halt|reload|ssh
 ```
 
 ![](res/manalize-vagrant-ssh.gif)
@@ -118,7 +118,7 @@ To do so, there are two commands to be aware of: `self-update` and `diff`.
 #### self-update
 
 ```sh
-$ manalize self-update
+manalize self-update
 ```
 
 Running this command updates your `manalize` binary to the latest release, coming with the latest configuration templates.
@@ -130,20 +130,20 @@ The `diff` command allows you to get a patch representing the diff between your 
 
 Getting the diff:
 ```
-$ manalize diff ~/my-awesome-app
+manalize diff --env="<env>" <my-awesome-app>
 ```
 
 Getting the diff for applying the patch immediately:
 ```
-$ cd ~/my-awesome-app
-$ manalize diff | git apply
+cd <my-awesome-app>
+manalize diff --env="<env>" | git apply
 ```
 
 Getting the diff for applying the patch later:
 ```
-$ cd ~/my-awesome-app
-$ manalize diff > manalize.patch
-$ git apply manalize.patch
+cd <my-awesome-app>
+manalize diff --env="<env>" > manalize.patch
+git apply manalize.patch
 ```
 
 _Note:_
@@ -158,7 +158,7 @@ Sometimes, it can be useful to setup the environment without affecting the exist
 The following command will only update the `ansible/.manalize` metadata file from what you will configure:
 
 ```
-$ manalize setup --no-update ~/my-awesome-app
+manalize setup --no-update ~/my-awesome-app
 ```
 
 So you can then apply a patch provided by the [diff](#diff) command.
@@ -168,21 +168,21 @@ Contributing
 
 #### Getting the source code
 ```sh
-$ git clone git@github.com:manala/manalize <path-to-manalize>
+git clone git@github.com:manala/manalize <path-to-manalize>
 ```
 
 #### Using the executable
 
 ```sh
-$ cd <my-awesome-app>
-$ <path-to-manalize>/bin/manalize
+cd <my-awesome-app>
+<path-to-manalize>/bin/manalize
 ```
 
 #### Running the test suite
 
 ```sh
-$ cd <path-to-manalize>
-$ make test
+cd <path-to-manalize>
+make test
 ```
 
 Troubleshooting
