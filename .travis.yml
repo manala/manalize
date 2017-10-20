@@ -33,7 +33,7 @@ install:
     - if [[ "$DEPS" == "low" ]]; then composer update --prefer-dist --prefer-lowest --no-interaction --optimize-autoloader; else composer update --optimize-autoloader --prefer-dist --no-interaction; fi;
 
 script:
-    - phpunit --exclude-group infra
+    - make test
     - if [[ "$CHECK_PHP_SYNTAX" == "yes" ]]; then vendor/bin/php-cs-fixer fix --config=.php_cs --dry-run --no-interaction --diff; fi;
 
 notifications:
