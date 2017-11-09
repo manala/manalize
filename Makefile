@@ -32,5 +32,6 @@ build:
 	rm -rf .build
 
 ## Test
+test: export SYMFONY_PHPUNIT_REMOVE = symfony/yaml
 test:
-	vendor/bin/phpunit
+	vendor/bin/simple-phpunit --exclude-group infra
