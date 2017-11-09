@@ -18,7 +18,7 @@ manala_deploy_releases: 5
 
 manala_deploy_strategy: git
 
-manala_deploy_strategy_git_repo:    "{{ lookup('pipe','git ls-remote --get-url origin') }}"
+manala_deploy_strategy_git_repo:    git@github.com:vendor/app.git
 manala_deploy_strategy_git_version: master
 
 ##########
