@@ -17,6 +17,6 @@ configs:
         dependency:
             - { name: redis, enabled: false }
             - { name: influxdb, enabled: false }
-            - { name: sqlite, enabled: false }
+            - { name: sqlite, enabled: true }
             - { name: java, enabled: false }
     make: {  }

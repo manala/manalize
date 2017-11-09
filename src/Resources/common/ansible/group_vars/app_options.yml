@@ -17,3 +17,4 @@ app_options:
   redis:                 {# redis_enabled #}
   influxdb:              {# influxdb_enabled #}
   java:                  {# java_enabled #}
+  sqlite:                {# sqlite_enabled #}
