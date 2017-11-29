@@ -33,9 +33,9 @@ Prerequisites
 -------------
 
 - [PHP](http://php.net) 7.0+
-- [Vagrant](https://www.vagrantup.com/) 1.8.4+
-- [Vagrant Landrush](https://github.com/vagrant-landrush/landrush) 1.0+
-- [VirtualBox](https://www.virtualbox.org/) 5.0.20+
+- [Vagrant](https://www.vagrantup.com/) 1.8.7+
+- [Vagrant Landrush](https://github.com/vagrant-landrush/landrush) 1.2.0+
+- [VirtualBox](https://www.virtualbox.org/) 5.1.18+
 
 Installation
 ------------

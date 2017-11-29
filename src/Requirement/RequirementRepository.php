@@ -24,8 +24,8 @@ class RequirementRepository
                 'vagrant',
                 RequirementType::BINARY(),
                 RequirementLevel::REQUIRED(),
-                '^1.8.4',
-                'Darwin' === php_uname('s') ? ['1.8.5.*', '1.8.6.*', '1.8.7.*'] : ['1.8.5.*', '1.8.6.*'], // /!\ Exclude 1.8.7 for OSX since it is buggy
+                '^1.8.7',
+                [],
                 'See https://www.vagrantup.com/downloads.html'
             ),
             new Requirement(
@@ -33,7 +33,7 @@ class RequirementRepository
                 'landrush',
                 RequirementType::VAGRANT_PLUGIN(),
                 RequirementLevel::REQUIRED(),
-                '^1.0.0',
+                '^1.2.0',
                 [],
                 'See https://github.com/vagrant-landrush/landrush'
             ),
@@ -42,7 +42,7 @@ class RequirementRepository
                 'ansible',
                 RequirementType::BINARY(),
                 RequirementLevel::RECOMMENDED(),
-                '^2.1.1',
+                '^2.2.0',
                 [],
                 'Required only if you intend to use the deploy role. See http://docs.ansible.com/ansible/intro_installation.html'
             ),
@@ -51,7 +51,7 @@ class RequirementRepository
                 'VboxManage',
                 RequirementType::BINARY(),
                 RequirementLevel::RECOMMENDED(),
-                '>=5.0.20 <5.0.28',
+                '>=5.1.18',
                 [],
                 'See https://www.virtualbox.org/wiki/Downloads'
             ),

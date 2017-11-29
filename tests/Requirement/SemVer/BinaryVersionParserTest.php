@@ -34,8 +34,8 @@ class BinaryVersionParserTest extends \PHPUnit_Framework_TestCase
         return [
             [
                 'vagrant',
-                'Vagrant 1.8.4',
-                '1.8.4',
+                'Vagrant 1.8.7',
+                '1.8.7',
             ],
             [
                 'php',
