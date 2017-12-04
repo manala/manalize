@@ -22,10 +22,11 @@ use Manala\Manalize\Requirement\RequirementType;
 use Manala\Manalize\Requirement\SemVer\BinaryVersionParser;
 use Manala\Manalize\Requirement\Violation\RequirementViolationLabelBuilder;
 use Manala\Manalize\Requirement\Violation\RequirementViolationList;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 
-class RequirementCheckerTest extends \PHPUnit_Framework_TestCase
+class RequirementCheckerTest extends TestCase
 {
     /** @var RequirementChecker */
     private $requirementChecker;

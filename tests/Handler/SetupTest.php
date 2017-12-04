@@ -15,9 +15,10 @@ use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvName;
 use Manala\Manalize\Handler\Setup;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
-class SetupTest extends \PHPUnit_Framework_TestCase
+class SetupTest extends TestCase
 {
     private static $cwd;
 

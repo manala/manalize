@@ -12,8 +12,9 @@
 namespace Manala\Manalize\Tests\Requirement\SemVer;
 
 use Manala\Manalize\Requirement\SemVer\BinaryVersionParser;
+use PHPUnit\Framework\TestCase;
 
-class BinaryVersionParserTest extends \PHPUnit_Framework_TestCase
+class BinaryVersionParserTest extends TestCase
 {
     /**
      * @param string $name

@@ -12,8 +12,9 @@
 namespace Manala\Manalize\Tests\Env\Config\Variable\Dependency;
 
 use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
+use PHPUnit\Framework\TestCase;
 
-class DependencyTest extends \PHPUnit_Framework_TestCase
+class DependencyTest extends TestCase
 {
     public function testGetReplaces()
     {

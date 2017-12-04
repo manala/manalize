@@ -14,8 +14,9 @@ namespace Manala\Manalize\Tests\Env\Config\Variable;
 use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
 use Manala\Manalize\Env\Config\Variable\VagrantBoxVersion;
 use Manala\Manalize\Env\Config\Variable\VagrantBoxVersionResolver;
+use PHPUnit\Framework\TestCase;
 
-class VagrantBoxVersionResolverTest extends \PHPUnit_Framework_TestCase
+class VagrantBoxVersionResolverTest extends TestCase
 {
     public function getBoxVersionsForPhpVersions()
     {

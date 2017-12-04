@@ -13,8 +13,9 @@ namespace Manala\Manalize\Tests\Env\Config;
 
 use Manala\Manalize\Env\Config\Ansible;
 use Manala\Manalize\Env\Config\Registry;
+use PHPUnit\Framework\TestCase;
 
-class RegistryTest extends \PHPUnit_Framework_TestCase
+class RegistryTest extends TestCase
 {
     public function testGetClassesByAliases()
     {

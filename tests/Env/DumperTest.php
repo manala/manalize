@@ -17,10 +17,11 @@ use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvExporter;
 use Manala\Manalize\Env\EnvFactory;
 use Manala\Manalize\Env\EnvName;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
-class DumperTest extends \PHPUnit_Framework_TestCase
+class DumperTest extends TestCase
 {
     private static $cwd;
 

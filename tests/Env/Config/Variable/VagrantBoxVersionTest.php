@@ -12,8 +12,9 @@
 namespace Manala\Manalize\Tests\Env\Config\Variable;
 
 use Manala\Manalize\Env\Config\Variable\VagrantBoxVersion;
+use PHPUnit\Framework\TestCase;
 
-class VagrantBoxVersionTest extends \PHPUnit_Framework_TestCase
+class VagrantBoxVersionTest extends TestCase
 {
     public function testGetReplaces()
     {

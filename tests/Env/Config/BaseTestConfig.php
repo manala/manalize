@@ -13,8 +13,9 @@ namespace Manala\Manalize\Tests\Env\Config;
 
 use Manala\Manalize\Env\Config\Config;
 use Manala\Manalize\Env\EnvName;
+use PHPUnit\Framework\TestCase;
 
-class BaseTestConfig extends \PHPUnit_Framework_TestCase
+class BaseTestConfig extends TestCase
 {
     const ENV = EnvName::SYMFONY;
 

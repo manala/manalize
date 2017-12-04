@@ -12,8 +12,9 @@
 namespace Manala\Manalize\Tests\Requirement\SemVer;
 
 use Manala\Manalize\Requirement\SemVer\VagrantPluginVersionParser;
+use PHPUnit\Framework\TestCase;
 
-class VagrantPluginVersionParserTest extends \PHPUnit_Framework_TestCase
+class VagrantPluginVersionParserTest extends TestCase
 {
     /**
      * @param string $name

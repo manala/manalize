@@ -13,8 +13,9 @@ namespace Manala\Manalize\Tests\Env\Config\Variable;
 
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Config\Variable\VariableHydrator;
+use PHPUnit\Framework\TestCase;
 
-class VariableHydratorTest extends \PHPUnit_Framework_TestCase
+class VariableHydratorTest extends TestCase
 {
     public function testHydrate()
     {

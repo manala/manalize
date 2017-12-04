@@ -12,8 +12,9 @@
 namespace Manala\Manalize\Tests\Env\Config\Variable\Dependency;
 
 use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
+use PHPUnit\Framework\TestCase;
 
-class VersionBoundedTest extends \PHPUnit_Framework_TestCase
+class VersionBoundedTest extends TestCase
 {
     public function testGetReplaces()
     {

@@ -12,8 +12,9 @@
 namespace Manala\Manalize\Tests\Env\Config\Dependency;
 
 use Manala\Manalize\Env\Defaults\Defaults;
+use PHPUnit\Framework\TestCase;
 
-class DefaultsTest extends \PHPUnit_Framework_TestCase
+class DefaultsTest extends TestCase
 {
     public function testGet()
     {
