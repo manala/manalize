@@ -57,6 +57,8 @@ class SetupTest extends TestCase
         $this->assertFileExists(self::$cwd.'/ansible/group_vars/app.yml');
         $this->assertFileExists(self::$cwd.'/ansible/app.yml');
         $this->assertFileExists(self::$cwd.'/ansible/ansible.yml');
+        $this->assertFileExists(self::$cwd.'/ansible/.gitignore');
+        $this->assertFileExists(self::$cwd.'/.gitignore');
 
         $fixturesDir = self::FIXTURES_DIR.'/Command/SetupTest';
         $vagrantFile = file_get_contents(self::$cwd.'/Vagrantfile');
@@ -66,6 +68,7 @@ class SetupTest extends TestCase
 
         if (UPDATE_FIXTURES) {
             file_put_contents("$fixturesDir/$expectedDeps", file_get_contents(self::$cwd.'/ansible/group_vars/app.yml'));
+            file_put_contents("$fixturesDir/$expectedMetadataFilename", file_get_contents(self::$cwd.'/ansible/.manalize.yml'));
         }
 
         $this->assertFileEquals("$fixturesDir/$expectedDeps", self::$cwd.'/ansible/group_vars/app.yml');
@@ -152,6 +155,11 @@ class SetupTest extends TestCase
         $this->assertFileNotExists(self::$cwd.'/ansible/group_vars/app.yml');
         $this->assertFileNotExists(self::$cwd.'/ansible/app.yml');
         $this->assertFileNotExists(self::$cwd.'/ansible/ansible.yml');
+
+        if (UPDATE_FIXTURES) {
+            file_put_contents(__DIR__.'/../fixtures/Command/SetupTest/execute_no_update.yml', file_get_contents(self::$cwd.'/ansible/.manalize.yml'));
+        }
+
         $this->assertFileEquals(self::$cwd.'/ansible/.manalize.yml', __DIR__.'/../fixtures/Command/SetupTest/execute_no_update.yml');
     }
 

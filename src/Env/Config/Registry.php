@@ -35,6 +35,7 @@ class Registry
             'make' => Make::class,
             'ansible' => Ansible::class,
             'vagrant' => Vagrant::class,
+            'gitignore' => Gitignore::class,
             // Variable
             'app_name' => AppName::class,
             'box_version' => VagrantBoxVersion::class,

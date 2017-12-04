@@ -20,3 +20,4 @@ configs:
             - { name: sqlite, enabled: true }
             - { name: java, enabled: false }
     make: {  }
+    gitignore: {  }

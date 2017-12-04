@@ -12,6 +12,7 @@
 namespace Manala\Manalize\Tests\Env;
 
 use Manala\Manalize\Env\Config\Ansible;
+use Manala\Manalize\Env\Config\Gitignore;
 use Manala\Manalize\Env\Config\Make;
 use Manala\Manalize\Env\Config\Vagrant;
 use Manala\Manalize\Env\Config\Variable\AppName;
@@ -29,10 +30,10 @@ class EnvFactoryTest extends TestCase
         $appName = new AppName('rch');
         $boxVersion = new VagrantBoxVersion('~> 3.0.0');
         $env = EnvFactory::createEnv($envType, $appName, $this->prophesize(\Iterator::class)->reveal());
-        $expectedConfigs = [new Vagrant($envType, $appName, $boxVersion), new Ansible($envType), new Make($envType)];
+        $expectedConfigs = [new Vagrant($envType, $appName, $boxVersion), new Ansible($envType), new Make($envType), new Gitignore($envType)];
 
         $this->assertInstanceOf(Env::class, $env);
         $this->assertEquals($expectedConfigs, $env->getConfigs());
-        $this->assertCount(3, $env->getConfigs());
+        $this->assertCount(4, $env->getConfigs());
     }
 }

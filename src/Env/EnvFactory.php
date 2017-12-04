@@ -12,6 +12,7 @@
 namespace Manala\Manalize\Env;
 
 use Manala\Manalize\Env\Config\Ansible;
+use Manala\Manalize\Env\Config\Gitignore;
 use Manala\Manalize\Env\Config\Make;
 use Manala\Manalize\Env\Config\Registry;
 use Manala\Manalize\Env\Config\Vagrant;
@@ -32,7 +33,8 @@ class EnvFactory
             $name->getValue(),
             new Vagrant($name, $appName, VagrantBoxVersionResolver::resolve($dependencies)),
             new Ansible($name, ...$dependencies),
-            new Make($name)
+            new Make($name),
+            new Gitignore($name)
         );
     }
 

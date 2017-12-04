@@ -1,0 +1,4 @@
+*.retry
+/group_vars/*_local.yml
+/roles/*
+/roles/.gitkeep
