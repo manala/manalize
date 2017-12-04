@@ -12,8 +12,9 @@
 namespace Manala\Manalize\Tests\Env\Config\Variable;
 
 use Manala\Manalize\Env\Config\Variable\AppName;
+use PHPUnit\Framework\TestCase;
 
-class AppNameTest extends \PHPUnit_Framework_TestCase
+class AppNameTest extends TestCase
 {
     public function testGetReplaces()
     {

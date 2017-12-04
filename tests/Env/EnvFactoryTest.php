@@ -19,8 +19,9 @@ use Manala\Manalize\Env\Config\Variable\VagrantBoxVersion;
 use Manala\Manalize\Env\Env;
 use Manala\Manalize\Env\EnvFactory;
 use Manala\Manalize\Env\EnvName;
+use PHPUnit\Framework\TestCase;
 
-class EnvFactoryTest extends \PHPUnit_Framework_TestCase
+class EnvFactoryTest extends TestCase
 {
     public function testCreateEnv()
     {

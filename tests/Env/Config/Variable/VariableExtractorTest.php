@@ -13,8 +13,9 @@ namespace Manala\Manalize\Tests\Env\Config\Variable;
 
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Config\Variable\VariableExtractor;
+use PHPUnit\Framework\TestCase;
 
-class VariableExtractorTest extends \PHPUnit_Framework_TestCase
+class VariableExtractorTest extends TestCase
 {
     public function testExtract()
     {

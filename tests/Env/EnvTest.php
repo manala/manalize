@@ -13,8 +13,9 @@ namespace Manala\Manalize\Tests\Env;
 
 use Manala\Manalize\Env\Config\Config;
 use Manala\Manalize\Env\Env;
+use PHPUnit\Framework\TestCase;
 
-class EnvTest extends \PHPUnit_Framework_TestCase
+class EnvTest extends TestCase
 {
     public function testGetConfig()
     {

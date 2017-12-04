@@ -24,7 +24,7 @@ use Symfony\Component\Process\Process;
 /**
  * TestCase.
  */
-abstract class TestCase extends \PHPUnit_Framework_TestCase
+abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
     const FIXTURES_DIR = __DIR__.'/../fixtures';
 

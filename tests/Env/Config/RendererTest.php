@@ -14,8 +14,9 @@ namespace Manala\Manalize\Tests\Config;
 use Manala\Manalize\Env\Config\Config;
 use Manala\Manalize\Env\Config\Renderer;
 use Manala\Manalize\Env\Config\Variable\Variable;
+use PHPUnit\Framework\TestCase;
 
-class RendererTest extends \PHPUnit_Framework_TestCase
+class RendererTest extends TestCase
 {
     private static $tempdir;
 
