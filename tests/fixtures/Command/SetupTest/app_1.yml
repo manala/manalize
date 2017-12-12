@@ -3,7 +3,7 @@
 app_options:
 
   php:                   true
-  php_version:           '7.1'
+  php_version:           '7.2'
   nodejs:                false
   nodejs_version:        '8'
   mysql:                 true
