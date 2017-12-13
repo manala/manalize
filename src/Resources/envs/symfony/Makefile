@@ -54,8 +54,8 @@ install@test:
 	bin/console doctrine:database:create --if-not-exists
 	bin/console doctrine:schema:update --force
 
-install@demo: export SYMFONY_ENV = prod
-install@demo:
+install@staging: export SYMFONY_ENV = prod
+install@staging:
 	# Composer
 	composer install --verbose --no-progress --no-interaction --prefer-dist --optimize-autoloader
 	# Symfony cache
@@ -63,8 +63,8 @@ install@demo:
 	# Doctrine migrations
 	bin/console doctrine:migrations:migrate --no-debug --no-interaction
 
-install@prod: export SYMFONY_ENV = prod
-install@prod:
+install@production: export SYMFONY_ENV = prod
+install@production:
 	# Composer
 	composer install --verbose --no-progress --no-interaction --prefer-dist --optimize-autoloader --no-dev
 	# Symfony cache
@@ -78,9 +78,9 @@ install@prod:
 
 build:
 	if [ -f "gulpfile" ]; then gulp --dev; fi;
-build@demo:
+build@staging:
 	if [ -f "gulpfile" ]; then gulp; fi;
-build@prod:
+build@production:
 	if [ -f "gulpfile" ]; then gulp; fi;
 
 ##########

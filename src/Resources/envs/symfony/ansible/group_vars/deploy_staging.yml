@@ -12,5 +12,5 @@ manala_deploy_removed:
 #########
 
 manala_deploy_tasks:
-  - make: install@demo
-  - make: build@demo
+  - make: install@staging
+  - make: build@staging

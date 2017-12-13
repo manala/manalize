@@ -13,5 +13,5 @@
 #########
 
 # manala_deploy_tasks:
-  # - make: install@prod
-  # - make: build@prod
+  # - make: install@production
+  # - make: build@production
