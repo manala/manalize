@@ -13,8 +13,7 @@ matrix:
           env: DEPS=low
         - php: 7.1
           env: CHECK_PHP_SYNTAX="yes"
-        - php: 7.0
-        - php: 7.1
+        - php: 7.2
 
 cache:
     directories:

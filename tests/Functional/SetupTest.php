@@ -66,6 +66,7 @@ class SetupTest extends TestCase
 
         if (UPDATE_FIXTURES) {
             file_put_contents("$fixturesDir/$expectedDeps", file_get_contents(self::$cwd.'/ansible/group_vars/app.yml'));
+            file_put_contents("$fixturesDir/$expectedMetadataFilename", file_get_contents(self::$cwd.'/ansible/.manalize.yml'));
         }
 
         $this->assertFileEquals("$fixturesDir/$expectedDeps", self::$cwd.'/ansible/group_vars/app.yml');
@@ -117,7 +118,7 @@ class SetupTest extends TestCase
                 'metadata_1.yml',
             ],
             [
-              ['foo-bar.manala', 'yes', '5.6', "\n", "\n", "\n", "\n", "\n", "\n"],
+                ['foo-bar.manala', 'yes', '5.6', "\n", "\n", "\n", "\n", "\n", "\n"],
                 'foo-bar.manala',
                 '~> 2.0.0',
                 'app_2.yml',
@@ -152,6 +153,11 @@ class SetupTest extends TestCase
         $this->assertFileNotExists(self::$cwd.'/ansible/group_vars/app.yml');
         $this->assertFileNotExists(self::$cwd.'/ansible/app.yml');
         $this->assertFileNotExists(self::$cwd.'/ansible/ansible.yml');
+
+        if (UPDATE_FIXTURES) {
+            file_put_contents(__DIR__.'/../fixtures/Command/SetupTest/execute_no_update.yml', file_get_contents(self::$cwd.'/ansible/.manalize.yml'));
+        }
+
         $this->assertFileEquals(self::$cwd.'/ansible/.manalize.yml', __DIR__.'/../fixtures/Command/SetupTest/execute_no_update.yml');
     }
 
