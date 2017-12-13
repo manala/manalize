@@ -1,6 +1,6 @@
 ## Deploy application
-deploy@demo:
-	ansible-playbook ansible/deploy.yml --inventory-file=ansible/hosts --limit=deploy_demo
-	
-deploy@prod:
-	ansible-playbook ansible/deploy.yml --inventory-file=ansible/hosts --limit=deploy_prod
+deploy@staging:
+	ansible-playbook ansible/deploy.yml --inventory-file=ansible/hosts --limit=deploy_staging
+
+deploy@production:
+	ansible-playbook ansible/deploy.yml --inventory-file=ansible/hosts --limit=deploy_production
