@@ -14,6 +14,7 @@ namespace Manala\Manalize\Handler;
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
 use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
+use Manala\Manalize\Env\Config\Variable\Tld;
 use Manala\Manalize\Env\Defaults\Defaults;
 use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvFactory;
@@ -30,25 +31,27 @@ class Setup
     private $envName;
     private $dependencies;
     private $options;
-    private $patch;
+    private $tld;
 
     public function __construct(
         string $cwd,
         AppName $appName,
         EnvName $envName,
+        Tld $tld,
         \Traversable $dependencies,
         array $options = []
     ) {
         $this->cwd = $cwd;
         $this->appName = $appName;
         $this->envName = $envName;
+        $this->tld = $tld;
         $this->dependencies = $dependencies;
         $this->options = $this->normalizeOptions($options);
     }
 
     public function handle(callable $notifier, callable $existingFileCallback = null)
     {
-        $env = EnvFactory::createEnv($this->envName, $this->appName, $this->dependencies);
+        $env = EnvFactory::createEnv($this->envName, $this->appName, $this->tld, $this->dependencies);
         $dumper = new Dumper($this->cwd);
 
         try {

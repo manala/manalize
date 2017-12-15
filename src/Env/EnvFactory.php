@@ -16,6 +16,7 @@ use Manala\Manalize\Env\Config\Make;
 use Manala\Manalize\Env\Config\Registry;
 use Manala\Manalize\Env\Config\Vagrant;
 use Manala\Manalize\Env\Config\Variable\AppName;
+use Manala\Manalize\Env\Config\Variable\Tld;
 use Manala\Manalize\Env\Config\Variable\VagrantBoxVersionResolver;
 use Manala\Manalize\Env\Config\Variable\VariableHydrator;
 
@@ -26,11 +27,11 @@ use Manala\Manalize\Env\Config\Variable\VariableHydrator;
  */
 class EnvFactory
 {
-    public static function createEnv(EnvName $name, AppName $appName, \Traversable $dependencies): Env
+    public static function createEnv(EnvName $name, AppName $appName, Tld $tld, \Traversable $dependencies): Env
     {
         return new Env(
             $name->getValue(),
-            new Vagrant($name, $appName, VagrantBoxVersionResolver::resolve($dependencies)),
+            new Vagrant($name, $appName, $tld, VagrantBoxVersionResolver::resolve($dependencies)),
             new Ansible($name, ...$dependencies),
             new Make($name)
         );

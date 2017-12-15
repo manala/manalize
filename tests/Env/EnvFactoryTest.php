@@ -15,6 +15,7 @@ use Manala\Manalize\Env\Config\Ansible;
 use Manala\Manalize\Env\Config\Make;
 use Manala\Manalize\Env\Config\Vagrant;
 use Manala\Manalize\Env\Config\Variable\AppName;
+use Manala\Manalize\Env\Config\Variable\Tld;
 use Manala\Manalize\Env\Config\Variable\VagrantBoxVersion;
 use Manala\Manalize\Env\Env;
 use Manala\Manalize\Env\EnvFactory;
@@ -27,9 +28,10 @@ class EnvFactoryTest extends TestCase
     {
         $envType = EnvName::SYMFONY();
         $appName = new AppName('rch');
+        $tld = new Tld('vm');
         $boxVersion = new VagrantBoxVersion('~> 3.0.0');
-        $env = EnvFactory::createEnv($envType, $appName, $this->prophesize(\Iterator::class)->reveal());
-        $expectedConfigs = [new Vagrant($envType, $appName, $boxVersion), new Ansible($envType), new Make($envType)];
+        $env = EnvFactory::createEnv($envType, $appName, $tld, $this->prophesize(\Iterator::class)->reveal());
+        $expectedConfigs = [new Vagrant($envType, $appName, $tld, $boxVersion), new Ansible($envType), new Make($envType)];
 
         $this->assertInstanceOf(Env::class, $env);
         $this->assertEquals($expectedConfigs, $env->getConfigs());

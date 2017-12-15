@@ -14,6 +14,7 @@ namespace Manala\Manalize\Env\Config;
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
 use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
+use Manala\Manalize\Env\Config\Variable\Tld;
 use Manala\Manalize\Env\Config\Variable\VagrantBoxVersion;
 use Manala\Manalize\Env\Config\Variable\Variable;
 
@@ -37,6 +38,7 @@ class Registry
             'vagrant' => Vagrant::class,
             // Variable
             'app_name' => AppName::class,
+            'tld' => Tld::class,
             'box_version' => VagrantBoxVersion::class,
             'dependency' => Dependency::class,
             'dependency_with_version' => VersionBounded::class,

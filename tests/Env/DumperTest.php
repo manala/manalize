@@ -13,6 +13,7 @@ namespace Manala\Manalize\Tests\Env;
 
 use Manala\Manalize\Env\Config\Config;
 use Manala\Manalize\Env\Config\Variable\AppName;
+use Manala\Manalize\Env\Config\Variable\Tld;
 use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvExporter;
 use Manala\Manalize\Env\EnvFactory;
@@ -89,6 +90,7 @@ class DumperTest extends TestCase
         $env = EnvFactory::createEnv(
             EnvName::SYMFONY(),
             new AppName('dummy'),
+            new Tld('vm'),
             $this->prophesize(\Iterator::class)->reveal()
         );
 

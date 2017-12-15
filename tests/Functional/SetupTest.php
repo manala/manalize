@@ -37,7 +37,7 @@ class SetupTest extends TestCase
     /**
      * @dataProvider provideEnvs()
      */
-    public function testExecute(array $inputs, $expectedBoxName, $expectedBoxVersion, $expectedDeps, $expectedMetadataFilename)
+    public function testExecute(array $inputs, $expectedBoxName, $expectedBoxVersion, $expectedTld, $expectedDeps, $expectedMetadataFilename)
     {
         self::createSymfonyStandardProject(self::$cwd);
         $tester = new CommandTester(new Setup());
@@ -63,6 +63,7 @@ class SetupTest extends TestCase
 
         $this->assertContains(":name        => '$expectedBoxName'", $vagrantFile);
         $this->assertContains(":box_version => '$expectedBoxVersion'", $vagrantFile);
+        $this->assertContains("config.vm.hostname      = app[:name] + '.$expectedTld'", $vagrantFile);
 
         if (UPDATE_FIXTURES) {
             file_put_contents("$fixturesDir/$expectedDeps", file_get_contents(self::$cwd.'/ansible/group_vars/app.yml'));
@@ -73,9 +74,39 @@ class SetupTest extends TestCase
         $this->assertFileEquals("$fixturesDir/$expectedMetadataFilename", self::$cwd.'/ansible/.manalize.yml');
     }
 
+    public function provideEnvs()
+    {
+        return [
+            [
+                ["\n", '.vm', "\n"],
+                'manalized-app',
+                '~> 3.0.0',
+                'vm',
+                'app_1.yml',
+                'metadata_1.yml',
+            ],
+            [
+                ['foo-bar.manala', '.vm', 'yes', '5.6', "\n", "\n", "\n", "\n", "\n", "\n"],
+                'foo-bar.manala',
+                '~> 2.0.0',
+                'vm',
+                'app_2.yml',
+                'metadata_2.yml',
+            ],
+            [
+                ['foo-bar.manala', 'Choose a custom TLD', 'my-tld', "\n"],
+                'foo-bar.manala',
+                '~> 3.0.0',
+                'my-tld',
+                'app_3.yml',
+                'metadata_3.yml',
+            ],
+        ];
+    }
+
     public function testExecuteEnvNameChoice()
     {
-        $inputs = ['0', "\n", "\n", "\n"];
+        $inputs = ['0', "\n", "\n", "\n", "\n"];
         $tester = new CommandTester(new Setup());
         $tester
             ->setInputs($inputs)
@@ -92,7 +123,7 @@ class SetupTest extends TestCase
     public function testExecuteEnvNameWithIncorrectChoice()
     {
         $countEnvs = count(EnvName::values());
-        $inputs = [(string) $countEnvs, '0', "\n", "\n", "\n", "\n"];
+        $inputs = [(string) $countEnvs, '0', "\n", "\n", "\n", "\n", "\n"];
         $tester = new CommandTester(new Setup());
         $tester
             ->setInputs($inputs)
@@ -107,38 +138,11 @@ class SetupTest extends TestCase
         $this->assertContains('Environment successfully configured', $consoleDisplay);
     }
 
-    public function provideEnvs()
-    {
-        return [
-            [
-                ["\n", "\n"],
-                'manalized-app',
-                '~> 3.0.0',
-                'app_1.yml',
-                'metadata_1.yml',
-            ],
-            [
-                ['foo-bar.manala', 'yes', '5.6', "\n", "\n", "\n", "\n", "\n", "\n"],
-                'foo-bar.manala',
-                '~> 2.0.0',
-                'app_2.yml',
-                'metadata_2.yml',
-            ],
-            [
-                ['foo-bar.manala', "\n"],
-                'foo-bar.manala',
-                '~> 3.0.0',
-                'app_3.yml',
-                'metadata_3.yml',
-            ],
-        ];
-    }
-
     public function testExecuteNoUpdate()
     {
         $tester = new CommandTester(new Setup());
         $tester
-            ->setInputs(["\n", "\n"])
+            ->setInputs(["\n", "\n", "\n"])
             ->execute(['cwd' => static::$cwd, '--no-update' => true, '--env' => 'symfony']);
 
         if (0 !== $tester->getStatusCode()) {
@@ -167,7 +171,7 @@ class SetupTest extends TestCase
 
         $tester = new CommandTester(new Setup());
         $tester
-            ->setInputs(["\n", "\n", '0']) // patch strategy
+            ->setInputs(["\n", "\n", "\n", '0']) // patch strategy
             ->execute(['cwd' => self::$cwd, '--env' => 'symfony']);
 
         if (0 !== $tester->getStatusCode()) {
