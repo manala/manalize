@@ -14,6 +14,7 @@ namespace Manala\Manalize\Command;
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
 use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
+use Manala\Manalize\Env\Config\Variable\Tld;
 use Manala\Manalize\Env\Defaults\Defaults;
 use Manala\Manalize\Env\Defaults\DefaultsParser;
 use Manala\Manalize\Env\Dumper;
@@ -70,6 +71,7 @@ class Setup extends Command
         $io->comment(sprintf('Start composing your <info>%s</info> environment', (string) $envName));
 
         $appName = $this->askForAppName($io, strtolower(basename($cwd)));
+        $tld = $this->askForTld($io);
         $envDefaults = DefaultsParser::parse($envName);
         $options = ['dumper_flags' => $input->getOption('no-update') ? Dumper::DUMP_METADATA : Dumper::DUMP_ALL];
 
@@ -79,7 +81,7 @@ class Setup extends Command
             $dependencies = SetupHandler::createDefaultDependencySet($envDefaults);
         }
 
-        $handler = new SetupHandler($cwd, new AppName($appName), $envName, $dependencies, $options);
+        $handler = new SetupHandler($cwd, new AppName($appName), $envName, new Tld($tld), $dependencies, $options);
 
         try {
             $handler->handle(function (string $target) use ($io) {
@@ -182,6 +184,29 @@ class Setup extends Command
         }, array_keys($packages), $packages));
 
         return $io->confirm('Do you want to customize your dependencies?', false);
+    }
+
+    private function askForTld(SymfonyStyle $io): string
+    {
+        $choices = [
+            'vm' => '.vm',
+            'test' => '.test',
+            'custom' => 'Choose a custom TLD',
+        ];
+
+        $tld = array_search($io->choice('Which TLD would you like to use?', array_values($choices), '.vm'), $choices);
+
+        if ('custom' === $tld) {
+            $tld = $io->ask('Please enter the TLD you\'d like to use', null, function ($value) {
+                if (empty($value)) {
+                    throw new \InvalidArgumentException('TLD cannot be empty.');
+                }
+
+                return Tld::validate($value);
+            });
+        }
+
+        return $tld;
     }
 
     private function askStrategyForExistingFile(SymfonyStyle $io, string $cwd, string $target, array $strategies): string

@@ -14,6 +14,7 @@ namespace Manala\Manalize\Tests\Functional;
 use Manala\Manalize\Env\Config\Variable\AppName;
 use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
 use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
+use Manala\Manalize\Env\Config\Variable\Tld;
 use Manala\Manalize\Env\Config\Variable\VariableHydrator;
 use Manala\Manalize\Env\Defaults\DefaultsParser;
 use Manala\Manalize\Env\EnvName;
@@ -113,8 +114,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
             $dependencies = Setup::createDefaultDependencySet(DefaultsParser::parse($envType));
         }
 
-        (new Setup($cwd, new AppName($appName), $envType, $dependencies))->handle(function () {
-        });
+        (new Setup($cwd, new AppName($appName), $envType, new Tld('vm'), $dependencies))->handle(function () {});
     }
 
     protected static function createManalizedProject($cwd, $appName = 'dummy.manala', EnvName $envType = null, \Iterator $dependencies = null)

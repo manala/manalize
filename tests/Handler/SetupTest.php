@@ -12,6 +12,7 @@
 namespace Manala\Manalize\Tests\Handler;
 
 use Manala\Manalize\Env\Config\Variable\AppName;
+use Manala\Manalize\Env\Config\Variable\Tld;
 use Manala\Manalize\Env\Dumper;
 use Manala\Manalize\Env\EnvName;
 use Manala\Manalize\Handler\Setup;
@@ -64,6 +65,7 @@ class SetupTest extends TestCase
             self::$cwd,
             new AppName('setup_test'),
             EnvName::SYMFONY(),
+            new Tld('vm'),
             $this->prophesize(\Iterator::class)->reveal(),
             $options
         );

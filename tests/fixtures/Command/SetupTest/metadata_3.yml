@@ -3,6 +3,8 @@ configs:
     vagrant:
         app_name:
             - { value: foo-bar.manala }
+        tld:
+            - { value: my-tld }
         box_version:
             - { value: '~> 3.0.0' }
     ansible:
