@@ -18,7 +18,7 @@ use Symfony\Component\Console\Application as BaseApplication;
  */
 final class Application extends BaseApplication
 {
-    const VERSION = '0.7.0';
+    const VERSION = '0.7.1-DEV';
     const REPOSITORY_NAME = 'manala/manalize';
 
     public function __construct()
