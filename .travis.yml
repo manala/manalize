@@ -9,11 +9,10 @@ env:
 matrix:
     fast_finish: true
     include:
-        - php: 7.0
-          env: DEPS=low
         - php: 7.1
-          env: CHECK_PHP_SYNTAX="yes"
+          env: DEPS=low
         - php: 7.2
+          env: CHECK_PHP_SYNTAX="yes"
 
 cache:
     directories:
