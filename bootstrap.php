@@ -12,9 +12,9 @@ foreach (array(__DIR__.'/../../autoload.php', __DIR__.'/../vendor/autoload.php',
     }
 }
 
-if (PHP_MAJOR_VERSION < 7) {
+if (version_compare(PHP_VERSION, '7.1.3') < 0) {
     $io = new SymfonyStyle(new ArgvInput(), new ConsoleOutput());
-    $io->error('☠️ PHP 7 is required in order to run manalize.');
+    $io->error('☠️ PHP >= 7.1.3 is required in order to run manalize.');
     exit(1);
 }
 
