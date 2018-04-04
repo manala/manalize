@@ -106,7 +106,7 @@ app_patterns:
   #  - file: app
   #    user: "{{ app.user }}"
   #    environment:
-  #      - SYMFONY_ENV: "{{ app.env }}"
+  #      - FOO: "BAR"
   #    jobs:
   #      - name:   foo-bar
   #        job:    "cd {{ app.dir }}{{ app.dir_release }} && php bin/console app:foo:bar --no-interaction -vv >> {{ app.log_dir }}/cron.foo-bar.log 2>&1"
@@ -128,6 +128,6 @@ app_patterns:
   #        - directory:      "{{ app.dir }}{{ app.dir_release }}"
   #        - user:           "{{ app.user }}"
   #        - stdout_logfile: "{{ app.log_dir }}/supervisor.foo-bar.log"
-  #        - environment:    "SYMFONY_ENV=\"{{ app.env }}\""
+  #        - environment:    "FOO=\"BAR\""
   #        # Dev
   #        - autostart:       false

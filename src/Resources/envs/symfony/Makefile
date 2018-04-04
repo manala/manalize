@@ -29,7 +29,6 @@ help:
 setup:
 	if [ -d  "./var/cache" ]; then rm -rf ./var/cache; fi;
 	if [ -d "./var/log" ]; then rm -rf ./var/log; fi;
-	if [ -d "./var/sessions" ]; then rm -rf ./var/sessions; fi;
 	vagrant up --no-provision
 	vagrant provision
 	vagrant ssh -- "cd /srv/app && make install && make build"
@@ -45,7 +44,6 @@ install:
 	composer install --verbose
 	bin/console doctrine:database:create --if-not-exists
 
-install@test: export SYMFONY_ENV = test
 install@test:
 	# Composer
 	composer install --verbose --no-progress --no-interaction
@@ -54,7 +52,6 @@ install@test:
 	bin/console doctrine:database:create --if-not-exists
 	bin/console doctrine:schema:update --force
 
-install@staging: export SYMFONY_ENV = prod
 install@staging:
 	# Composer
 	composer install --verbose --no-progress --no-interaction --prefer-dist --optimize-autoloader
@@ -63,7 +60,6 @@ install@staging:
 	# Doctrine migrations
 	bin/console doctrine:migrations:migrate --no-debug --no-interaction
 
-install@production: export SYMFONY_ENV = prod
 install@production:
 	# Composer
 	composer install --verbose --no-progress --no-interaction --prefer-dist --optimize-autoloader --no-dev

@@ -37,7 +37,6 @@ manala_deploy_shared_files:
 
 manala_deploy_shared_dirs:
   - var/log
-  - var/sessions
 
 ############
 # Writable #
@@ -49,4 +48,3 @@ manala_deploy_shared_dirs:
 #manala_deploy_writable_dirs:
 #  - var/cache
 #  - var/log
-#  - var/sessions
