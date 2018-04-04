@@ -1,13 +1,5 @@
 ---
 
-###########
-# Removed #
-###########
-
-manala_deploy_removed:
-  - web/app_dev.php
-  - web/app_test.php
-
 #########
 # Tasks #
 #########

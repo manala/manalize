@@ -28,7 +28,7 @@ help:
 ## Setup environment & Install & Build application
 setup:
 	if [ -d  "./var/cache" ]; then rm -rf ./var/cache; fi;
-	if [ -d "./var/logs" ]; then rm -rf ./var/logs; fi;
+	if [ -d "./var/log" ]; then rm -rf ./var/log; fi;
 	if [ -d "./var/sessions" ]; then rm -rf ./var/sessions; fi;
 	vagrant up --no-provision
 	vagrant provision
