@@ -15,11 +15,7 @@ app_patterns:
   ###############
 
   # environment_variables:
-  #   - APP_DATABASE_HOST:           127.0.0.1
-  #   - APP_DATABASE_PORT:           null
-  #   - APP_DATABASE_NAME:           app
-  #   - APP_DATABASE_USER:           "{{ app.user }}"
-  #   - APP_DATABASE_PASSWORD:       null
+  #   - FOO: BAR
 
   #########
   # Files #

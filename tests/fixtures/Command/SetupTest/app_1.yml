@@ -33,13 +33,8 @@ app_patterns:
   # Environment #
   ###############
 
-  environment_variables:
-    - APP_SECRET:                  ThisTokenIsNotSoSecretChangeIt
-    - APP_DATABASE_HOST:           127.0.0.1
-    - APP_DATABASE_PORT:           null
-    - APP_DATABASE_NAME:           app
-    - APP_DATABASE_USER:           "{{ app.user }}"
-    - APP_DATABASE_PASSWORD:       null
+  # environment_variables:
+  #   - FOO: BAR
 
   #########
   # Files #
@@ -123,7 +118,7 @@ app_patterns:
   #  - file: app
   #    user: "{{ app.user }}"
   #    environment:
-  #      - SYMFONY_ENV: "{{ app.env }}"
+  #      - FOO: "BAR"
   #    jobs:
   #      - name:   foo-bar
   #        job:    "cd {{ app.dir }}{{ app.dir_release }} && php bin/console app:foo:bar --no-interaction -vv >> {{ app.log_dir }}/cron.foo-bar.log 2>&1"
