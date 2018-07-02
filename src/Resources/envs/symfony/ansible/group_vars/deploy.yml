@@ -36,8 +36,7 @@ manala_deploy_shared_files:
   - app/config/parameters.yml
 
 manala_deploy_shared_dirs:
-  - var/logs
-  - var/sessions
+  - var/log
 
 ############
 # Writable #
@@ -48,5 +47,4 @@ manala_deploy_shared_dirs:
 #  follow: true
 #manala_deploy_writable_dirs:
 #  - var/cache
-#  - var/logs
-#  - var/sessions
+#  - var/log
