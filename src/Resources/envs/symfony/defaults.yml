@@ -36,8 +36,8 @@ packages:
     elasticsearch:
         enabled:    false
         required:   false
-        default:    '5'
-        constraint: '1.5|1.6|1.7|2|5'
+        default:    '6'
+        constraint: '1.5|1.6|1.7|2|5|6'
     nodejs:
         enabled:    false
         required:   false
