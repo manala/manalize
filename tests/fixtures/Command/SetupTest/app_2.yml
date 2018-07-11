@@ -15,7 +15,7 @@ app_options:
   postgresql:            false
   postgresql_version:    '9.5'
   elasticsearch:         false
-  elasticsearch_version: '5'
+  elasticsearch_version: '6'
   redis:                 false
   influxdb:              false
   java:                  false
