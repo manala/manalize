@@ -15,7 +15,7 @@ configs:
             - { version: '3.2', name: mongodb, enabled: false }
             - { version: '10.1', name: mariadb, enabled: false }
             - { version: '6', name: elasticsearch, enabled: false }
-            - { version: '8', name: nodejs, enabled: false }
+            - { version: '10', name: nodejs, enabled: false }
         dependency:
             - { name: redis, enabled: false }
             - { name: influxdb, enabled: false }
