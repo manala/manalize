@@ -20,7 +20,7 @@ use function iter\search;
  */
 class VagrantBoxVersionResolver
 {
-    const DEFAULT_BOX_VERSION = '~> 3.0.0';
+    const DEFAULT_BOX_VERSION = '~> 4.0.3';
 
     /**
      * Resolves the vagrant box version.
@@ -42,7 +42,7 @@ class VagrantBoxVersionResolver
 
     private static function resolveFromPhpVersion($phpVersion): string
     {
-        return (float) $phpVersion < 7 ? '~> 2.0.0' : self::DEFAULT_BOX_VERSION;
+        return (float) $phpVersion < 7 ? '~> 2.0.8' : self::DEFAULT_BOX_VERSION;
     }
 
     private static function findDependency(string $name, \Traversable $dependencies)

@@ -6,14 +6,14 @@ configs:
         tld:
             - { value: my-tld }
         box_version:
-            - { value: '~> 3.0.0' }
+            - { value: '~> 4.0.3' }
     ansible:
         dependency_with_version:
             - { version: '7.2', name: php, enabled: true }
-            - { version: '5.6', name: mysql, enabled: true }
+            - { version: '5.7', name: mysql, enabled: true }
             - { version: '9.5', name: postgresql, enabled: false }
             - { version: '3.2', name: mongodb, enabled: false }
-            - { version: '10.1', name: mariadb, enabled: false }
+            - { version: '10.3', name: mariadb, enabled: false }
             - { version: '6', name: elasticsearch, enabled: false }
             - { version: '10', name: nodejs, enabled: false }
         dependency:

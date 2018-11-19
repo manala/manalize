@@ -7,11 +7,11 @@ app_options:
   nodejs:                false
   nodejs_version:        '10'
   mysql:                 true
-  mysql_version:         '5.6'
+  mysql_version:         '5.7'
   mongodb:               false
   mongodb_version:       '3.2'
   mariadb:               false
-  mariadb_version:       '10.1'
+  mariadb_version:       '10.3'
   postgresql:            false
   postgresql_version:    '9.5'
   elasticsearch:         false
