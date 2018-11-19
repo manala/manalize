@@ -2,7 +2,6 @@
 
 # App
 - hosts: app
-  gather_facts: false
   vars:
     manala_ansible_galaxy_roles:
       - manala.ansible-galaxy
@@ -13,7 +12,6 @@
 
 # Global
 - hosts: all
-  gather_facts: false
   vars:
     manala_ansible_galaxy_roles_path: "{{ playbook_dir }}/roles"
     manala_ansible_galaxy_roles:
