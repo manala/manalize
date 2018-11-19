@@ -55,8 +55,6 @@ app_patterns:
     - curl
     - mbstring
     - xml
-    # Composer
-    - zip
     # App
 
   php_configs:
