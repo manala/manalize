@@ -2,6 +2,10 @@
 
 {% include('common/ansible/group_vars/app_options.yml') %}
 
+  #app:
+  #  env_vars:
+  #    FOO: bar
+
 app_patterns:
 
   ############
@@ -9,13 +13,6 @@ app_patterns:
   ############
 
   timezone_default: Etc/UTC
-
-  ###############
-  # Environment #
-  ###############
-
-  # environment_variables:
-  #   - FOO: BAR
 
   #########
   # Files #
