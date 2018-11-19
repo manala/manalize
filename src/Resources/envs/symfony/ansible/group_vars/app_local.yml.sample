@@ -1,14 +1,13 @@
 ---
 
+app_local_options:
+
+  #app:
+  #  env_vars:
+  #    XDEBUG_CONFIG:  remote_host={{ ansible_eth1.ipv4.address|regex_replace('^(.*)\.\d+$', '\1') }}.1 idekey=app
+  #    PHP_IDE_CONFIG: serverName={{ ansible_fqdn }}
+
 app_local_patterns:
-
-  ###############
-  # Environment #
-  ###############
-
-  #environment_variables:
-  #  - XDEBUG_CONFIG:  remote_host={{ ansible_eth1.ipv4.address|regex_replace('^(.*)\.\d+$', '\1') }}.1 idekey=app
-  #  - PHP_IDE_CONFIG: serverName={{ ansible_fqdn }}
 
   #######
   # Apt #
