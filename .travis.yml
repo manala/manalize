@@ -5,6 +5,7 @@ env:
     global:
         - CHECK_PHP_SYNTAX="no"
         - DEPS="high"
+        - SYMFONY_PHPUNIT_VERSION="6.5"
 
 matrix:
     fast_finish: true
