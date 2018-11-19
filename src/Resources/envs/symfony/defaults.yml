@@ -7,7 +7,7 @@ packages:
     mysql:
         enabled:    true
         required:   false
-        default:    '5.6'
+        default:    '5.7'
         constraint: '5.6|5.7'
     postgresql:
         enabled:    false
@@ -22,8 +22,8 @@ packages:
     mariadb:
         enabled:    false
         required:   false
-        default:    '10.1'
-        constraint: '10.0|10.1|10.2'
+        default:    '10.3'
+        constraint: '10.0|10.1|10.2|10.3'
     redis:
         required:   false
         enabled:    false

@@ -44,8 +44,9 @@ final class VagrantBoxVersion extends SingleValue
     private static function getSupportedVersions()
     {
         return [
-            '~> 2.0.0',
-            '~> 3.0.0',
+            '~> 2.0.8',
+            '~> 3.0.14',
+            '~> 4.0.3',
         ];
     }
 }
