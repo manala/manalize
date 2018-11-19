@@ -27,9 +27,10 @@
     },
     "require-dev": {
         "symfony/console": "^3.4|^4.0",
-        "symfony/phpunit-bridge": "^3.4|^4.0",
+        "symfony/phpunit-bridge": "^4.1",
         "friendsofphp/php-cs-fixer": "^2.0",
-        "kherge/box": "^2.7"
+        "kherge/box": "^2.7.5",
+        "justinrainbow/json-schema": "^1.6"
     },
     "autoload": {
         "psr-4": { "Manala\\Manalize\\": "src/" }
