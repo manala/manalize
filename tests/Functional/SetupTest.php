@@ -80,7 +80,7 @@ class SetupTest extends TestCase
             [
                 ["\n", '.vm', "\n"],
                 'manalized-app',
-                '~> 3.0.0',
+                '~> 4.0.3',
                 'vm',
                 'app_1.yml',
                 'metadata_1.yml',
@@ -88,7 +88,7 @@ class SetupTest extends TestCase
             [
                 ['foo-bar.manala', '.vm', 'yes', '5.6', "\n", "\n", "\n", "\n", "\n", "\n"],
                 'foo-bar.manala',
-                '~> 2.0.0',
+                '~> 2.0.8',
                 'vm',
                 'app_2.yml',
                 'metadata_2.yml',
@@ -96,7 +96,7 @@ class SetupTest extends TestCase
             [
                 ['foo-bar.manala', 'Choose a custom TLD', 'my-tld', "\n"],
                 'foo-bar.manala',
-                '~> 3.0.0',
+                '~> 4.0.3',
                 'my-tld',
                 'app_3.yml',
                 'metadata_3.yml',
