@@ -33,5 +33,6 @@ build:
 
 ## Test
 test: export SYMFONY_PHPUNIT_REMOVE = symfony/yaml
+test: export SYMFONY_PHPUNIT_VERSION=6.5
 test:
 	vendor/bin/simple-phpunit --exclude-group infra
