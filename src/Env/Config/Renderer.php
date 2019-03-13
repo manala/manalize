@@ -13,6 +13,7 @@ namespace Manala\Manalize\Env\Config;
 
 use Manala\Manalize\Twig\FilesystemLoader;
 use Manala\Manalize\Twig\Lexer;
+use Twig\Environment;
 
 /**
  * Config' template renderer.
@@ -23,10 +24,10 @@ class Renderer
 {
     private $twig;
 
-    public function __construct(\Twig_Environment $twig = null)
+    public function __construct(Environment $twig = null)
     {
         if (null === $twig) {
-            $twig = new \Twig_Environment(new FilesystemLoader(), [
+            $twig = new Environment(new FilesystemLoader(), [
                 'debug' => $debug = '' === \Phar::running(),
                 'cache' => $debug ? MANALIZE_DIR.'/var/cache' : manala_get_tmp_dir(),
             ]);

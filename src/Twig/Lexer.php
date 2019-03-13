@@ -11,14 +11,17 @@
 
 namespace Manala\Manalize\Twig;
 
+use Twig\Environment;
+use Twig\Lexer as BaseLexer;
+
 /**
  * Manalize Twig Lexer.
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-final class Lexer extends \Twig_Lexer
+final class Lexer extends BaseLexer
 {
-    public function __construct(\Twig_Environment $env)
+    public function __construct(Environment $env)
     {
         parent::__construct($env, ['tag_comment' => ['[#', '#]'], 'tag_variable' => ['{#', '#}']]);
     }
