@@ -11,12 +11,14 @@
 
 namespace Manala\Manalize\Twig;
 
+use Twig\Loader\FilesystemLoader as BaseFilesystemLoader;
+
 /**
  * Loads templates through absolute paths in addition of relative ones.
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-final class FilesystemLoader extends \Twig_Loader_Filesystem
+final class FilesystemLoader extends BaseFilesystemLoader
 {
     /**
      * {@inheritdoc}
