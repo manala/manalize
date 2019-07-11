@@ -21,6 +21,7 @@ class VagrantBoxVersionResolverTest extends TestCase
     public function getBoxVersionsForPhpVersions()
     {
         return [
+            ['~> 4.0.5', '7.3'],
             ['~> 4.0.5', '7.2'],
             ['~> 4.0.5', '7.1'],
             ['~> 4.0.5', '7.0'],
