@@ -38,7 +38,7 @@ Vagrant.configure(2) do |config|
   end
 
   # Vm - Provision - Dotfiles
-  for dotfile in ['.ssh/config', '.gitconfig', '.gitignore', '.composer/auth.json']
+  for dotfile in ['.ssh/config', '.gitconfig', '.gitignore', '.gitignore_global', '.composer/auth.json']
     if File.exists?(File.join(Dir.home, dotfile)) then
       config.vm.provision dotfile, type: 'file', run: 'always' do |file|
         file.source      = '~/' + dotfile
