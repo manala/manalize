@@ -6,7 +6,7 @@ configs:
         tld:
             - { value: vm }
         box_version:
-            - { value: '~> 2.0.8' }
+            - { value: '~> 2.0.10' }
     ansible:
         dependency_with_version:
             - { version: '5.6', name: php, enabled: true }
