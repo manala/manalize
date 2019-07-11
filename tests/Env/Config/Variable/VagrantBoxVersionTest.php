@@ -34,6 +34,6 @@ class VagrantBoxVersionTest extends TestCase
 
     public function testValidate()
     {
-        $this->assertSame('~> 2.0.8', VagrantBoxVersion::validate('~> 2.0.8'));
+        $this->assertSame('~> 2.0.10', VagrantBoxVersion::validate('~> 2.0.10'));
     }
 }

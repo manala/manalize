@@ -29,7 +29,7 @@ class EnvFactoryTest extends TestCase
         $envType = EnvName::SYMFONY();
         $appName = new AppName('rch');
         $tld = new Tld('vm');
-        $boxVersion = new VagrantBoxVersion('~> 4.0.3');
+        $boxVersion = new VagrantBoxVersion('~> 4.0.5');
         $env = EnvFactory::createEnv($envType, $appName, $tld, $this->prophesize(\Iterator::class)->reveal());
         $expectedConfigs = [new Vagrant($envType, $appName, $tld, $boxVersion), new Ansible($envType), new Make($envType)];
 
