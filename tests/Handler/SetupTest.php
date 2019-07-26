@@ -30,27 +30,26 @@ class SetupTest extends TestCase
 
     public function provideHandleData()
     {
-        return [
+        yield [
+            [],
             [
-                [],
-                [
-                    'Vagrantfile',
-                    'ansible/.manalize.yml',
-                    'ansible/ansible.yml',
-                    'ansible/app.yml',
-                    'ansible/deploy.yml',
-                    'ansible/group_vars/app.yml',
-                    'ansible/group_vars/app_local.yml.sample',
-                    'ansible/group_vars/deploy.yml',
-                    'ansible/group_vars/deploy_staging.yml',
-                    'ansible/group_vars/deploy_production.yml',
-                    'Makefile',
-                ],
+                'Vagrantfile',
+                'ansible/.manalize.yml',
+                'ansible/ansible.yml',
+                'ansible/app.yml',
+                'ansible/deploy.yml',
+                'ansible/group_vars/app.yml',
+                'ansible/group_vars/app_local.yml.sample',
+                'ansible/group_vars/deploy.yml',
+                'ansible/group_vars/deploy_staging.yml',
+                'ansible/group_vars/deploy_production.yml',
+                'Makefile',
             ],
-            [
-                ['dumper_flags' => Dumper::DUMP_METADATA],
-                ['ansible/.manalize.yml'],
-            ],
+        ];
+
+        yield [
+            ['dumper_flags' => Dumper::DUMP_METADATA],
+            ['ansible/.manalize.yml'],
         ];
     }
 
