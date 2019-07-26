@@ -11,9 +11,9 @@
 
 namespace Manala\Manalize\Env\Config\Variable;
 
+use function iter\search;
 use Manala\Manalize\Env\Config\Variable\Dependency\Dependency;
 use Manala\Manalize\Env\Config\Variable\Dependency\VersionBounded;
-use function iter\search;
 
 /**
  * @author Robin Chalas <robin.chalas@gmail.com>
