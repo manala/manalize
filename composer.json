@@ -20,7 +20,7 @@
         "symfony/process": "^3.4|^4.0",
         "symfony/yaml": "^3.4|^4.0",
         "composer/semver": "^1.4",
-        "nikic/iter": "^1.4",
+        "nikic/iter": "^2.0",
         "guzzlehttp/guzzle": "^6.2",
         "elao/enum": "^0.4.0",
         "twig/twig": "~2.1"
