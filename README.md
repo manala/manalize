@@ -1,3 +1,5 @@
+> :warning: This repository is unmaintained in favor of using the [Manala binary](https://github.com/manala/manala) along with a [recipe](https://github.com/manala/manala-recipes)
+
 Manalize
 =========
 
